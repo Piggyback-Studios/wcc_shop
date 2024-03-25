@@ -16,15 +16,12 @@ export default function Checkout() {
     const jsonRes = await res.json();
     setClientSecret(jsonRes.clientSecret);
   };
-
   useEffect(() => {
     fetchClientSecret();
   }, []);
-
   const stripeOptions = {
     clientSecret,
   };
-
   return (
     <main className={styles.main}>
       {clientSecret && (
