@@ -11,7 +11,12 @@ export default function CheckoutLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      {/* nav here */}
+      <body>
+        {children}
+        {/* cart summary sidebar */}
+      </body>
+      {/* no footer in checkout flow */}
     </html>
   );
 }
