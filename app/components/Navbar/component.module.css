@@ -1,0 +1,24 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid blue;
+  height: 80px;
+  padding: 0 0.5rem;
+  background: #f6f2ea;
+
+  .nav_menu {
+    display: flex;
+    gap: 0.5rem;
+    .menu_item:hover {
+      border: 1px solid red;
+    }
+  }
+
+  .logo {
+    font-size: 64px;
+  }
+}

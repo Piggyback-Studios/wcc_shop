@@ -1,0 +1,24 @@
+{
+  "leftMenuItems": [
+    {
+      "name": "furniture"
+    },
+    {
+      "name": "decor"
+    }
+  ],
+  "logoText": "wcc",
+
+  "rightMenuItems": [
+    {
+      "name": "search",
+      "type": "icon",
+      "url": ""
+    },
+    {
+      "name": "cart",
+      "type": "icon",
+      "url": "/icons/"
+    }
+  ]
+}
