@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import styles from "./page.module.css";
 import Stripe from "stripe";
+
+import styles from "./page.module.css";
+import ProductCard from "./components/ProductCard";
 
 export default function Home() {
   const [products, setProducts] = useState<Stripe.Product[]>([]);
@@ -14,12 +16,16 @@ export default function Home() {
   useEffect(() => {
     fetchProducts();
   }, []);
-
   useEffect(() => console.log(products), [products]);
   return (
     <main className={styles.main}>
-      {products.length &&
-        products.map((product: Stripe.Product) => <p>{product.name}</p>)}
+      {products && (
+        <div className={styles.product_carousel}>
+          {products.map((product: Stripe.Product) => (
+            <ProductCard product={product} />
+          ))}
+        </div>
+      )}
     </main>
   );
 }

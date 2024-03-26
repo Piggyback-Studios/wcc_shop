@@ -4,8 +4,6 @@ import Stripe from "stripe";
 export async function GET(req: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SK || "");
   const productList = await stripe.products.list();
-
-  console.log(productList);
   return NextResponse.json({
     products: productList.data,
   });
