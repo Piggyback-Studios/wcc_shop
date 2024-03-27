@@ -17,7 +17,7 @@ const ProductGalleryBlock = () => {
     fetchProducts();
   }, []);
   return (
-    <div className={styles.product_carousel}>
+    <div className={styles.product_gallery}>
       {products &&
         products.map((product: Stripe.Product) => (
           <ProductCard product={product} />

@@ -5,20 +5,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid blue;
   height: 80px;
   padding: 0 0.5rem;
-  background: #f6f2ea;
-
+  background: var(--dark-color);
+  color: var(--light-color);
   .nav_menu {
     display: flex;
     gap: 0.5rem;
-    .menu_item:hover {
-      border: 1px solid red;
-    }
-  }
 
-  .logo {
-    font-size: 64px;
+    .menu_item {
+      cursor: pointer;
+    }
+
+    .menu_item:hover {
+      /* border: 1px solid red; */
+    }
   }
 }

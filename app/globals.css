@@ -8,14 +8,17 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
-  background: #f6f2ea;
-  /* account for navbar in this layout */
-  margin-top: 40px;
-
-  color: #2d2513;
+  background: var(--light-color);
+  color: var(--dark-color);
 }
 
 a {
   color: inherit;
   text-decoration: none;
+}
+
+:root {
+  --light-color: #f6f2ea;
+  --dark-color: #2d2513;
+  --nav-height: 80px;
 }

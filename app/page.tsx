@@ -1,20 +1,22 @@
 "use client";
 
-import ProductGalleryBlock from "./components/ProductGalleryBlock";
+import ProductGalleryBlock from "./blocks/ProductGalleryBlock";
 
 import styles from "./page.module.css";
 
 export default function Home() {
   return (
     <main className={styles.main}>
-      <ProductGalleryBlock />
-      <ProductGalleryBlock />
-      <ProductGalleryBlock />
-      <ProductGalleryBlock />
-      <ProductGalleryBlock />
-      <ProductGalleryBlock />
-      <ProductGalleryBlock />
-      <ProductGalleryBlock />
+      <div className={styles.content_wrapper}>
+        <ProductGalleryBlock />
+        <ProductGalleryBlock />
+        <ProductGalleryBlock />
+        <ProductGalleryBlock />
+        <ProductGalleryBlock />
+        <ProductGalleryBlock />
+        <ProductGalleryBlock />
+        <ProductGalleryBlock />
+      </div>
     </main>
   );
 }

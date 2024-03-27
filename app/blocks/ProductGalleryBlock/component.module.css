@@ -1,5 +1,4 @@
-.product_carousel {
-  border: 1px solid green;
+.product_gallery {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 1rem;

@@ -1,1 +1,5 @@
-
+.main {
+  .content_wrapper {
+    margin: calc(2rem + var(--nav-height)) 12rem 2rem 12rem;
+  }
+}

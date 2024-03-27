@@ -27,7 +27,7 @@ interface INavLogo {
   className: string;
 }
 const NavLogo = ({ logoText }: INavLogo) => {
-  return <div>{logoText}</div>;
+  return <h1>{logoText}</h1>;
 };
 
 const Navbar = () => {
