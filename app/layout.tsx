@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import Navbar from "./components/Navbar";
+import ProviderWrapper from "./components/ProviderWrapper";
 
 export const metadata: Metadata = {
   title: "Williford Carpentry Collective",
@@ -15,9 +16,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <Navbar />
-      <body>{children}</body>
-      {/* footer here */}
+      <ProviderWrapper>
+        <Navbar />
+        <body>{children}</body>
+        {/* footer here */}
+      </ProviderWrapper>
     </html>
   );
 }

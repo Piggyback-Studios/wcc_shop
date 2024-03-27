@@ -9,13 +9,6 @@ export default function Home() {
     <main className={styles.main}>
       <div className={styles.content_wrapper}>
         <ProductGalleryBlock />
-        <ProductGalleryBlock />
-        <ProductGalleryBlock />
-        <ProductGalleryBlock />
-        <ProductGalleryBlock />
-        <ProductGalleryBlock />
-        <ProductGalleryBlock />
-        <ProductGalleryBlock />
       </div>
     </main>
   );

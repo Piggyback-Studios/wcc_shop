@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import Image from "next/image";
 
 import styles from "./component.module.css";
+import { useCartContext } from "@/app/context/Cart";
 
 interface ProductCard {
   product: Stripe.Product;
@@ -10,10 +11,12 @@ interface ProductCard {
 
 const ProductCard = (props: ProductCard) => {
   const { product } = props;
-  console.log(product);
+  const [cart, setCart] = useCartContext();
 
-  const addProductToCart = () => {
+  const addProductToCart = (product: Stripe.Product) => {
     console.log("add product to cart context here");
+
+    setCart([...cart, product]);
   };
   return (
     <div className={styles.card}>
@@ -33,7 +36,7 @@ const ProductCard = (props: ProductCard) => {
         {product.default_price && <p>{product.default_price.toString()}</p>}
         <button
           className={styles.add_to_cart_button}
-          onClick={() => addProductToCart()}
+          onClick={() => addProductToCart(product)}
         >
           Add to Cart
         </button>

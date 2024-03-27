@@ -11,21 +11,17 @@ type CartItem = {
   productId: string;
 };
 
-type ContextType = {
-  cart: CartItem[];
-  setCart: Dispatch<SetStateAction<CartItem[]>>;
-};
+type ContextType = [
+  cart: CartItem[],
+  setCart: Dispatch<SetStateAction<CartItem[]>>
+];
 
 export const CartContext = createContext<ContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
-  const [cart, setCart] = useState<ContextType["cart"]>([]);
+  const value = useState<CartItem[]>([]);
 
-  return (
-    <CartContext.Provider value={{ cart, setCart }}>
-      {children}
-    </CartContext.Provider>
-  );
+  return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 
 export const useCartContext = () => {

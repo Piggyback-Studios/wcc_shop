@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import Stripe from "stripe";
 
 import ProductCard from "../../components/ProductCard";
-
 import styles from "./component.module.css";
 
 const ProductGalleryBlock = () => {
