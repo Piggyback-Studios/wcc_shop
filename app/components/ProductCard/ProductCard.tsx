@@ -11,6 +11,10 @@ interface ProductCard {
 const ProductCard = (props: ProductCard) => {
   const { product } = props;
   console.log(product);
+
+  const addProductToCart = () => {
+    console.log("add product to cart context here");
+  };
   return (
     <div className={styles.card}>
       <div className={styles.info}>
@@ -20,13 +24,19 @@ const ProductCard = (props: ProductCard) => {
             width={500}
             height={500}
             alt={`picture of ${product.name}`}
+            layout="responsive"
           />
         )}
 
-        <p>{product.name}</p>
-        <p>{product.description}</p>
+        {product.name && <h3>{product.name}</h3>}
+        {product.description && <p>{product.description}</p>}
         {product.default_price && <p>{product.default_price.toString()}</p>}
-        <button className={styles.add_to_cart_button}>Add to Cart</button>
+        <button
+          className={styles.add_to_cart_button}
+          onClick={() => addProductToCart()}
+        >
+          Add to Cart
+        </button>
       </div>
     </div>
   );

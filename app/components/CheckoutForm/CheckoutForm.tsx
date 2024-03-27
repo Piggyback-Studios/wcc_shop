@@ -4,6 +4,7 @@ import {
   useStripe,
   useElements,
   PaymentElement,
+  AddressElement,
 } from "@stripe/react-stripe-js";
 
 const CheckoutForm = () => {
@@ -42,6 +43,7 @@ const CheckoutForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <PaymentElement />
+      <AddressElement options={{ mode: "shipping" }} />
       <button disabled={!stripe}>Submit</button>
     </form>
   );

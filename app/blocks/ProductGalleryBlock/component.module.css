@@ -1,5 +1,15 @@
 .product_gallery {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 1rem;
+  grid-template-columns: repeat(1, 1fr);
+
+  /* tablet */
+  @media screen and (min-width: 576px) {
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+  }
+
+  /* desktop */
+  @media screen and (min-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
