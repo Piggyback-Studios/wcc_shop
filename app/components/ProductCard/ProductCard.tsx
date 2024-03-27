@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Stripe from "stripe";
 import Image from "next/image";
 
@@ -15,25 +15,44 @@ const ProductCard = (props: ProductCard) => {
 
   const addProductToCart = (product: Stripe.Product) => {
     console.log("add product to cart context here");
+    const itemInCart = cart.filter(
+      (cartProduct) => cartProduct.productId === product.id
+    );
+    const otherItemsInCart = cart.filter(
+      (cartProduct) => cartProduct.productId !== product.id
+    );
 
-    setCart([...cart, product]);
+    setCart([
+      ...otherItemsInCart,
+      {
+        productId: product.id,
+        quantity: itemInCart.length ? itemInCart[0].quantity + 1 : 1,
+        price: product.metadata.plainTextPrice,
+      },
+    ]);
   };
+
+  useEffect(() => {
+    console.log(cart);
+  }, [cart]);
+
   return (
     <div className={styles.card}>
+      {product.images[0] && (
+        <Image
+          src={product.images[0]}
+          width={500}
+          height={500}
+          alt={`picture of ${product.name}`}
+          layout="responsive"
+        />
+      )}
       <div className={styles.info}>
-        {product.images[0] && (
-          <Image
-            src={product.images[0]}
-            width={500}
-            height={500}
-            alt={`picture of ${product.name}`}
-            layout="responsive"
-          />
-        )}
-
         {product.name && <h3>{product.name}</h3>}
         {product.description && <p>{product.description}</p>}
-        {product.default_price && <p>{product.default_price.toString()}</p>}
+        {product.metadata.plainTextPrice && (
+          <p>${product.metadata.plainTextPrice}</p>
+        )}
         <button
           className={styles.add_to_cart_button}
           onClick={() => addProductToCart(product)}
