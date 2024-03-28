@@ -14,14 +14,12 @@ const ProductCard = (props: ProductCard) => {
   const [cart, setCart] = useCartContext();
 
   const addProductToCart = (product: Stripe.Product) => {
-    console.log("add product to cart context here");
     const itemInCart = cart.filter(
       (cartProduct) => cartProduct.productId === product.id
     );
     const otherItemsInCart = cart.filter(
       (cartProduct) => cartProduct.productId !== product.id
     );
-
     setCart([
       ...otherItemsInCart,
       {
@@ -48,11 +46,16 @@ const ProductCard = (props: ProductCard) => {
         />
       )}
       <div className={styles.info}>
-        {product.name && <h3>{product.name}</h3>}
+        <div className={styles.top_row}>
+          {product.name && <h3 className={styles.title}>{product.name}</h3>}
+          {product.metadata.plainTextPrice && (
+            <span className={styles.price}>
+              ${product.metadata.plainTextPrice}
+            </span>
+          )}
+        </div>
         {product.description && <p>{product.description}</p>}
-        {product.metadata.plainTextPrice && (
-          <p>${product.metadata.plainTextPrice}</p>
-        )}
+
         <button
           className={styles.add_to_cart_button}
           onClick={() => addProductToCart(product)}
