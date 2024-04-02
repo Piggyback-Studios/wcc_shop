@@ -3,10 +3,10 @@
   padding: 1rem 0;
   position: relative;
 
-  .info {
-    .image {
-    }
+  .image {
+  }
 
+  .info {
     .top_row {
       display: flex;
       justify-content: space-between;
@@ -19,6 +19,7 @@
     }
 
     .description {
+      padding: 1rem 0;
     }
 
     .add_to_cart_button {

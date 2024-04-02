@@ -11,14 +11,13 @@
 
   "rightMenuItems": [
     {
-      "name": "search",
-      "type": "icon",
-      "url": ""
+      "name": "search"
     },
     {
       "name": "cart",
       "type": "icon",
-      "url": "/icons/"
+      "assetUrl": "/icons/",
+      "link": "/cart"
     }
   ]
 }

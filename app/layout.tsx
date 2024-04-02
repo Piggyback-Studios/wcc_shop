@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import Navbar from "./components/Navbar";
 import ProviderWrapper from "./components/ProviderWrapper";
 
 export const metadata: Metadata = {
@@ -16,11 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ProviderWrapper>
-        <Navbar />
-        <body>{children}</body>
-        {/* footer here */}
-      </ProviderWrapper>
+      <body>{children}</body>
     </html>
   );
 }

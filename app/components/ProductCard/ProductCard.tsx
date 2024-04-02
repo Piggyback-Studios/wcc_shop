@@ -14,20 +14,31 @@ const ProductCard = (props: ProductCard) => {
   const [cart, setCart] = useCartContext();
 
   const addProductToCart = (product: Stripe.Product) => {
-    const itemInCart = cart.filter(
+    // i dont necessarily like this solution
+    const itemInCart = cart.cartItems.filter(
       (cartProduct) => cartProduct.productId === product.id
     );
-    const otherItemsInCart = cart.filter(
+    const otherItemsInCart = cart.cartItems.filter(
       (cartProduct) => cartProduct.productId !== product.id
     );
-    setCart([
-      ...otherItemsInCart,
-      {
-        productId: product.id,
-        quantity: itemInCart.length ? itemInCart[0].quantity + 1 : 1,
-        price: product.metadata.plainTextPrice,
+    // use .reduce() for this
+    const totalCartItemsQuantity = cart.cartItems.reduce(
+      (runningTotal, current) => {
+        return (runningTotal += current.quantity);
       },
-    ]);
+      0
+    );
+    setCart({
+      cartItems: [
+        ...otherItemsInCart,
+        {
+          productId: product.id,
+          quantity: itemInCart.length ? itemInCart[0].quantity + 1 : 1,
+          price: product.metadata.plainTextPrice,
+        },
+      ],
+      totalCartItemsQuantity,
+    });
   };
 
   useEffect(() => {
@@ -54,7 +65,9 @@ const ProductCard = (props: ProductCard) => {
             </span>
           )}
         </div>
-        {product.description && <p>{product.description}</p>}
+        {product.description && (
+          <p className={styles.description}>{product.description}</p>
+        )}
 
         <button
           className={styles.add_to_cart_button}

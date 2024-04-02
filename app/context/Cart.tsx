@@ -13,16 +13,17 @@ type CartItem = {
   quantity: number;
 };
 
-type ContextType = [
-  cart: CartItem[],
-  setCart: Dispatch<SetStateAction<CartItem[]>>
-];
+type Cart = {
+  cartItems: CartItem[];
+  totalCartItemsQuantity: number;
+};
+
+type ContextType = [cart: Cart, setCart: Dispatch<SetStateAction<Cart>>];
 
 export const CartContext = createContext<ContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
-  const value = useState<CartItem[]>([]);
-
+  const value = useState<Cart>({ cartItems: [], totalCartItemsQuantity: 0 });
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 

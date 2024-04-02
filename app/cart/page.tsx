@@ -4,8 +4,9 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 
-import ProviderWrapper from "../components/ProviderWrapper";
+import styles from "./page.module.css";
 import CheckoutForm from "../components/CheckoutForm";
+import ProviderWrapper from "../components/ProviderWrapper";
 import Navbar from "../components/Navbar";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || "");
@@ -27,7 +28,7 @@ export default function Checkout() {
     <ProviderWrapper>
       <Navbar />
       <main className="content_wrapper">
-        {clientSecret && (
+        {clientSecret && stripePromise && (
           <Elements stripe={stripePromise} options={stripeOptions}>
             <CheckoutForm />
           </Elements>

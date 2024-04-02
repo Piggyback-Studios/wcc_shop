@@ -22,3 +22,19 @@ a {
   --dark-color: #2d2513;
   --nav-height: 80px;
 }
+
+.content_wrapper {
+  margin: calc(2rem + var(--nav-height)) 1rem 2rem 1rem;
+
+  /* tablet */
+  @media screen and (min-width: 576px) {
+    margin-left: 2rem;
+    margin-right: 2rem;
+  }
+
+  /* desktop */
+  @media screen and (min-width: 1024px) {
+    margin-left: 4rem;
+    margin-right: 4rem;
+  }
+}
