@@ -1,20 +1,12 @@
 "use client";
+
 import React from "react";
 import Link from "next/link";
 
 import styles from "./component.module.css";
 import { leftMenuItems, logoText, rightMenuItems } from "./content.json";
 import { useCartContext } from "@/app/context/Cart";
-
-interface IMenuItem {
-  name: string;
-  link?: string;
-}
-
-interface ISideMenu {
-  menuItems: IMenuItem[];
-  className: string;
-}
+import { IMenuItem, ISideMenu } from "./navbar.types";
 
 const CartMenuItem = ({ link }: IMenuItem) => {
   const [cart] = useCartContext();
@@ -33,7 +25,7 @@ const CartMenuItem = ({ link }: IMenuItem) => {
 const SideMenu = ({ menuItems, className }: ISideMenu) => {
   return (
     <div className={className}>
-      {menuItems.map((item) => {
+      {menuItems.map((item: IMenuItem) => {
         switch (item.name) {
           case "cart":
             return <CartMenuItem {...item} />;
@@ -64,9 +56,15 @@ const NavLogo = ({ logoText }: INavLogo) => {
 const Navbar = () => {
   return (
     <div className={styles.navbar}>
-      <SideMenu className={styles.nav_menu} menuItems={leftMenuItems} />
+      <SideMenu
+        className={styles.nav_menu}
+        menuItems={leftMenuItems as IMenuItem[]}
+      />
       <NavLogo className={styles.logo} logoText={logoText} />
-      <SideMenu className={styles.nav_menu} menuItems={rightMenuItems} />
+      <SideMenu
+        className={styles.nav_menu}
+        menuItems={rightMenuItems as IMenuItem[]}
+      />
     </div>
   );
 };

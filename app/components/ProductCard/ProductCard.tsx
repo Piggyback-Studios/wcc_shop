@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import styles from "./component.module.css";
 import { useCartContext } from "@/app/context/Cart";
+import { CartItem } from "@/app/types/cart.types";
 
 interface ProductCard {
   product: Stripe.Product;
@@ -35,7 +36,7 @@ const ProductCard = (props: ProductCard) => {
           productId: product.id,
           quantity: itemInCart.length ? itemInCart[0].quantity + 1 : 1,
           price: product.metadata.plainTextPrice,
-        },
+        } as CartItem,
       ],
       totalCartItemsQuantity,
     });

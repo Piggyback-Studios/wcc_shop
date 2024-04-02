@@ -7,11 +7,7 @@ import {
   SetStateAction,
 } from "react";
 
-type CartItem = {
-  productId: string;
-  price: string;
-  quantity: number;
-};
+import { CartItem } from "../types/cart.types";
 
 type Cart = {
   cartItems: CartItem[];
@@ -30,7 +26,7 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
 export const useCartContext = () => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error("useCartContext must be used inside the ThemeProvider");
+    throw new Error("useCartContext must be used inside the CartProvider");
   }
   return context;
 };

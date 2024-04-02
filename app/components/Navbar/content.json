@@ -1,17 +1,19 @@
 {
   "leftMenuItems": [
     {
-      "name": "furniture"
+      "name": "furniture",
+      "link": ""
     },
     {
-      "name": "decor"
+      "name": "decor",
+      "link": ""
     }
   ],
   "logoText": "wcc",
-
   "rightMenuItems": [
     {
-      "name": "search"
+      "name": "search",
+      "link": ""
     },
     {
       "name": "cart",

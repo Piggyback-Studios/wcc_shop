@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 
-import ProviderWrapper from "./components/ProviderWrapper";
-
 export const metadata: Metadata = {
   title: "Williford Carpentry Collective",
   description: "Built with love by Louie Williford U+00A9 2024",

@@ -19,7 +19,10 @@ const ProductGalleryBlock = () => {
     <div className={styles.product_gallery}>
       {products &&
         products.map((product: Stripe.Product) => (
-          <ProductCard product={product} />
+          <ProductCard
+            product={product}
+            key={product.name + Math.round(Math.random() * 100)}
+          />
         ))}
     </div>
   );
