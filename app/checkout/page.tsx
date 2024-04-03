@@ -4,9 +4,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 
-import ProviderWrapper from "../components/ProviderWrapper";
 import CheckoutForm from "../components/CheckoutForm";
-import Navbar from "../components/Navbar";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || "");
 
@@ -24,15 +22,12 @@ export default function Checkout() {
     clientSecret,
   };
   return (
-    <ProviderWrapper>
-      <Navbar />
-      <main className="content_wrapper">
-        {clientSecret && (
-          <Elements stripe={stripePromise} options={stripeOptions}>
-            <CheckoutForm />
-          </Elements>
-        )}
-      </main>
-    </ProviderWrapper>
+    <>
+      {clientSecret && (
+        <Elements stripe={stripePromise} options={stripeOptions}>
+          <CheckoutForm />
+        </Elements>
+      )}
+    </>
   );
 }
