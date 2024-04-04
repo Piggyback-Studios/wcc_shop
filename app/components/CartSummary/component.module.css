@@ -1,0 +1,18 @@
+.cart_summary {
+  display: grid;
+  gap: 2rem;
+  .display_item {
+    position: relative;
+    border-bottom: 1px solid var(--dark-color);
+    .info {
+      margin-bottom: 2rem;
+    }
+    .button_row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      position: absolute;
+      bottom: -10px;
+    }
+  }
+}

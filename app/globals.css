@@ -38,3 +38,9 @@ a {
     margin-right: 4rem;
   }
 }
+
+button {
+  background: var(--light-color);
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+}

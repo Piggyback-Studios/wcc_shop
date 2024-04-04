@@ -36,6 +36,7 @@ const ProductCard = (props: ProductCard) => {
           id: product.id,
           quantity: itemInCart.length ? itemInCart[0].quantity + 1 : 1,
           price: Number(product.metadata.plainTextPrice),
+          image: product.images[0],
         } as CartItem,
       ],
       totalCartItemsQuantity,
