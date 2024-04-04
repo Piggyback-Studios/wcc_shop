@@ -28,10 +28,19 @@ const SideMenu = ({ menuItems, className }: ISideMenu) => {
       {menuItems.map((item: IMenuItem) => {
         switch (item.name) {
           case "cart":
-            return <CartMenuItem {...item} />;
+            return (
+              <CartMenuItem
+                {...item}
+                key={item.name + Math.round(Math.random() * 100)}
+              />
+            );
           default:
             return (
-              <Link href={item.link || ""} className={styles.menu_item}>
+              <Link
+                href={item.link || ""}
+                className={styles.menu_item}
+                key={item.name + Math.round(Math.random() * 100)}
+              >
                 {item.name}
               </Link>
             );

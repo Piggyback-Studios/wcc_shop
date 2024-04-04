@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import Stripe from "stripe";
 // import Image from "next/image";
 
 import { useCartContext } from "@/app/context/Cart";
@@ -11,11 +10,11 @@ const CartDisplayItem = (props: CartItem) => {
   const { name, price, quantity } = props;
   const [cart] = useCartContext();
 
-  const editProductInCart = (product: Stripe.Product) => {
+  const editProductInCart = (cartItem: CartItem) => {
     console.log("hello!");
   };
 
-  const removeProductFromCart = (product: Stripe.Product) => {
+  const removeProductFromCart = (product: CartItem) => {
     console.log("hello!");
   };
 
@@ -50,14 +49,14 @@ const CartDisplayItem = (props: CartItem) => {
 
         <button
           className={styles.edit_cart_display_item_button}
-          onClick={() => editProductInCart()}
+          onClick={() => editProductInCart({ ...props })}
         >
           edit
         </button>
 
         <button
           className={styles.add_to_cart_button}
-          onClick={() => removeProductFromCart()}
+          onClick={() => removeProductFromCart({ ...props })}
         >
           remove
         </button>
