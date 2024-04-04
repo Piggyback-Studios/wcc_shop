@@ -14,10 +14,6 @@ export async function POST(req: NextRequest) {
         const currentPrice = await stripe.prices.retrieve(
           currentProduct.default_price as string
         );
-        console.log({ name: current.name });
-        console.log({ resolvedRunningTotal });
-        console.log({ priceInCents: currentPrice.unit_amount });
-        console.log({ qty: current.quantity });
         return (runningTotal =
           resolvedRunningTotal +
           current.quantity * (currentPrice.unit_amount || 0));
