@@ -18,10 +18,6 @@ const CartDisplayItem = (props: CartItem) => {
     console.log("hello!");
   };
 
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
-
   return (
     <div className={styles.display_item}>
       <div className={styles.info}>

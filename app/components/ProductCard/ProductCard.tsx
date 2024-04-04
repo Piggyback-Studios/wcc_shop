@@ -43,10 +43,6 @@ const ProductCard = (props: ProductCard) => {
     });
   };
 
-  useEffect(() => {
-    console.log(cart);
-  }, [cart]);
-
   return (
     <div className={styles.card}>
       {product.images[0] && (
