@@ -10,7 +10,7 @@ const CartDisplayItem = (props: CartItem) => {
   const { name, price, quantity, image } = props;
   const [cart, setCart] = useCartContext();
 
-  const editProductInCart = (cartItem: CartItem) => {
+  const editProductInCart = (product: CartItem) => {
     console.log("hello!");
   };
 
@@ -32,13 +32,23 @@ const CartDisplayItem = (props: CartItem) => {
 
   return (
     <div className={styles.display_item}>
-      <div className={styles.info}>
-        <div className={styles.top_row}>
-          {name && <h3 className={styles.title}>{name}</h3>}
+      <div className={styles.top_row}>
+        <div className={styles.info_section}>
+          {name && <h3 className={styles.name}>{name}</h3>}
           {price && <span className={styles.price}>${price}</span>}
+          {quantity && <p className={styles.quantity}>Qty: {quantity}</p>}
         </div>
-        {quantity && <p className={styles.quantity}>Qty: {quantity}</p>}
+        {/* {image && (
+          <Image
+            src={image}
+            width={500}
+            height={500}
+            alt={`picture of ${name}`}
+            className={styles.cart_display_item_image}
+          />
+        )} */}
       </div>
+
       <div className={styles.button_row}>
         <button
           className={styles.edit_cart_display_item_button}
@@ -53,15 +63,6 @@ const CartDisplayItem = (props: CartItem) => {
           remove
         </button>
       </div>
-      {/* {image && (
-        <Image
-          src={image}
-          width={500}
-          height={500}
-          alt={`picture of ${name}`}
-          className={styles.cart_display_item_image}
-        />
-      )} */}
     </div>
   );
 };
