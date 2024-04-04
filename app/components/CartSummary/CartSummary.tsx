@@ -8,14 +8,26 @@ import Link from "next/link";
 
 const CartDisplayItem = (props: CartItem) => {
   const { name, price, quantity, image } = props;
-  const [cart] = useCartContext();
+  const [cart, setCart] = useCartContext();
 
   const editProductInCart = (cartItem: CartItem) => {
     console.log("hello!");
   };
 
   const removeProductFromCart = (product: CartItem) => {
-    console.log("hello!");
+    const otherItemsInCart = cart.cartItems.filter(
+      (cartProduct) => cartProduct.id !== product.id
+    );
+    const totalCartItemsQuantity = otherItemsInCart.reduce(
+      (runningTotal, current) => {
+        return (runningTotal += current.quantity);
+      },
+      1
+    );
+    setCart({
+      cartItems: [...otherItemsInCart],
+      totalCartItemsQuantity,
+    });
   };
 
   return (
