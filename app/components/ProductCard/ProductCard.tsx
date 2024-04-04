@@ -17,23 +17,23 @@ const ProductCard = (props: ProductCard) => {
   const addProductToCart = (product: Stripe.Product) => {
     // i dont necessarily like this solution
     const itemInCart = cart.cartItems.filter(
-      (cartProduct) => cartProduct.productId === product.id
+      (cartProduct) => cartProduct.id === product.id
     );
     const otherItemsInCart = cart.cartItems.filter(
-      (cartProduct) => cartProduct.productId !== product.id
+      (cartProduct) => cartProduct.id !== product.id
     );
-    // use .reduce() for this
     const totalCartItemsQuantity = cart.cartItems.reduce(
       (runningTotal, current) => {
         return (runningTotal += current.quantity);
       },
-      0
+      1
     );
     setCart({
       cartItems: [
         ...otherItemsInCart,
         {
-          productId: product.id,
+          name: product.name,
+          id: product.id,
           quantity: itemInCart.length ? itemInCart[0].quantity + 1 : 1,
           price: product.metadata.plainTextPrice,
         } as CartItem,

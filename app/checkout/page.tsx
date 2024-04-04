@@ -11,7 +11,9 @@ const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || "");
 export default function Checkout() {
   const [clientSecret, setClientSecret] = useState<string>();
   const fetchClientSecret = async () => {
-    const res = await fetch("/api/get-secret");
+    const res = await fetch("/api/get-secret", {
+      method: "POST",
+    });
     const jsonRes = await res.json();
     setClientSecret(jsonRes.clientSecret);
   };
