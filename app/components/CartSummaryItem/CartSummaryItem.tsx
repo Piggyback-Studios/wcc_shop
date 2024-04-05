@@ -24,7 +24,7 @@ const CartSummaryItem = (props: CartItem) => {
     );
     setCart({
       cartItems: [...otherItemsInCart],
-      totalCartItemsQuantity,
+      totalCartItemsQuantity: totalCartItemsQuantity - product.quantity,
     });
   };
 
