@@ -1,0 +1,54 @@
+.display_item {
+  display: grid;
+  position: relative;
+  border-bottom: 1px solid var(--dark-color);
+  padding-bottom: 2rem;
+
+  .top_row {
+    display: grid;
+    grid-template-areas:
+      "image"
+      "."
+      "info";
+
+    .info_section {
+      grid-area: info;
+    }
+
+    .cart_display_item_image {
+      grid-area: image;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .button_row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    position: absolute;
+    bottom: -10px;
+  }
+
+  /* tablet */
+  @media screen and (min-width: 576px) {
+    padding-bottom: unset;
+    .top_row {
+      grid-template-areas: unset;
+      grid-template-columns: 1fr 200px;
+
+      .info_section {
+        grid-area: unset;
+      }
+
+      .cart_display_item_image {
+        grid-area: unset;
+        margin-bottom: unset;
+      }
+    }
+  }
+
+  /* desktop */
+  @media screen and (min-width: 1024px) {
+    /*  */
+  }
+}
