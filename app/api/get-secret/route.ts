@@ -21,9 +21,14 @@ export async function POST(req: NextRequest) {
     },
     0
   );
+  const metadata: any = {};
+  products.forEach((product: CartItem) => {
+    metadata[product.id] = `${product.name} - Quantity:${product.quantity},`;
+  });
   const paymentIntent = await stripe.paymentIntents.create({
     amount: total,
     currency: "usd",
+    metadata,
   });
   return NextResponse.json({
     clientSecret: paymentIntent.client_secret,
