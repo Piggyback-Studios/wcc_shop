@@ -29,6 +29,7 @@ const CartDisplayItem = (props: CartItem) => {
       totalCartItemsQuantity,
     });
   };
+  console.log(quantity);
 
   return (
     <div className={styles.display_item}>
