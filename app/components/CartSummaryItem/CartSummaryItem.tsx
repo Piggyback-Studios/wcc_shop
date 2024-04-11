@@ -9,6 +9,7 @@ const CartSummaryItem = (props: CartItem) => {
   const [cart, setCart] = useCartContext();
 
   const editProductInCart = (product: CartItem) => {
+    // TODO: do this
     console.log("hello!");
   };
 
