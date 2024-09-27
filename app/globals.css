@@ -7,7 +7,6 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
   background: var(--light-color);
   color: var(--dark-color);
 }
@@ -27,7 +26,6 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
 }
 
 /* global content container class */
