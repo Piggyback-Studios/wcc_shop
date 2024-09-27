@@ -67,7 +67,7 @@ const Navbar = () => {
   return (
     <nav className={styles.navbar}>
       <ContentContainer>
-        <div className={styles.nacbar_Container}>
+        <div className={styles.navbar_content}>
           <SideMenu
             className={styles.nav_menu}
             menuItems={leftMenuItems as IMenuItem[]}
