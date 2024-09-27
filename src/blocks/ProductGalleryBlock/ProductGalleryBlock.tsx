@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import Stripe from "stripe";
 
-import ProductCard from "../../components/ProductCard";
+import ProductCard from "@/src/components/ProductCard";
 import styles from "./component.module.css";
 import ContentContainer from "@/src/components/ui/ContentContainer";
 
