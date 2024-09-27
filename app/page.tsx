@@ -1,6 +1,6 @@
 "use client";
 
-import ProductGalleryBlock from "./blocks/ProductGalleryBlock";
+import ProductGalleryBlock from "@/src/blocks/ProductGalleryBlock";
 
 export default function Home() {
   return (

@@ -5,8 +5,9 @@ import Link from "next/link";
 
 import styles from "./component.module.css";
 import { leftMenuItems, logoText, rightMenuItems } from "./content.json";
-import { useCartContext } from "@/app/context/Cart";
+import { useCartContext } from "@/src/context/Cart";
 import { IMenuItem, ISideMenu } from "./navbar.types";
+import ContentContainer from "@/src/components/ui/ContentContainer";
 
 const CartMenuItem = ({ link }: IMenuItem) => {
   const [cart] = useCartContext();
@@ -64,17 +65,21 @@ const NavLogo = ({ logoText }: INavLogo) => {
 
 const Navbar = () => {
   return (
-    <div className={styles.navbar}>
-      <SideMenu
-        className={styles.nav_menu}
-        menuItems={leftMenuItems as IMenuItem[]}
-      />
-      <NavLogo className={styles.logo} logoText={logoText} />
-      <SideMenu
-        className={styles.nav_menu}
-        menuItems={rightMenuItems as IMenuItem[]}
-      />
-    </div>
+    <nav className={styles.navbar}>
+      <ContentContainer>
+        <div className={styles.nacbar_Container}>
+          <SideMenu
+            className={styles.nav_menu}
+            menuItems={leftMenuItems as IMenuItem[]}
+          />
+          <NavLogo className={styles.logo} logoText={logoText} />
+          <SideMenu
+            className={styles.nav_menu}
+            menuItems={rightMenuItems as IMenuItem[]}
+          />
+        </div>
+      </ContentContainer>
+    </nav>
   );
 };
 

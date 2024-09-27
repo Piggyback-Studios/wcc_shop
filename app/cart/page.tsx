@@ -1,6 +1,6 @@
 "use client";
 
-import CartSummary from "../components/CartSummary";
+import CartSummary from "@/src/components/CartSummary";
 
 export default function Cart() {
   return (

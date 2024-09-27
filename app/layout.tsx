@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "./components/Navbar";
-import ProviderWrapper from "./components/ProviderWrapper";
+import Navbar from "@/src/components/ui/Navbar";
+import ProviderWrapper from "@/src/components/ProviderWrapper";
 
 export const metadata: Metadata = {
   title: "Williford Carpentry Collective",
@@ -18,7 +18,7 @@ export default function RootLayout({
       <body>
         <ProviderWrapper>
           <Navbar />
-          <main className="content_wrapper">{children}</main>
+          <main className="main-page-container">{children}</main>
         </ProviderWrapper>
       </body>
     </html>

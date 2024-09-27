@@ -23,20 +23,24 @@ a {
   --nav-height: 80px;
 }
 
-.content_wrapper {
-  margin: calc(2rem + var(--nav-height)) 1rem 2rem 1rem;
+.main-page-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+}
 
-  /* tablet */
-  @media screen and (min-width: 576px) {
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
+/* global content container class */
 
-  /* desktop */
-  @media screen and (min-width: 1024px) {
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
+.contentContainer {
+  margin: 0 2rem;
+  width: calc(100% - 4rem);
+}
+
+/* Desktop and above */
+@media (min-width: 1120px) {
+  .contentContainer {
+    max-width: 1120px;
   }
 }
 

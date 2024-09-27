@@ -3,7 +3,7 @@ import Stripe from "stripe";
 import Image from "next/image";
 
 import styles from "./component.module.css";
-import { useCartContext } from "@/app/context/Cart";
+import { useCartContext } from "@/src/context/Cart";
 import { CartItem } from "@/app/types/cart.types";
 
 interface ProductCard {

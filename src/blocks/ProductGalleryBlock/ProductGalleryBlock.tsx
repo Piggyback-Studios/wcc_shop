@@ -4,6 +4,7 @@ import Stripe from "stripe";
 
 import ProductCard from "../../components/ProductCard";
 import styles from "./component.module.css";
+import ContentContainer from "@/src/components/ui/ContentContainer";
 
 const ProductGalleryBlock = () => {
   const [products, setProducts] = useState<Stripe.Product[]>([]);
@@ -16,15 +17,19 @@ const ProductGalleryBlock = () => {
     fetchProducts();
   }, []);
   return (
-    <div className={styles.product_gallery}>
-      {products &&
-        products.map((product: Stripe.Product) => (
-          <ProductCard
-            product={product}
-            key={product.name + Math.round(Math.random() * 100)}
-          />
-        ))}
-    </div>
+    <section>
+      <ContentContainer>
+        <div className={styles.product_gallery}>
+          {products &&
+            products.map((product: Stripe.Product) => (
+              <ProductCard
+                product={product}
+                key={product.name + Math.round(Math.random() * 100)}
+              />
+            ))}
+        </div>
+      </ContentContainer>
+    </section>
   );
 };
 

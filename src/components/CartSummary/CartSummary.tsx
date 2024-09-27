@@ -1,9 +1,9 @@
 import React from "react";
 
-import { useCartContext } from "@/app/context/Cart";
+import { useCartContext } from "@/src/context/Cart";
 import styles from "./component.module.css";
 import Link from "next/link";
-import CartSummaryItem from "../CartSummaryItem";
+import CartSummaryItem from "@/src/components/CartSummaryItem";
 
 const CartSummary = () => {
   const [cart] = useCartContext();

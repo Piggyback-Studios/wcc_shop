@@ -1,7 +1,7 @@
 import { CartItem } from "@/app/types/cart.types";
 import Image from "next/image";
 
-import { useCartContext } from "@/app/context/Cart";
+import { useCartContext } from "@/src/context/Cart";
 import styles from "./component.module.css";
 
 const CartSummaryItem = (props: CartItem) => {
