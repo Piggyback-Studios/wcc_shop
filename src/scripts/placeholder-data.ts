@@ -1,7 +1,7 @@
 import Stripe from "stripe";
 
-import { AdminUser } from "../types/adminUser.types";
-import { CustomerUser } from "../types/customerUser.types";
+import { AdminUser } from "@/app/types/adminUser.types";
+import { CustomerUser } from "@/app/types/customerUser.types";
 
 export const adminUsers: AdminUser[] = [
   {

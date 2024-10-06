@@ -7,7 +7,7 @@ import {
   SetStateAction,
 } from "react";
 
-import { CartItem } from "../types/cart.types";
+import { CartItem } from "@/app/types/cart.types";
 
 type Cart = {
   cartItems: CartItem[];
