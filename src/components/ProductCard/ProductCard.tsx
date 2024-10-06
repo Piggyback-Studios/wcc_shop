@@ -56,7 +56,7 @@ const ProductCard = (props: ProductCard) => {
       )}
       <div className={styles.info}>
         <div className={styles.top_row}>
-          {product.name && <h3 className={styles.name}>{product.name}</h3>}
+          {product.name && <p className={styles.name}>{product.name}</p>}
           {product.metadata.plainTextPrice && (
             <span className={styles.price}>
               ${product.metadata.plainTextPrice}

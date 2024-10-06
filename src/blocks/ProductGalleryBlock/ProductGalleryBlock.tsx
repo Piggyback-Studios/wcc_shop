@@ -4,7 +4,7 @@ import Stripe from "stripe";
 
 import ProductCard from "@/src/components/ProductCard";
 import styles from "./component.module.css";
-import ContentContainer from "@/src/components/ui/ContentContainer";
+import ContentContainer from "@/src/components/common/ContentContainer";
 
 const ProductGalleryBlock = () => {
   const [products, setProducts] = useState<Stripe.Product[]>([]);

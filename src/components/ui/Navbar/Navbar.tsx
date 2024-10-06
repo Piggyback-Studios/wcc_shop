@@ -7,7 +7,7 @@ import styles from "./component.module.css";
 import { leftMenuItems, logoText, rightMenuItems } from "./content.json";
 import { useCartContext } from "@/src/context/Cart";
 import { IMenuItem, ISideMenu } from "./navbar.types";
-import ContentContainer from "@/src/components/ui/ContentContainer";
+import ContentContainer from "@/src/components/common/ContentContainer";
 
 const CartMenuItem = ({ link }: IMenuItem) => {
   const [cart] = useCartContext();
