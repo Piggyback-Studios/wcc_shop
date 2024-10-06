@@ -1,5 +1,6 @@
 "use client";
 
+import ContentContainer from "@/src/components/common/ContentContainer";
 import {
   useStripe,
   useElements,
@@ -41,11 +42,17 @@ const CheckoutForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <PaymentElement />
-      <AddressElement options={{ mode: "shipping" }} />
-      <button disabled={!stripe}>Submit</button>
-    </form>
+    <section>
+      <ContentContainer>
+        <div>
+          <form onSubmit={handleSubmit}>
+            <PaymentElement />
+            <AddressElement options={{ mode: "shipping" }} />
+            <button disabled={!stripe}>Submit</button>
+          </form>
+        </div>
+      </ContentContainer>
+    </section>
   );
 };
 

@@ -5,10 +5,10 @@ import Spacer from "@/src/blocks/ui/Spacer";
 
 export default function Home() {
   return (
-    <>
+    <main>
       <Spacer size="lg" />
       <ProductGalleryBlock />
       <Spacer size="lg" />
-    </>
+    </main>
   );
 }

@@ -4,7 +4,7 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 
-import CheckoutForm from "@/src/components/CheckoutForm";
+import CheckoutForm from "@/src/blocks/CheckoutForm";
 import { useCartContext } from "@/src/context/Cart";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || "");
