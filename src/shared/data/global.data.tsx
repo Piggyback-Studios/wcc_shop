@@ -2,7 +2,11 @@ import Image from "next/image";
 
 import { Link, IconLink, NavbarProps, FooterProps } from "@/src/shared/types";
 
-export const pageLinks: Link[] = [];
+export const pageLinks: Link[] = [
+  { href: "/contact", label: "contact" },
+  { href: "/search", label: "search" },
+  { href: "/cart", label: "cart" },
+];
 
 export const socialsLinks: IconLink[] = [];
 
@@ -16,7 +20,7 @@ export const navbarData: NavbarProps = {
       alt="Williford Carpentry Collective Logo"
     />
   ),
-  links: [],
+  links: pageLinks,
 };
 
 export const footerData: FooterProps = {};

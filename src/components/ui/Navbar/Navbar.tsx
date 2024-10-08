@@ -13,9 +13,11 @@ const Navbar = ({ logo, links }: NavbarProps) => {
       <ContentContainer>
         <div className="flex justify-between items-center">
           <Link href="/">{logo}</Link>
-          <ul>
+          <ul className="flex flex-row gap-6">
             {links.map((link, idx) => (
-              <li key={idx}>{link.label}</li>
+              <li key={idx}>
+                <Link href={link.href}> {link.label}</Link>
+              </li>
             ))}
           </ul>
         </div>
