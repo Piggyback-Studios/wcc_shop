@@ -6,9 +6,9 @@ import { FooterProps } from "@/src/shared/types";
 
 const Footer = ({}: FooterProps) => {
   return (
-    <footer>
+    <footer className="flex justify-center">
       <ContentContainer>
-        <div className="grid md: grid-cols-3">
+        <div className="grid md:grid-cols-3">
           <div>
             <h6>LINKS</h6>
           </div>

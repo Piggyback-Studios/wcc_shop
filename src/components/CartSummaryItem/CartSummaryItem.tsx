@@ -30,12 +30,29 @@ const CartSummaryItem = (props: CartItem) => {
   };
 
   return (
-    <div className="grid md:grid-cols-2">
-      <div className={styles.top_row}>
-        <div className={styles.info_section}>
-          {name && <h3 className={styles.name}>{name}</h3>}
-          {price && <span className={styles.price}>${price}</span>}
-          {quantity && <p className={styles.quantity}>Qty: {quantity}</p>}
+    <div>
+      <div className="grid md:grid-cols-2">
+        <div className="flex flex-col justify-between">
+          <div>
+            {name && <h3 className={styles.name}>{name}</h3>}
+            {price && <span className={styles.price}>${price}</span>}
+            {quantity && <p className={styles.quantity}>Qty: {quantity}</p>}
+          </div>
+
+          <div className={styles.button_row}>
+            <button
+              className={styles.edit_cart_display_item_button}
+              onClick={() => editProductInCart({ ...props })}
+            >
+              edit
+            </button>
+            <button
+              className={styles.add_to_cart_button}
+              onClick={() => removeProductFromCart({ ...props })}
+            >
+              remove
+            </button>
+          </div>
         </div>
         {image && (
           <Image
@@ -47,21 +64,6 @@ const CartSummaryItem = (props: CartItem) => {
             layout="responsive"
           />
         )}
-      </div>
-
-      <div className={styles.button_row}>
-        <button
-          className={styles.edit_cart_display_item_button}
-          onClick={() => editProductInCart({ ...props })}
-        >
-          edit
-        </button>
-        <button
-          className={styles.add_to_cart_button}
-          onClick={() => removeProductFromCart({ ...props })}
-        >
-          remove
-        </button>
       </div>
     </div>
   );
