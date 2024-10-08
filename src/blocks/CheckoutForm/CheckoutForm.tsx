@@ -42,7 +42,7 @@ const CheckoutForm = () => {
   };
 
   return (
-    <section>
+    <section className="w-full flex justify-center">
       <ContentContainer>
         <form onSubmit={handleSubmit}>
           <PaymentElement />

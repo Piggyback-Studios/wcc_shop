@@ -24,6 +24,37 @@ a {
   --light-color: #f6f2ea;
   --dark-color: #2d2513;
   --nav-height: 80px;
+  --h1FontSize: clamp(2.5rem, -0.875rem + 8.333vw, 209px);
+  --h2FontSize: clamp(2rem, -0.875rem + 8vw, 90px);
+  --h3FontSize: clamp(1.75rem, -0.875rem + 7.5vw, 40px);
+  --h4FontSize: clamp(1.5rem, -0.875rem + 7vw, 32px);
+  --h5FontSize: 26px;
+  --h6FontSize: 20px;
+  --copyFontSize: 26px;
+}
+
+h1 {
+  font-size: var(--h1FontSize);
+}
+
+h2 {
+  font-size: var(--h2FontSize);
+}
+
+h3 {
+  font-size: var(--h3FontSize);
+}
+
+h4 {
+  font-size: var(--h4FontSize);
+}
+
+h5 {
+  font-size: var(--h5FontSize);
+}
+
+h6 {
+  font-size: var(--h6FontSize);
 }
 
 h1,
@@ -33,6 +64,7 @@ h4,
 h5,
 h6 {
   font-family: var(--font-header);
+  line-height: 1.1;
 }
 
 /* global content container class */

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 
 import CheckoutForm from "@/src/blocks/CheckoutForm";
 import { useCartContext } from "@/src/context/Cart";
+import Spacer from "@/src/blocks/ui/Spacer";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || "");
 
@@ -30,6 +31,7 @@ export default function Checkout() {
   };
   return (
     <main className="flex flex-col items-center">
+      <Spacer size="lg" />
       {clientSecret && (
         <Elements stripe={stripePromise} options={stripeOptions}>
           <CheckoutForm />
