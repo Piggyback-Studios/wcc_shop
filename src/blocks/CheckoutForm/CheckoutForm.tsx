@@ -27,7 +27,7 @@ const CheckoutForm = () => {
       //`Elements` instance that was used to create the Payment Element
       elements,
       confirmParams: {
-        return_url: "https://example.com/order/123/complete",
+        return_url: "/order-complete",
       },
     });
 
@@ -44,13 +44,11 @@ const CheckoutForm = () => {
   return (
     <section>
       <ContentContainer>
-        <div>
-          <form onSubmit={handleSubmit}>
-            <PaymentElement />
-            <AddressElement options={{ mode: "shipping" }} />
-            <button disabled={!stripe}>Submit</button>
-          </form>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <PaymentElement />
+          <AddressElement options={{ mode: "shipping" }} />
+          <button disabled={!stripe}>Submit</button>
+        </form>
       </ContentContainer>
     </section>
   );
