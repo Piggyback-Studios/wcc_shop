@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 
 import styles from "./component.module.css";
-import { leftMenuItems, logoText, rightMenuItems } from "./content.json";
+import { logoText, rightMenuItems } from "./content.json";
 import { useCartContext } from "@/src/context/Cart";
 import { IMenuItem, ISideMenu } from "./navbar.types";
 import ContentContainer from "@/src/components/common/ContentContainer";
@@ -65,13 +65,9 @@ const NavLogo = ({ logoText }: INavLogo) => {
 
 const Navbar = () => {
   return (
-    <nav className={styles.navbar}>
+    <nav className="fixed top-0 w-full flex items-center justify-center bg-primary-500 h-24 z-50">
       <ContentContainer>
-        <div className={styles.navbar_content}>
-          <SideMenu
-            className={styles.nav_menu}
-            menuItems={leftMenuItems as IMenuItem[]}
-          />
+        <div className="flex justify-between items-center">
           <NavLogo className={styles.logo} logoText={logoText} />
           <SideMenu
             className={styles.nav_menu}

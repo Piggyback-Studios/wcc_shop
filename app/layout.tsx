@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/src/components/ui/Navbar";
 import ProviderWrapper from "@/src/components/ProviderWrapper";
-import { poppins, hostgard } from "@/app/fonts";
+import { poppins, scenarie } from "@/app/fonts";
 
 export const metadata: Metadata = {
   title: "Williford Carpentry Collective",
@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.className} ${hostgard.variable} ${poppins.variable}`}
+      className={`${poppins.className} ${scenarie.variable} ${poppins.variable}`}
     >
       <body>
         <ProviderWrapper>

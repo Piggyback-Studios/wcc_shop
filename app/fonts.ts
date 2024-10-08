@@ -8,11 +8,11 @@ const poppins = Poppins({
   variable: "--font-body",
 });
 
-const hostgard = localFont({
+const scenarie = localFont({
   weight: "400",
   display: "swap",
-  src: "fonts/Hostgard.ttf",
+  src: "fonts/Scenarie.otf",
   variable: "--font-header",
 });
 
-export { poppins, hostgard };
+export { poppins, scenarie };
