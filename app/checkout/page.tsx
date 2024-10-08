@@ -29,12 +29,12 @@ export default function Checkout() {
     clientSecret,
   };
   return (
-    <>
+    <main className="flex flex-col items-center">
       {clientSecret && (
         <Elements stripe={stripePromise} options={stripeOptions}>
           <CheckoutForm />
         </Elements>
       )}
-    </>
+    </main>
   );
 }

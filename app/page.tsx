@@ -5,7 +5,7 @@ import Spacer from "@/src/blocks/ui/Spacer";
 
 export default function Home() {
   return (
-    <main>
+    <main className="flex flex-col items-center">
       <Spacer size="lg" />
       <ProductGalleryBlock />
       <Spacer size="lg" />

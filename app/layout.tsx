@@ -3,10 +3,11 @@ import "./globals.css";
 import Navbar from "@/src/components/ui/Navbar";
 import ProviderWrapper from "@/src/components/ProviderWrapper";
 import { poppins, scenarie } from "@/app/fonts";
+import { navbarData } from "@/src/shared/data/global.data";
 
 export const metadata: Metadata = {
   title: "Williford Carpentry Collective",
-  description: "Built with love by Louie Williford U+00A9 2024",
+  description: "Built with love by Piggyback Studios LLC 2024",
 };
 
 export default function RootLayout({
@@ -21,7 +22,7 @@ export default function RootLayout({
     >
       <body>
         <ProviderWrapper>
-          <Navbar />
+          <Navbar {...navbarData} />
           {children}
         </ProviderWrapper>
       </body>
