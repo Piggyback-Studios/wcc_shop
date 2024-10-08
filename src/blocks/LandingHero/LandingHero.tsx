@@ -1,12 +1,23 @@
 import ContentContainer from "@/src/components/common/ContentContainer";
+import { LandingHeroProps } from "@/src/shared/types";
 import Image from "next/image";
 
-const LandingHero = () => {
+const LandingHero = ({
+  tagline,
+  headline,
+  description,
+  cta,
+}: LandingHeroProps) => {
   return (
     <section className="min-h-screen">
       <ContentContainer>
         <div className="grid md:grid-cols-2">
-          <p>hello</p>
+          <div>
+            <h3>{tagline}</h3>
+            <h1>{headline}</h1>
+            <p>{description}</p>
+            <>{cta}</>
+          </div>
           <div>
             <Image
               width={1024}

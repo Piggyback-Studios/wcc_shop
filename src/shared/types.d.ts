@@ -17,6 +17,14 @@ export type SVG = {
 
 export type IconLink = Link & SVG;
 
+export type ButtonType = "submit" | "reset" | "button" | undefined;
+
+export type Button = {
+  label: string;
+  type?: ButtonType;
+  disabled?: boolean;
+};
+
 // compontent and block level data types
 export type SpacerProps = {
   size: SpacerSize;
@@ -28,3 +36,10 @@ export type NavbarProps = {
 };
 
 export type FooterProps = {};
+
+export type LandingHeroProps = {
+  tagline: string;
+  headline: string | ReactElement;
+  description: string | ReactElement;
+  cta: ReactElement;
+};
