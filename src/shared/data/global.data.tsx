@@ -13,7 +13,7 @@ export const socialsLinks: IconLink[] = [];
 export const navbarData: NavbarProps = {
   logo: (
     <Image
-      src="/images/logo.svg"
+      src="/svg/logo.svg"
       height={24}
       width={24}
       className="h-8 w-auto"

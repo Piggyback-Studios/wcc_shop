@@ -16,7 +16,7 @@ const Navbar = ({ logo, links }: NavbarProps) => {
           <ul className="flex flex-row gap-6">
             {links.map((link, idx) => (
               <li key={idx}>
-                <Link href={link.href}> {link.label}</Link>
+                <Link href={link.href}>{link.label}</Link>
               </li>
             ))}
           </ul>
