@@ -8,7 +8,17 @@ const Footer = ({}: FooterProps) => {
   return (
     <footer>
       <ContentContainer>
-        <div className="grid md: grid-cols-3"></div>
+        <div className="grid md: grid-cols-3">
+          <div>
+            <h6>LINKS</h6>
+          </div>
+          <div>
+            <h6>FOLLOW</h6>
+          </div>
+          <div>
+            <h6>LEGAL</h6>
+          </div>
+        </div>
         <div>
           Built with love by{" "}
           <Link href="www.piggybackstudios.co">Piggyback Studios, LLC</Link>{" "}
