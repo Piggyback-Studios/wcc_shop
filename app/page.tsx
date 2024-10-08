@@ -8,6 +8,7 @@ import { heroData } from "@/src/shared/data/pages/landing.data";
 export default function Home() {
   return (
     <main className="flex flex-col items-center">
+      <Spacer size="lg" />
       <LandingHero {...heroData} />
       <Spacer size="lg" />
       <ProductGalleryBlock />

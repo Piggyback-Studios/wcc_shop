@@ -12,9 +12,9 @@ const LandingHero = ({
     <section className="min-h-screen">
       <ContentContainer>
         <div className="grid md:grid-cols-2">
-          <div>
+          <div className="flex flex-col gap-4">
             <h3>{tagline}</h3>
-            <h1>{headline}</h1>
+            <h1 className="mb-4">{headline}</h1>
             <p>{description}</p>
             <>{cta}</>
           </div>
