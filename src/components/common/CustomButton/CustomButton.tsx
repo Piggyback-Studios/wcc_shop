@@ -7,7 +7,7 @@ const CustomButton = ({ label, type = "submit", disabled = false }: Button) => {
     <button
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="bg-primary-500 hover:bg-black hover:text-white p-4 flex items-center justify-between gap-4 text-xl w-fit rounded-lg"
+      className="btn-bordered"
       type={type}
       disabled={disabled}
     >
