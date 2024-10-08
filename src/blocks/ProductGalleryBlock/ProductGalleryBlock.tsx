@@ -9,7 +9,7 @@ import ContentContainer from "@/src/components/common/ContentContainer";
 const ProductGalleryBlock = () => {
   const [products, setProducts] = useState<Stripe.Product[]>([]);
   const fetchProducts = async () => {
-    const res = await fetch("/api/fetch-products");
+    const res = await fetch("/api/products", { method: "GET" });
     const jsonRes = await res.json();
     setProducts(jsonRes.products);
   };

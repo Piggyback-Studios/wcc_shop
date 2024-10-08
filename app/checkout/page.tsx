@@ -4,8 +4,9 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 
-import CheckoutForm from "@/src/components/CheckoutForm";
+import CheckoutForm from "@/src/blocks/CheckoutForm";
 import { useCartContext } from "@/src/context/Cart";
+import Spacer from "@/src/blocks/ui/Spacer";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || "");
 
@@ -29,12 +30,13 @@ export default function Checkout() {
     clientSecret,
   };
   return (
-    <>
+    <main className="flex flex-col items-center">
+      <Spacer size="lg" />
       {clientSecret && (
         <Elements stripe={stripePromise} options={stripeOptions}>
           <CheckoutForm />
         </Elements>
       )}
-    </>
+    </main>
   );
 }

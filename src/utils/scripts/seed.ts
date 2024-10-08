@@ -1,7 +1,7 @@
 import { db, VercelPoolClient } from "@vercel/postgres";
 import { customerUsers, adminUsers } from "./placeholder-data";
 import bcrypt from "bcrypt";
-import { AdminUser } from "../types/adminUser.types.js";
+import { AdminUser } from "@/app/types/adminUser.types.js";
 
 async function seedAdminUsers(client: VercelPoolClient) {
   try {

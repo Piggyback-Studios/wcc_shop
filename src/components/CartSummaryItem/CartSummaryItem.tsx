@@ -30,7 +30,7 @@ const CartSummaryItem = (props: CartItem) => {
   };
 
   return (
-    <div className={styles.display_item}>
+    <div className="grid md:grid-cols-2">
       <div className={styles.top_row}>
         <div className={styles.info_section}>
           {name && <h3 className={styles.name}>{name}</h3>}

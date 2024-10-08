@@ -2,11 +2,12 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/src/components/ui/Navbar";
 import ProviderWrapper from "@/src/components/ProviderWrapper";
-import { poppins, hostgard } from "@/app/fonts";
+import { poppins, scenarie } from "@/app/fonts";
+import { navbarData } from "@/src/shared/data/global.data";
 
 export const metadata: Metadata = {
   title: "Williford Carpentry Collective",
-  description: "Built with love by Louie Williford U+00A9 2024",
+  description: "Built with love by Piggyback Studios LLC 2024",
 };
 
 export default function RootLayout({
@@ -17,12 +18,12 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${poppins.className} ${hostgard.variable} ${poppins.variable}`}
+      className={`${poppins.className} ${scenarie.variable} ${poppins.variable}`}
     >
       <body>
         <ProviderWrapper>
-          <Navbar />
-          <main className="main-page-container">{children}</main>
+          <Navbar {...navbarData} />
+          {children}
         </ProviderWrapper>
       </body>
     </html>
