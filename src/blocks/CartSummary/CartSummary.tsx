@@ -4,6 +4,7 @@ import { useCartContext } from "@/src/context/Cart";
 import Link from "next/link";
 import CartSummaryItem from "@/src/components/CartSummaryItem";
 import ContentContainer from "@/src/components/common/ContentContainer";
+import CustomButton from "@/src/components/common/CustomButton";
 
 const CartSummary = () => {
   const [cart] = useCartContext();
@@ -18,13 +19,7 @@ const CartSummary = () => {
               />
             ))
           : ""}
-        {cart?.cartItems.length ? (
-          <Link href={"/checkout"}>
-            <button className="btn-bordered">go to checkout</button>
-          </Link>
-        ) : (
-          ""
-        )}
+        {cart?.cartItems.length ? <CustomButton label="go to checkout" /> : ""}
         {!cart?.cartItems.length && <p>No items in cart...</p>}
       </ContentContainer>
     </section>

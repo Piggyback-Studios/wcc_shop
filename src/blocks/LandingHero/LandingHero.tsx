@@ -13,7 +13,7 @@ const LandingHero = ({
       <ContentContainer>
         <div className="grid gap-8 md:grid-cols-2">
           <div className="flex flex-col gap-4">
-            <h3>{tagline}</h3>
+            <h6>{tagline}</h6>
             <h1 className="mb-4">{headline}</h1>
             <p>{description}</p>
             <>{cta}</>
