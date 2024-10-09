@@ -2,9 +2,9 @@ import { sql } from "@vercel/postgres";
 import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
-  const products = sql`select * where status = active from products;`;
-  console.log(products);
+  const products = await sql`select * from products where active = true;`;
+  console.log(products.rows);
   return NextResponse.json({
-    products: products,
+    products: products.rows,
   });
 }

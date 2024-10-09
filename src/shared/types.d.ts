@@ -52,7 +52,16 @@ export type CustomerUser = User & {
   stripeId: string;
 };
 
-export type Product = {};
+export type Product = {
+  name: string;
+  description: string;
+  stripeId: string;
+  price: number;
+  priceId: string;
+  quantityToSell: number;
+  quantityInCart: number;
+  imageUrl?: string;
+};
 
 // compontent and block level data types
 export type SpacerProps = {
@@ -73,3 +82,5 @@ export type LandingHeroProps = {
   cta: ReactElement;
   videos: Video[];
 };
+
+export type ProductCardProps = Product & {};

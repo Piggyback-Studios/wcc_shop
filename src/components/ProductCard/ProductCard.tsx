@@ -4,75 +4,70 @@ import Image from "next/image";
 
 import styles from "./component.module.css";
 import { useCartContext } from "@/src/context/Cart";
-import { CartItem } from "@/app/types/cart.types";
+import { ProductCardProps } from "@/src/shared/types";
 
-interface ProductCard {
-  product: Stripe.Product;
-}
-
-const ProductCard = (props: ProductCard) => {
-  const { product } = props;
+const ProductCard = ({
+  name,
+  price,
+  description,
+  imageUrl,
+}: ProductCardProps) => {
   const [cart, setCart] = useCartContext();
 
-  const addProductToCart = (product: Stripe.Product) => {
-    // i dont necessarily like this solution
-    const itemInCart = cart.cartItems.filter(
-      (cartProduct) => cartProduct.id === product.id
-    );
-    const otherItemsInCart = cart.cartItems.filter(
-      (cartProduct) => cartProduct.id !== product.id
-    );
-    const totalCartItemsQuantity = cart.cartItems.reduce(
-      (runningTotal, current) => {
-        return (runningTotal += current.quantity);
-      },
-      1
-    );
-    setCart({
-      cartItems: [
-        ...otherItemsInCart,
-        {
-          name: product.name,
-          id: product.id,
-          quantity: itemInCart.length ? itemInCart[0].quantity + 1 : 1,
-          price: Number(product.metadata.plainTextPrice),
-          image: product.images[0],
-        } as CartItem,
-      ],
-      totalCartItemsQuantity,
-    });
-  };
+  // const addProductToCart = (product: Stripe.Product) => {
+  //   // i dont necessarily like this solution
+  //   const itemInCart = cart.cartItems.filter(
+  //     (cartProduct) => cartProduct.id === product.id
+  //   );
+  //   const otherItemsInCart = cart.cartItems.filter(
+  //     (cartProduct) => cartProduct.id !== product.id
+  //   );
+  //   const totalCartItemsQuantity = cart.cartItems.reduce(
+  //     (runningTotal, current) => {
+  //       return (runningTotal += current.quantity);
+  //     },
+  //     1
+  //   );
+  //   setCart({
+  //     cartItems: [
+  //       ...otherItemsInCart,
+  //       {
+  //         name,
+  //         id,
+  //         quantity: itemInCart.length ? itemInCart[0].quantity + 1 : 1,
+  //         price: Number(product.metadata.plainTextPrice),
+  //         image: imageUrl,
+  //       },
+  //     ],
+  //     totalCartItemsQuantity,
+  //   });
+  // };
 
   return (
     <div className={styles.card}>
-      {product.images[0] && (
+      {imageUrl && (
         <Image
-          src={product.images[0]}
+          src={imageUrl}
           width={500}
           height={500}
-          alt={`picture of ${product.name}`}
+          alt={`picture of ${name}`}
           layout="responsive"
         />
       )}
       <div className={styles.info}>
         <div className={styles.top_row}>
-          {product.name && <p className={styles.name}>{product.name}</p>}
-          {product.metadata.plainTextPrice && (
-            <span className={styles.price}>
-              ${product.metadata.plainTextPrice}
-            </span>
-          )}
-        </div>
-        {product.description && (
-          <p className={styles.description}>{product.description}</p>
-        )}
+          <p className={styles.name}>{name}</p>
 
+          <span className={styles.price}>${price}</span>
+        </div>
+        {description && <p className={styles.description}>{description}</p>}
+        {/* 
         <button
           className={styles.add_to_cart_button}
           onClick={() => addProductToCart(product)}
         >
           Add to Cart
-        </button>
+        </button> */}
       </div>
     </div>
   );

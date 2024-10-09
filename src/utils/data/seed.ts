@@ -2,34 +2,50 @@ import { db, VercelPoolClient } from "@vercel/postgres";
 import bcrypt from "bcrypt";
 import Stripe from "stripe";
 import { faker } from "@faker-js/faker";
-
-import { AdminUser, Product } from "@/src/shared/types";
+import { v4 as uuid } from "uuid";
 
 async function seedProducts(client: VercelPoolClient) {
-  const createTable = await client.sql`
+  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+
+  await client.sql`
       CREATE TABLE IF NOT EXISTS products (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
         stripe_id VARCHAR(255) NOT NULL,
         name VARCHAR(255) NOT NULL,
-        price VARCHAR(255) NOT NULL,
-        quantity TEXT NOT NULL UNIQUE,
-        password TEXT NOT NULL
+        description VARCHAR(5000),
+        price BIGINT NOT NULL,
+        image_url VARCHAR(255) NOT NULL,
+        quantity BIGINT NOT NULL,
+        active BOOLEAN NOT NULL
       );
     `;
-  // console.log(`Created "products" table`);
+  console.log(`Created "products" table`);
 
   const stripe = new Stripe(process.env.STRIPE_SK || "");
-
   const products = await stripe.products.list();
 
-  console.log(products);
-
-  products.data.map((product, idx) => {
-    client.sql` INSERT INTO products `;
+  products.data.map(async (product, idx) => {
+    if (product.default_price) {
+      const price = await stripe.prices.retrieve(
+        product.default_price as string
+      );
+      const quantity = Math.floor(Math.random() * (25 - 1) + 25);
+      client.sql`
+        INSERT INTO products 
+        (id, stripe_id, name, description, price, image_url, quantity, active) 
+        VALUES (${uuid()}, ${product.id}, ${product.name}, ${
+        product.description
+      }, ${price.unit_amount}, ${product.images[0]}, ${quantity}, ${
+        product.active
+      });
+      `;
+    }
   });
-
-  // create products in
 }
+
+async function seedCategories(client: VercelPoolClient) {}
+
+async function seedProductCategories(client: VercelPoolClient) {}
 
 async function seedAdminUsers(client: VercelPoolClient) {
   // try {
@@ -113,11 +129,12 @@ async function main() {
   Promise.all(promises)
     .then(() => {
       console.log("Db Seeded!");
+      return;
     })
     .catch((err: any) => {
       console.log("Error:", err);
+      return;
     });
-  return;
 }
 
 main().catch((err) => {
