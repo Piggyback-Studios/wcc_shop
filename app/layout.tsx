@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
+
 import "./globals.css";
 import Navbar from "@/src/components/ui/Navbar";
 import ProviderWrapper from "@/src/components/ProviderWrapper";
@@ -25,6 +27,7 @@ export default function RootLayout({
         <ProviderWrapper>
           <Navbar {...navbarData} />
           {children}
+          <Analytics />
           <Footer />
         </ProviderWrapper>
       </body>

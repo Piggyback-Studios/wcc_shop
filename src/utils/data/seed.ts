@@ -24,7 +24,11 @@ async function seedProducts(client: VercelPoolClient) {
 
   console.log(products);
 
-  // fetch products from stripe
+  products.data.map((product, idx) => {
+    client.sql` INSERT INTO products `;
+  });
+
+  // create products in
 }
 
 async function seedAdminUsers(client: VercelPoolClient) {
