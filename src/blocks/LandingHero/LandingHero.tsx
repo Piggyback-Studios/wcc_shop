@@ -19,8 +19,26 @@ const LandingHero = ({
             <p>{description}</p>
             <>{cta}</>
           </div>
-          <div className="grid grid-rows-3 grid-cols-3">
-            {videos && videos.map((video, idx) => <div></div>)}
+          <div className="grid grid-rows-3 grid-cols-3 gap-8">
+            {videos &&
+              videos.map((video, idx) => (
+                <div key={idx}>
+                  <video
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className={`rounded-lg object-cover position-center h-full w-auto border-2 ${
+                      (idx === 3 || idx === 4 || idx === 5) && "ml-8"
+                    }`}
+                    width={video.width}
+                    height={video.height}
+                    preload="none"
+                  >
+                    <source src={video.src} type="video/mp4" />
+                  </video>
+                </div>
+              ))}
           </div>
         </div>
       </ContentContainer>

@@ -23,13 +23,14 @@ export type Button = {
   label: string;
   type?: ButtonType;
   disabled?: boolean;
-  onClick: (...args: any[]) => any;
+  onClick?: (...args: any[]) => any;
 };
 
 export type Video = {
   src: string;
+  alt: string;
   width: number;
-  height;
+  height: number;
 };
 
 // compontent and block level data types
