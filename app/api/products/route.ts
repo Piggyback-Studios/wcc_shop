@@ -1,10 +1,10 @@
+import { sql } from "@vercel/postgres";
 import { NextResponse, NextRequest } from "next/server";
-import Stripe from "stripe";
 
 export async function GET(req: NextRequest) {
-  const stripe = new Stripe(process.env.STRIPE_SK || "");
-  const productList = await stripe.products.list();
+  const products = sql`select * where status = active from products;`;
+  console.log(products);
   return NextResponse.json({
-    products: productList.data,
+    products: products,
   });
 }

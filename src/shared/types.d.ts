@@ -33,6 +33,27 @@ export type Video = {
   height: number;
 };
 
+export type User = {
+  id: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
+
+export type AdminUser = User & {
+  adminLevel: "owner" | "editor" | "basic";
+};
+
+export type CustomerUser = User & {
+  id: string;
+  addressLineOne: string;
+  addressLineTwo: string;
+  stripeId: string;
+};
+
+export type Product = {};
+
 // compontent and block level data types
 export type SpacerProps = {
   size: SpacerSize;
