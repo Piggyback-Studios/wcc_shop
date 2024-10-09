@@ -7,9 +7,10 @@ const LandingHero = ({
   headline,
   description,
   cta,
+  videos,
 }: LandingHeroProps) => {
   return (
-    <section className="min-h-screen">
+    <section>
       <ContentContainer>
         <div className="grid gap-8 md:grid-cols-2">
           <div className="flex flex-col gap-4">
@@ -18,13 +19,8 @@ const LandingHero = ({
             <p>{description}</p>
             <>{cta}</>
           </div>
-          <div>
-            <Image
-              width={1024}
-              height={1024}
-              src="/svg/blob-shape.svg"
-              alt="blob"
-            />
+          <div className="grid grid-rows-3 grid-cols-3">
+            {videos && videos.map((video, idx) => <div></div>)}
           </div>
         </div>
       </ContentContainer>

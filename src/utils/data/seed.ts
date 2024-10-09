@@ -1,5 +1,5 @@
 import { db, VercelPoolClient } from "@vercel/postgres";
-import { customerUsers, adminUsers } from "./placeholder-data";
+import { customerUsers, adminUsers } from "../scripts/placeholder-data";
 import bcrypt from "bcrypt";
 import { AdminUser } from "@/app/types/adminUser.types.js";
 

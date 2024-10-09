@@ -23,6 +23,13 @@ export type Button = {
   label: string;
   type?: ButtonType;
   disabled?: boolean;
+  onClick: (...args: any[]) => any;
+};
+
+export type Video = {
+  src: string;
+  width: number;
+  height;
 };
 
 // compontent and block level data types
@@ -42,4 +49,5 @@ export type LandingHeroProps = {
   headline: string | ReactElement;
   description: string | ReactElement;
   cta: ReactElement;
+  videos: Video[];
 };
