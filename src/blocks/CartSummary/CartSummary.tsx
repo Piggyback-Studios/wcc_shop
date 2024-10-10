@@ -11,17 +11,17 @@ const CartSummary = () => {
   return (
     <section>
       <ContentContainer>
-        {cart?.cartItems.length > 0 &&
-          cart?.cartItems.map((cartItem) => (
+        {cart?.cartProducts.length > 0 &&
+          cart?.cartProducts.map((cartItem) => (
             <CartSummaryItem
               {...cartItem}
               key={cartItem.name + Math.round(Math.random() * 100)}
             />
           ))}
-        {cart?.cartItems.length > 0 && (
+        {cart?.cartProducts.length > 0 && (
           <CustomLink href="/checkout" label="go to checkout" />
         )}
-        {!cart?.cartItems.length && <p>No items in cart...</p>}
+        {!cart?.cartProducts.length && <p>No items in cart...</p>}
       </ContentContainer>
     </section>
   );

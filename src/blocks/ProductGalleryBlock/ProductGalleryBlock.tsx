@@ -13,7 +13,7 @@ const ProductGalleryBlock = () => {
     const res = await fetch("/api/products", { method: "GET" });
     const jsonRes = await res.json();
     setProducts(jsonRes.products);
-    console.log(jsonRes);
+    console.log(jsonRes.products);
   };
   useEffect(() => {
     fetchProducts();
@@ -21,7 +21,7 @@ const ProductGalleryBlock = () => {
   return (
     <section>
       <ContentContainer>
-        <div className={styles.product_gallery}>
+        <div className="grid md:grid-cols-3 gap-8">
           {products &&
             products.map((product: Product) => (
               <ProductCard
