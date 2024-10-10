@@ -37,11 +37,8 @@ const ProductCard = ({
       cartProducts: [
         ...otherItemsInCart,
         {
-          name,
-          id,
+          ...product,
           cartQuantity: itemInCart.length ? itemInCart[0].cartQuantity + 1 : 1,
-          price: product.price,
-          imageUrl,
         } as Product,
       ],
       totalCartProductsQuantity,
