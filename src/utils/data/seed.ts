@@ -80,8 +80,8 @@ async function seedProductCategories(client: VercelPoolClient) {
   await client.sql`
       CREATE TABLE IF NOT EXISTS products_categories (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-        product_id UUID REFERENCES products (id),
-        category_id UUID REFERENCES categories (id)
+        product_id UUID REFERENCES products (id) ON DELETE CASCADE,
+        category_id UUID REFERENCES categories (id) ON DELETE CASCADE
       );
     `;
   const stripe = new Stripe(process.env.STRIPE_SK || "");
