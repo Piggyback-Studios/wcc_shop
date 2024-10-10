@@ -21,6 +21,7 @@ const ProductGalleryBlock = () => {
   return (
     <section>
       <ContentContainer>
+        <h2>Our Collection</h2>
         <div className="grid md:grid-cols-3 gap-8">
           {products &&
             products.map((product: Product) => (

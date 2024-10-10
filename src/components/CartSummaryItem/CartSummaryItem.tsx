@@ -39,7 +39,7 @@ const CartSummaryItem = ({ name, price, cartQuantity, imageUrl }: Product) => {
           )}
         </div>
 
-        <div className={styles.button_row}>
+        <div className="flex gap-4 mb-4 md:mb-0">
           <button
             className={styles.edit_cart_display_item_button}
             // TODO: fix this

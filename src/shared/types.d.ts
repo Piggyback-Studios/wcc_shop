@@ -11,8 +11,8 @@ export type Link = {
 export type SVG = {
   width: number;
   height: number;
-  fill: string;
-  stroke: string;
+  fill?: string;
+  stroke?: string;
 };
 
 export type IconLink = Link & SVG;
@@ -89,3 +89,8 @@ export type LandingHeroProps = {
 };
 
 export type ProductCardProps = Product & {};
+
+export type SearchBarProps = {
+  onSearch: (...args: any[]) => any;
+  value: string;
+};
