@@ -5,6 +5,7 @@ import Image from "next/image";
 import styles from "./component.module.css";
 import { useCartContext } from "@/src/context/Cart";
 import { ProductCardProps, Product } from "@/src/shared/types";
+import CustomButton from "../common/CustomButton";
 
 const ProductCard = ({
   id,
@@ -62,9 +63,7 @@ const ProductCard = ({
           <span className={styles.price}>${price}</span>
         </div>
         {description && <p className={styles.description}>{description}</p>}
-
-        <button
-          className={styles.add_to_cart_button}
+        <CustomButton
           onClick={() =>
             addProductToCart({
               id,
@@ -78,9 +77,9 @@ const ProductCard = ({
               cartQuantity,
             })
           }
-        >
-          Add to Cart
-        </button>
+          label="Add to Cart"
+          className="absolute bottom-0 translate-y-1/2 right-2"
+        />
       </div>
     </div>
   );

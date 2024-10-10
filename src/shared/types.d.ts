@@ -24,6 +24,7 @@ export type Button = {
   type?: ButtonType;
   disabled?: boolean;
   onClick?: (...args: any[]) => any;
+  className?: string;
 };
 
 export type Video = {

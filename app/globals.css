@@ -83,5 +83,5 @@ h6 {
 }
 
 .btn-bordered {
-  @apply: "bg-transparent hover:bg-primary-600 text-primary-800 font-semibold hover:text-white py-2 px-4 border border-primary-600 hover:border-transparent rounded";
+  @apply: bg-light hover:bg-primary-600 text-primary-800 font-semibold hover:text-white py-2 px-4 border border-primary-600 hover:border-transparent rounded;
 }

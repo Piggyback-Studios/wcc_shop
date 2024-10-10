@@ -6,13 +6,14 @@ const CustomButton = ({
   type = "submit",
   disabled = false,
   onClick,
+  className = "",
 }: Button) => {
   const [hovered, setHovered] = useState(false);
   return (
     <button
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className="btn-bordered"
+      className={`btn-bordered ${className}`}
       type={type}
       disabled={disabled}
       onClick={onClick}
