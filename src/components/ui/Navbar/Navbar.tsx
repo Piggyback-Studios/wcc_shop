@@ -9,7 +9,7 @@ import { NavbarProps } from "@/src/shared/types";
 
 const Navbar = ({ logo, links }: NavbarProps) => {
   return (
-    <nav className="fixed top-0 w-full flex items-center justify-center bg-primary-500 h-24 z-50">
+    <nav className="fixed top-0 w-full flex items-center justify-center h-24 z-50">
       <ContentContainer>
         <div className="flex justify-between items-center">
           <Link href="/">{logo}</Link>

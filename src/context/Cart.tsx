@@ -7,11 +7,11 @@ import {
   SetStateAction,
 } from "react";
 
-import { CartItem } from "@/app/types/cart.types";
+import { Product } from "@/src/shared/types";
 
 type Cart = {
-  cartItems: CartItem[];
-  totalCartItemsQuantity: number;
+  cartProducts: Product[];
+  totalCartProductsQuantity: number;
 };
 
 type ContextType = [cart: Cart, setCart: Dispatch<SetStateAction<Cart>>];
@@ -19,7 +19,10 @@ type ContextType = [cart: Cart, setCart: Dispatch<SetStateAction<Cart>>];
 export const CartContext = createContext<ContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
-  const value = useState<Cart>({ cartItems: [], totalCartItemsQuantity: 0 });
+  const value = useState<Cart>({
+    cartProducts: [],
+    totalCartProductsQuantity: 0,
+  });
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };
 

@@ -7,9 +7,11 @@ import {
   PaymentElement,
   AddressElement,
 } from "@stripe/react-stripe-js";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const CheckoutForm = () => {
+  const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -49,6 +51,7 @@ const CheckoutForm = () => {
 
       if (result.paymentIntent.status === "succeeded") {
         // redirect to order complete page here
+        router.push("/order-complete");
       }
     }
     setDisabled(false);

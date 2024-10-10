@@ -4,72 +4,83 @@ import Image from "next/image";
 
 import styles from "./component.module.css";
 import { useCartContext } from "@/src/context/Cart";
-import { CartItem } from "@/app/types/cart.types";
+import { ProductCardProps, Product } from "@/src/shared/types";
 
-interface ProductCard {
-  product: Stripe.Product;
-}
-
-const ProductCard = (props: ProductCard) => {
-  const { product } = props;
+const ProductCard = ({
+  id,
+  name,
+  price,
+  description,
+  imageUrl,
+  stripeId,
+  priceId,
+  stockQuantity,
+  cartQuantity,
+}: ProductCardProps) => {
   const [cart, setCart] = useCartContext();
 
-  const addProductToCart = (product: Stripe.Product) => {
+  const addProductToCart = (product: Product) => {
     // i dont necessarily like this solution
-    const itemInCart = cart.cartItems.filter(
+    const itemInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id === product.id
     );
-    const otherItemsInCart = cart.cartItems.filter(
+    const otherItemsInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id !== product.id
     );
-    const totalCartItemsQuantity = cart.cartItems.reduce(
+    const totalCartProductsQuantity = cart.cartProducts.reduce(
       (runningTotal, current) => {
-        return (runningTotal += current.quantity);
+        return (runningTotal += current.cartQuantity);
       },
       1
     );
     setCart({
-      cartItems: [
+      cartProducts: [
         ...otherItemsInCart,
         {
-          name: product.name,
-          id: product.id,
-          quantity: itemInCart.length ? itemInCart[0].quantity + 1 : 1,
-          price: Number(product.metadata.plainTextPrice),
-          image: product.images[0],
-        } as CartItem,
+          name,
+          id,
+          cartQuantity: itemInCart.length ? itemInCart[0].cartQuantity + 1 : 1,
+          price: product.price,
+          imageUrl,
+        } as Product,
       ],
-      totalCartItemsQuantity,
+      totalCartProductsQuantity,
     });
   };
 
   return (
     <div className={styles.card}>
-      {product.images[0] && (
+      {imageUrl && (
         <Image
-          src={product.images[0]}
+          src={imageUrl}
           width={500}
           height={500}
-          alt={`picture of ${product.name}`}
+          alt={`picture of ${name}`}
           layout="responsive"
         />
       )}
       <div className={styles.info}>
         <div className={styles.top_row}>
-          {product.name && <p className={styles.name}>{product.name}</p>}
-          {product.metadata.plainTextPrice && (
-            <span className={styles.price}>
-              ${product.metadata.plainTextPrice}
-            </span>
-          )}
+          <p className={styles.name}>{name}</p>
+          <span className={styles.price}>${price}</span>
         </div>
-        {product.description && (
-          <p className={styles.description}>{product.description}</p>
-        )}
+        {description && <p className={styles.description}>{description}</p>}
 
         <button
           className={styles.add_to_cart_button}
-          onClick={() => addProductToCart(product)}
+          onClick={() =>
+            addProductToCart({
+              id,
+              name,
+              price,
+              description,
+              imageUrl,
+              stripeId,
+              priceId,
+              stockQuantity,
+              cartQuantity,
+            })
+          }
         >
           Add to Cart
         </button>

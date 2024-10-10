@@ -8,7 +8,11 @@ export const pageLinks: Link[] = [
   { href: "/cart", label: "cart" },
 ];
 
-export const socialsLinks: IconLink[] = [];
+export const socialsLinks: IconLink[] = [
+  { href: "/contact", label: "contact", width: 25, height: 25 },
+  { href: "/search", label: "search", width: 25, height: 25 },
+  { href: "/cart", label: "cart", width: 25, height: 25 },
+];
 
 export const navbarData: NavbarProps = {
   logo: (

@@ -11,8 +11,8 @@ export type Link = {
 export type SVG = {
   width: number;
   height: number;
-  fill: string;
-  stroke: string;
+  fill?: string;
+  stroke?: string;
 };
 
 export type IconLink = Link & SVG;
@@ -23,6 +23,49 @@ export type Button = {
   label: string;
   type?: ButtonType;
   disabled?: boolean;
+  onClick?: (...args: any[]) => any;
+};
+
+export type Video = {
+  src: string;
+  alt: string;
+  width: number;
+  height: number;
+};
+
+export type User = {
+  id: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
+
+export type AdminUser = User & {
+  adminLevel: "owner" | "editor" | "basic";
+};
+
+export type CustomerUser = User & {
+  id: string;
+  addressLineOne: string;
+  addressLineTwo: string;
+  stripeId: string;
+};
+
+export type Product = {
+  id: string;
+  name: string;
+  description: string;
+  stripeId: string;
+  price: number;
+  priceId: string;
+  stockQuantity: number;
+  cartQuantity: number;
+  imageUrl?: string;
+};
+
+export type Metadata = {
+  [k: string]: string;
 };
 
 // compontent and block level data types
@@ -42,4 +85,12 @@ export type LandingHeroProps = {
   headline: string | ReactElement;
   description: string | ReactElement;
   cta: ReactElement;
+  videos: Video[];
+};
+
+export type ProductCardProps = Product & {};
+
+export type SearchBarProps = {
+  onSearch: (...args: any[]) => any;
+  value: string;
 };
