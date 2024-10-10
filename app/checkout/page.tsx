@@ -17,7 +17,7 @@ export default function Checkout() {
     const res = await fetch("/api/get-secret", {
       method: "POST",
       body: JSON.stringify({
-        products: cart.cartItems,
+        products: cart.cartProducts,
       }),
     });
     const jsonRes = await res.json();

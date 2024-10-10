@@ -9,21 +9,23 @@ export async function POST(req: NextRequest) {
   const total = await products.reduce(
     async (runningTotal: number, current: Product) => {
       const resolvedRunningTotal = await runningTotal;
-      if (current.quantity) {
+      if (current.cartQuantity) {
         const currentProduct = await stripe.products.retrieve(current.id);
         const currentPrice = await stripe.prices.retrieve(
           currentProduct.default_price as string
         );
         return (runningTotal =
           resolvedRunningTotal +
-          current.quantity * (currentPrice.unit_amount || 0));
+          current.cartQuantity * (currentPrice.unit_amount || 0));
       } else return 0;
     },
     0
   );
   const metadata: Metadata = {};
   products.forEach((product: Product) => {
-    metadata[product.id] = `${product.name} - Quantity: ${product.quantity}`;
+    metadata[
+      product.id
+    ] = `${product.name} - Quantity: ${product.cartQuantity}`;
   });
   const paymentIntent = await stripe.paymentIntents.create({
     amount: total,
