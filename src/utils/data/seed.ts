@@ -6,7 +6,6 @@ import { v4 as uuid } from "uuid";
 
 async function seedProducts(client: VercelPoolClient) {
   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
   await client.sql`
       CREATE TABLE IF NOT EXISTS products (
         id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
@@ -19,18 +18,16 @@ async function seedProducts(client: VercelPoolClient) {
         active BOOLEAN NOT NULL
       );
     `;
-  console.log(`Created "products" table`);
-
+  console.log(`Created "products" table...`);
   const stripe = new Stripe(process.env.STRIPE_SK || "");
   const products = await stripe.products.list();
-
   products.data.map(async (product, idx) => {
     if (product.default_price) {
       const price = await stripe.prices.retrieve(
         product.default_price as string
       );
       const quantity = Math.floor(Math.random() * (25 - 1) + 25);
-      client.sql`
+      await client.sql`
         INSERT INTO products 
         (id, stripe_id, name, description, price, image_url, quantity, active) 
         VALUES (${uuid()}, ${product.id}, ${product.name}, ${
@@ -41,11 +38,53 @@ async function seedProducts(client: VercelPoolClient) {
       `;
     }
   });
+  console.log(`"products" table seeded!`);
 }
 
-async function seedCategories(client: VercelPoolClient) {}
+async function seedCategories(client: VercelPoolClient) {
+  await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
 
-async function seedProductCategories(client: VercelPoolClient) {}
+  await client.sql`
+      CREATE TABLE IF NOT EXISTS categories (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        description VARCHAR(5000),
+        image_url VARCHAR(255),
+        active BOOLEAN NOT NULL
+      );
+    `;
+
+  console.log(`Created "categories" table...`);
+
+  // get all categories from stripe product metadata and populate db with it
+  const categories: string[] = [];
+  const stripe = new Stripe(process.env.STRIPE_SK || "");
+  const products = await stripe.products.list();
+
+  products.data.map((product) => {
+    JSON.parse(product.metadata.categories).map((category: string) => {
+      if (!categories.includes(category)) categories.push(category);
+    });
+  });
+  categories.map(async (category) => {
+    await client.sql`
+        INSERT INTO categories 
+        (id, name, description, image_url, active) 
+        VALUES (${uuid()}, ${category}, ${category}, '', ${true});
+      `;
+  });
+  console.log(`"categories" table seeded!`);
+}
+
+async function seedProductCategories(client: VercelPoolClient) {
+  await client.sql`
+      CREATE TABLE IF NOT EXISTS products_categories (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        product_id UUID REFERENCES products (id),
+        category_id UUID REFERENCES categories (id)
+      );
+    `;
+}
 
 async function seedAdminUsers(client: VercelPoolClient) {
   // try {
@@ -85,6 +124,7 @@ async function seedAdminUsers(client: VercelPoolClient) {
 }
 
 async function seedCustomerUsers(client: VercelPoolClient) {
+  // TODO: fetch customers from stripe here and populate db
   // try {
   //   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
   //   // Create the "customers" table if it doesn't exist
@@ -123,8 +163,10 @@ async function main() {
   const client = await db.connect();
   const promises = [
     await seedProducts(client),
-    await seedAdminUsers(client),
-    await seedCustomerUsers(client),
+    await seedCategories(client),
+    await seedProductCategories(client),
+    // await seedAdminUsers(client),
+    // await seedCustomerUsers(client),
   ];
   Promise.all(promises)
     .then(() => {

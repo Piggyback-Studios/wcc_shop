@@ -1,17 +1,13 @@
-import { CartItem } from "@/app/types/cart.types";
+import { Product, Metadata } from "@/src/shared/types";
 import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
-
-interface IMetadata {
-  [k: string]: string;
-}
 
 export async function POST(req: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SK || "");
   const data = await req.json();
   const { products } = data;
   const total = await products.reduce(
-    async (runningTotal: number, current: CartItem) => {
+    async (runningTotal: number, current: Product) => {
       const resolvedRunningTotal = await runningTotal;
       if (current.quantity) {
         const currentProduct = await stripe.products.retrieve(current.id);
@@ -25,8 +21,8 @@ export async function POST(req: NextRequest) {
     },
     0
   );
-  const metadata: IMetadata = {};
-  products.forEach((product: CartItem) => {
+  const metadata: Metadata = {};
+  products.forEach((product: Product) => {
     metadata[product.id] = `${product.name} - Quantity: ${product.quantity}`;
   });
   const paymentIntent = await stripe.paymentIntents.create({

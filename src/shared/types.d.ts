@@ -53,14 +53,19 @@ export type CustomerUser = User & {
 };
 
 export type Product = {
+  id: string;
   name: string;
   description: string;
   stripeId: string;
   price: number;
   priceId: string;
-  quantityToSell: number;
-  quantityInCart: number;
+  stockQuantity: number;
+  cartQuantity: number;
   imageUrl?: string;
+};
+
+export type Metadata = {
+  [k: string]: string;
 };
 
 // compontent and block level data types
