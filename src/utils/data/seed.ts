@@ -84,6 +84,22 @@ async function seedProductCategories(client: VercelPoolClient) {
         category_id UUID REFERENCES categories (id)
       );
     `;
+  const stripe = new Stripe(process.env.STRIPE_SK || "");
+  const products = await stripe.products.list();
+
+  products.data.map((product) => {
+    JSON.parse(product.metadata.categories).map(async (category: string) => {
+      const { rows: categoryRows } =
+        await client.sql`select id from categories where name=${category}`;
+      const { rows: productRows } =
+        await client.sql`select id from products where stripe_id=${product.id}`;
+      await client.sql`
+        INSERT INTO products_categories
+          (id, product_id, category_id)
+          VALUES (${uuid()}, ${productRows[0].id}, ${categoryRows[0].id});
+        `;
+    });
+  });
 }
 
 async function seedAdminUsers(client: VercelPoolClient) {
