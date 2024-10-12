@@ -54,12 +54,12 @@ const ProductCard = ({
           width={500}
           height={500}
           alt={`picture of ${name}`}
-          layout="responsive"
+          className="rounded-lg mb-4"
         />
       )}
       <div className={styles.info}>
-        <div className={styles.top_row}>
-          <p className={styles.name}>{name}</p>
+        <div className="mb-2 flex justify-between">
+          <h6>{name}</h6>
           <span className={styles.price}>${price}</span>
         </div>
         {description && <p className={styles.description}>{description}</p>}

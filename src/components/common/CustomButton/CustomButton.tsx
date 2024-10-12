@@ -13,12 +13,12 @@ const CustomButton = ({
     <button
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      className={`btn-bordered ${className}`}
+      className={`bg-background hover:bg-primary-600 text-primary-800 font-semibold hover:text-white py-2 px-4 border border-primary-600 hover:border-transparent rounded ${className}`}
       type={type}
       disabled={disabled}
       onClick={onClick}
     >
-      <span>{label.toUpperCase()}</span>
+      {label.toUpperCase()}
     </button>
   );
 };
