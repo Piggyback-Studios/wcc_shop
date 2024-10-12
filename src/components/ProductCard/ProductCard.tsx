@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import Stripe from "stripe";
+import React from "react";
 import Image from "next/image";
 
 import styles from "./component.module.css";
@@ -34,7 +33,15 @@ const ProductCard = ({
       },
       1
     );
+
+    // calculate cart subtotal
+    const cartSubtotal = cart.cartProducts.reduce((runningTotal, current) => {
+      return (runningTotal += current.cartQuantity * current.price);
+    }, 1);
+
     setCart({
+      ...cart,
+      cartSubtotal,
       cartProducts: [
         ...otherItemsInCart,
         {

@@ -8,6 +8,8 @@ import CheckoutForm from "@/src/blocks/CheckoutForm";
 import { useCartContext } from "@/src/context/Cart";
 import Spacer from "@/src/blocks/ui/Spacer";
 import { useRouter } from "next/navigation";
+import CartTotalsSummary from "@/src/blocks/CartTotalsSummary";
+import { SP } from "next/dist/shared/lib/utils";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || "");
 
@@ -37,6 +39,8 @@ export default function Checkout() {
   };
   return (
     <main className="flex flex-col items-center">
+      <Spacer size="lg" />
+      <CartTotalsSummary />
       <Spacer size="lg" />
       {clientSecret && (
         <Elements stripe={stripePromise} options={stripeOptions}>
