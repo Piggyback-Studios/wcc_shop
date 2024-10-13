@@ -15,16 +15,13 @@ export default function Checkout() {
   const [clientSecret, setClientSecret] = useState<string>();
   const [cart] = useCartContext();
   const fetchClientSecret = async () => {
-    console.log(cart.cartProducts);
     const res = await fetch("/api/get-secret", {
       method: "POST",
       body: JSON.stringify({
         products: cart.cartProducts,
       }),
     });
-    console.log({ res });
     const jsonRes = await res.json();
-    console.log({ jsonRes });
     setClientSecret(jsonRes.clientSecret);
   };
   useEffect(() => {

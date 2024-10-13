@@ -6,12 +6,10 @@ export async function POST(req: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SK || "");
   const data = await req.json();
   const { products } = data;
-  console.log({ products });
   const total = await products.reduce(
     async (runningTotal: number, current: Product) => {
       const resolvedRunningTotal = await runningTotal;
       if (current.cartQuantity) {
-        // console.log({ current });
         const currentProduct = await stripe.products.retrieve(current.stripeId);
         const currentPrice = await stripe.prices.retrieve(
           currentProduct.default_price as string

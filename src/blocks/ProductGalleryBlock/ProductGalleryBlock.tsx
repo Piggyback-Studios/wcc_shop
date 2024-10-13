@@ -13,7 +13,6 @@ const ProductGalleryBlock = () => {
     const res = await fetch("/api/products", { method: "GET" });
     const jsonRes = await res.json();
     setProducts(jsonRes.products);
-    console.log(jsonRes.products);
   };
   useEffect(() => {
     fetchProducts();

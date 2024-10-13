@@ -9,7 +9,6 @@ const CartSummaryItem = ({ name, price, cartQuantity, imageUrl }: Product) => {
 
   const editProductInCart = (product: Product) => {
     // TODO: do this
-    console.log("hello!");
   };
 
   const removeProductFromCart = (product: Product) => {
