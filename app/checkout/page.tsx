@@ -7,17 +7,13 @@ import { useEffect, useState } from "react";
 import CheckoutForm from "@/src/blocks/CheckoutForm";
 import { useCartContext } from "@/src/context/Cart";
 import Spacer from "@/src/blocks/ui/Spacer";
-import { useRouter } from "next/navigation";
 import CartTotalsSummary from "@/src/blocks/CartTotalsSummary";
-import { SP } from "next/dist/shared/lib/utils";
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PK || "");
 
 export default function Checkout() {
   const [clientSecret, setClientSecret] = useState<string>();
   const [cart] = useCartContext();
-  const router = useRouter();
-  if (!cart.cartProducts.length) router.push("/");
   const fetchClientSecret = async () => {
     console.log(cart.cartProducts);
     const res = await fetch("/api/get-secret", {

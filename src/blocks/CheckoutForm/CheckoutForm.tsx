@@ -1,6 +1,7 @@
 "use client";
 
 import ContentContainer from "@/src/components/common/ContentContainer";
+import CustomButton from "@/src/components/common/CustomButton";
 import {
   useStripe,
   useElements,
@@ -63,7 +64,7 @@ const CheckoutForm = () => {
         <form onSubmit={handleSubmit}>
           <PaymentElement />
           <AddressElement options={{ mode: "shipping" }} />
-          <button disabled={!stripe || disabled}>{submitLabel}</button>
+          <CustomButton disabled={!stripe || disabled} label={submitLabel} />
         </form>
       </ContentContainer>
     </section>

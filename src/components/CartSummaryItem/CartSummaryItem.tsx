@@ -23,6 +23,7 @@ const CartSummaryItem = ({ name, price, cartQuantity, imageUrl }: Product) => {
       1
     );
     setCart({
+      ...cart,
       cartProducts: [...otherItemsInCart],
       totalCartProductsQuantity: totalCartItemsQuantity - product.cartQuantity,
     });
