@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useCartContext } from "@/src/context/Cart";
 import ContentContainer from "@/src/components/common/ContentContainer";
 import { NavbarProps } from "@/src/shared/types";
+import CustomHamburger from "@/src/components/ui/AnimatedHamburgerIcon";
 
 const Navbar = ({ logo, links }: NavbarProps) => {
   const [cart] = useCartContext();
@@ -19,6 +20,7 @@ const Navbar = ({ logo, links }: NavbarProps) => {
       <ContentContainer>
         <div className="flex justify-between items-center">
           <Link href="/">{logo}</Link>
+          <CustomHamburger />
           <ul className="flex flex-row gap-6">
             {links.map((link, idx) => (
               <li key={idx} className="relative">
