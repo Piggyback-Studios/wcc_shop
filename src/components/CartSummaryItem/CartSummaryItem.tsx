@@ -55,6 +55,7 @@ const CartSummaryItem = (product: Product) => {
           height={500}
           alt={`picture of ${name}`}
           layout="responsive"
+          className="rounded-lg border-2 border-dark-900"
         />
       )}
     </div>

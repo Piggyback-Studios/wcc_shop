@@ -61,7 +61,7 @@ const ProductCard = ({
           width={500}
           height={500}
           alt={`picture of ${name}`}
-          className="rounded-lg mb-4"
+          className="rounded-lg border-2 border-dark-900 mb-4"
         />
       )}
       <div className={styles.info}>

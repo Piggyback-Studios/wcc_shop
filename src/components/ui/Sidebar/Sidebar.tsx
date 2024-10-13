@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { pageLinks } from "@/src/shared/data/global.data";
@@ -28,7 +29,15 @@ const sideVariants = {
 };
 
 const Sidebar = () => {
-  const [sidebar] = useSidebarContext();
+  const [sidebar, setSidebar] = useSidebarContext();
+
+  useEffect(() => {
+    if (typeof window !== "undefined")
+      window.addEventListener("resize", () => {
+        window.innerWidth > 767 && setSidebar({ isOpen: false });
+      });
+  }, []);
+
   return (
     <AnimatePresence>
       {sidebar.isOpen && (
@@ -41,10 +50,10 @@ const Sidebar = () => {
             width: 0,
             transition: { delay: 0.7, duration: 0.3 },
           }}
-          className="h-screen absolute border-2 border-dark bg-light right-0"
+          className="h-screen absolute border-2 border-dark bg-light-100 right-0"
         >
           <motion.div
-            className="container"
+            className="mt-24 md:mt-32"
             initial="closed"
             animate="open"
             exit="closed"
