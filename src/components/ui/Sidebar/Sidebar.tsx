@@ -41,6 +41,7 @@ const Sidebar = () => {
             width: 0,
             transition: { delay: 0.7, duration: 0.3 },
           }}
+          className="h-screen absolute border-2 border-dark bg-light right-0"
         >
           <motion.div
             className="container"
@@ -49,16 +50,18 @@ const Sidebar = () => {
             exit="closed"
             variants={sideVariants}
           >
-            {pageLinks.map(({ label, href }, idx) => (
-              <motion.a
-                key={idx}
-                href={href}
-                whileHover={{ scale: 1.1 }}
-                variants={itemVariants}
-              >
-                {label}
-              </motion.a>
-            ))}
+            <div className="flex flex-col">
+              {pageLinks.map(({ label, href }, idx) => (
+                <motion.a
+                  key={idx}
+                  href={href}
+                  whileHover={{ scale: 1.1 }}
+                  variants={itemVariants}
+                >
+                  {label}
+                </motion.a>
+              ))}
+            </div>
           </motion.div>
         </motion.aside>
       )}

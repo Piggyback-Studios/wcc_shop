@@ -21,7 +21,7 @@ const Navbar = ({ logo, links }: NavbarProps) => {
         <div className="flex justify-between items-center">
           <Link href="/">{logo}</Link>
           <CustomHamburger />
-          <ul className="flex flex-row gap-6">
+          <ul className="hidden md:flex flex-row gap-6">
             {links.map((link, idx) => (
               <li key={idx} className="relative">
                 {link.label === "cart" && cart.totalCartProductsQuantity ? (

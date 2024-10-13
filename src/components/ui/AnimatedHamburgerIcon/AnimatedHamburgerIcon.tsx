@@ -6,10 +6,12 @@ const CustomHamburger = () => {
   const [sidebar, setSidebar] = useSidebarContext();
 
   return (
-    <Hamburger
-      toggled={sidebar.isOpen || undefined}
-      toggle={() => setSidebar({ isOpen: !sidebar.isOpen })}
-    />
+    <div className="md:hidden">
+      <Hamburger
+        toggled={sidebar.isOpen || undefined}
+        toggle={() => setSidebar({ isOpen: !sidebar.isOpen })}
+      />
+    </div>
   );
 };
 
