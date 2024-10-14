@@ -95,7 +95,7 @@ export type CreateProductFormType = {
   name: string;
   description: string;
   price: number;
-  image: File;
+  image: FileList;
   stockQuantity: number;
   active: boolean;
 };

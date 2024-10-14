@@ -7,22 +7,26 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { CreateProductFormType } from "@/src/shared/types";
 
 const CreateProductForm = () => {
-  const { register, handleSubmit, setValue } = useForm<CreateProductFormType>();
+  const { register, handleSubmit } = useForm<CreateProductFormType>();
 
   const onSubmit: SubmitHandler<CreateProductFormType> = async (values) => {
     const { name, price, description, stockQuantity, active, image } = values;
-    await fetch(`/api/products?product_image=${values.image.name}`, {
+    const formData = new FormData();
+    formData.append("image", image[0], image[0].name);
+    formData.append("name", name);
+    formData.append("description", description);
+    formData.append("stockQuantity", stockQuantity as unknown as string);
+    formData.append("price", price as unknown as string);
+    formData.append("active", active as unknown as string);
+    // log form data
+    // for (const [k, v] of Object.entries(formData)) {
+    //   console.log(k + ", " + v);
+    // }
+    await fetch(`/api/products`, {
       method: "POST",
-      body: JSON.stringify({
-        name,
-        price,
-        description,
-        stockQuantity,
-        active,
-        image,
-      }),
+      body: formData,
     }).then((res) => {
-      console.log(res);
+      // console.log(res);
     });
   };
   const { ref: nameRef, ...nameRest } = register("name");
@@ -33,7 +37,7 @@ const CreateProductForm = () => {
   const { ref: imageRef, ...imageRest } = register("image");
   const { ref: activeRef, ...activeRest } = register("active");
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
       <CustomInput
         placeholder="product name"
         type="text"

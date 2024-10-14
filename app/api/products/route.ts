@@ -5,6 +5,12 @@ import Stripe from "stripe";
 import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
 
+export const config = {
+  api: {
+    bodyParser: false, // Disable the default body parser
+  },
+};
+
 // fetch all active products
 export async function GET(req: NextRequest) {
   const products = await sql`select * from products where active = true;`;
@@ -31,8 +37,16 @@ export async function GET(req: NextRequest) {
 // create a product
 export async function POST(req: NextRequest) {
   try {
-    const { name, description, price, image, active, stockQuantity } =
-      await req.json();
+    // pull form data
+    const form = await req.formData();
+    const image = form.get("image") as File;
+    const name = form.get("name") as string;
+    const description = form.get("description") as string;
+    const price = form.get("price") as unknown as number;
+    const stockQuantity = form.get("stockQuantity") as unknown as number;
+    const active = (form.get("active") as unknown as boolean) || false;
+
+    console.log({ active, name, description, price });
 
     // create stripe product
     const stripe = new Stripe(process.env.STRIPE_SK!);
@@ -47,9 +61,8 @@ export async function POST(req: NextRequest) {
     });
 
     // upload image
-    const { searchParams } = new URL(req.url);
-    const filename = searchParams.get("product_image");
-    const { url } = await put(`/images/products/${filename}`, image, {
+    const imageFp = `/images/products/${image.name}`;
+    const { url } = await put(imageFp, image, {
       access: "public",
     });
 
