@@ -9,7 +9,7 @@ import {
   ContactFormFieldNamesType,
   ContactFormProps,
   ContactFormType,
-} from "@/src/shared/data/types";
+} from "@/src/shared/types";
 import { useState } from "react";
 
 const ContactForm = ({

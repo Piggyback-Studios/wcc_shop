@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/src/shared/types";
 import { useState } from "react";
 
