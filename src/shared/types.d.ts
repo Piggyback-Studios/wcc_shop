@@ -100,6 +100,11 @@ export type CreateProductFormType = {
   active: boolean;
 };
 
+export type SignInFormType = {
+  email: string;
+  password: string;
+};
+
 export type ContactProps = {
   title: string;
   addressLine1: string;
