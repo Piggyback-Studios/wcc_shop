@@ -4,6 +4,16 @@ import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
 import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
+import formidable, { File } from "formidable";
+
+import { parseForm } from "@/src/utils/forms";
+import { IncomingMessage } from "http";
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 // fetch all active products
 export async function GET(req: NextRequest) {
@@ -30,49 +40,54 @@ export async function GET(req: NextRequest) {
 
 // create a product
 export async function POST(req: NextRequest) {
-  const data = await req.formData();
-  const file = data.get("image") as File;
-  const name = data.get("name") as unknown as string;
-  const price = data.get("price") as unknown as number;
-  const description = data.get("description") as unknown as string;
-  const stockQuantity = data.get("stockQuantity") as unknown as number;
-  const active = data.get("active") as unknown as boolean;
-  const stripe = new Stripe(process.env.STRIPE_SK || "");
+  try {
+    const { fields, files } = await parseForm(
+      req as unknown as IncomingMessage
+    );
 
-  console.log({
-    name,
-    price,
-    description,
-    stockQuantity,
-    active,
-  });
+    console.log(fields);
+    console.log(files);
 
-  // TODO: file.name is undefined so we aren't sure how to save the image file
+    const file = files.image as unknown as File;
+    const name = fields.name?.join(" ")!;
+    const description = fields.description?.join(" ")!;
+    const unit_amount = fields.price as unknown as number;
+    const active = fields.active as unknown as boolean;
+    const stockQuantity = fields.stockQuantity as unknown as number;
 
-  // create stripe product
-  const product = await stripe.products.create({
-    name,
-    description,
-    default_price_data: {
-      currency: "usd",
-      unit_amount: price,
-    },
-    active,
-  });
+    // create stripe product
+    const stripe = new Stripe(process.env.STRIPE_SK!);
+    const product = await stripe.products.create({
+      name,
+      description,
+      default_price_data: {
+        currency: "usd",
+        unit_amount,
+      },
+      active,
+    });
 
-  // upload image
-  const { url } = await put(`/images/products/${file.name}`, file, {
-    access: "public",
-  });
+    // upload image
+    const { url } = await put(
+      `/images/products/${file.originalFilename}`,
+      file.toString(),
+      {
+        access: "public",
+      }
+    );
 
-  // add sql row
-  sql`
+    // add sql row
+    sql`
   INSERT INTO products
   (id, stripe_id, name, description, price, image_url, quantity, active)
   VALUES (${uuid()}, ${product.id}, ${
-    product.name
-  }, ${description}, ${price}, ${url}, ${stockQuantity}, ${active});
+      product.name
+    }, ${description}, ${unit_amount}, ${url}, ${stockQuantity}, ${active});
   `;
+  } catch (err) {
+    console.log(err);
+  }
+
   return NextResponse.json({
     status: 200,
     message: "Success!",

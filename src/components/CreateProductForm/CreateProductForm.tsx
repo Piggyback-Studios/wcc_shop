@@ -7,7 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { CreateProductFormType } from "@/src/shared/types";
 
 const CreateProductForm = () => {
-  const { register, handleSubmit } = useForm<CreateProductFormType>();
+  const { register, handleSubmit, setValue } = useForm<CreateProductFormType>();
 
   const onSubmit: SubmitHandler<CreateProductFormType> = async (values) => {
     const formData = new FormData();
@@ -52,14 +52,21 @@ const CreateProductForm = () => {
         type="number"
         {...priceRest}
         forwardRef={priceRef}
-        label="Product Name"
+        label="Product Price"
       />
       <CustomInput
         placeholder=""
         type="file"
         {...imageRest}
-        forwardRef={imageRef}
-        label="Product Name"
+        forwardRef={(e: any) => {
+          imageRef(e); // continue registering the input
+          e?.addEventListener("change", (event: any) => {
+            if (event.target.files) {
+              setValue("image", event.target.files[0]); // set the actual file
+            }
+          });
+        }}
+        label="Product Image"
       />
       <CustomInput
         placeholder="1"
