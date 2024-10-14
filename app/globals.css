@@ -81,9 +81,3 @@ h6 {
     width: 100%;
   }
 }
-
-button {
-  background: var(--light-color);
-  padding: 0.25rem 0.5rem;
-  cursor: pointer;
-}

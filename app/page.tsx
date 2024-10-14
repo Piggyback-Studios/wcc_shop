@@ -7,7 +7,7 @@ import { heroData } from "@/src/shared/data/pages/landing.data";
 
 export default function Home() {
   return (
-    <main className="flex flex-col items-center">
+    <main className="flex flex-col items-center min-h-[calc(screen - 90px)]">
       <Spacer size="lg" />
       <LandingHero {...heroData} />
       <Spacer size="lg" />
