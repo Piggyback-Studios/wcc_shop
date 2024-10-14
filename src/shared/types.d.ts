@@ -69,6 +69,28 @@ export type Metadata = {
   [k: string]: string;
 };
 
+export type AlignmentType = "left" | "center" | "right";
+
+export type InputField = {
+  name: string;
+  placeholder: string;
+  type: string;
+  label: string;
+  icon?: Icon;
+  onChange: any;
+  onBlur: any;
+  forwardRef: React.MutableRefObject;
+};
+
+export type ContactProps = {
+  title: string;
+  addressLine1: string;
+  addressLine2: string;
+  phoneNumber: Link;
+  email: Link;
+  socials: Link[];
+};
+
 // compontent and block level data types
 export type SpacerProps = {
   size: SpacerSize;
@@ -94,4 +116,11 @@ export type ProductCardProps = Product & {};
 export type SearchBarProps = {
   onSearch: (...args: any[]) => any;
   value: string;
+};
+
+export type ContactBlockProps = {
+  title?: string;
+  submitLabel: string;
+  fields: InputField[];
+  alignment?: AlignmentType;
 };

@@ -50,7 +50,7 @@ const Sidebar = () => {
             width: 0,
             transition: { delay: 0.7, duration: 0.3 },
           }}
-          className="h-screen absolute border-2 border-dark bg-light-100 right-0"
+          className="h-screen fixed border-2 border-dark bg-light-100 right-0 z-40 px-4"
         >
           <motion.div
             className="mt-24 md:mt-32"

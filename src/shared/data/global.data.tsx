@@ -1,6 +1,13 @@
 import Image from "next/image";
 
-import { Link, IconLink, NavbarProps, FooterProps } from "@/src/shared/types";
+import {
+  Link,
+  IconLink,
+  NavbarProps,
+  FooterProps,
+  ContactBlockProps,
+  InputField,
+} from "@/src/shared/types";
 
 export const pageLinks: Link[] = [
   { href: "/contact", label: "contact" },
@@ -25,6 +32,40 @@ export const navbarData: NavbarProps = {
     />
   ),
   links: pageLinks,
+};
+
+export const globalContactFormData: ContactBlockProps = {
+  submitLabel: "submit",
+  fields: [
+    {
+      name: "name",
+      placeholder: "name",
+      type: "text",
+      label: "name",
+    },
+    {
+      name: "email",
+      placeholder: "email",
+      type: "email",
+      label: "email",
+    },
+    {
+      name: "message",
+      placeholder: "message",
+      type: "textarea",
+      label: "message",
+    },
+  ] as InputField[],
+};
+
+export const SITE_INFO = {
+  BRAND_NAME: "Williford Carpentry Collective",
+  ADDRESS_LINE_1: "",
+  ADDRESS_LINE_2: "",
+  PHONE_NUMBER: "",
+  PHONE_NUMBER_LINK: "",
+  EMAIL_ADDRESS: "",
+  EMAIL_ADDRESS_LINK: "",
 };
 
 export const footerData: FooterProps = {};
