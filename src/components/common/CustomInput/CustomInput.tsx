@@ -11,7 +11,7 @@ const CustomInput = ({
   if (type === "textarea")
     return (
       <textarea
-        className="border-none border-b-2 border-black bg-primary-500 text-black mb-8 bg-white text-black rounded-lg w-full"
+        className="p-2 border-none border-b-2 border-black bg-primary-500 text-black mb-8 bg-white text-black rounded-lg w-full"
         name={name}
         placeholder={placeholder}
         rows={10}
@@ -23,7 +23,7 @@ const CustomInput = ({
   else
     return (
       <input
-        className="border-none border-b-2 border-black bg-primary-500 text-black mb-8 bg-white text-black rounded-lg w-full"
+        className="p-2 border-none border-b-2 border-black bg-primary-500 text-black mb-8 bg-white text-black rounded-lg w-full"
         name={name}
         placeholder={placeholder}
         type={type}

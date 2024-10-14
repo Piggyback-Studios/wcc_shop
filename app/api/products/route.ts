@@ -3,6 +3,7 @@ import { sql } from "@vercel/postgres";
 import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
 import { put } from "@vercel/blob";
+import { v4 as uuid } from "uuid";
 
 export async function GET(req: NextRequest) {
   const products = await sql`select * from products where active = true;`;
@@ -25,31 +26,50 @@ export async function GET(req: NextRequest) {
     products: formattedProducts,
   });
 }
+
 // create a product
 export async function POST(req: NextRequest) {
-  const data = await req.json();
-  console.log(data);
+  const data = await req.formData();
+  const file = data.get("image") as File;
+  const name = data.get("name") as unknown as string;
+  const price = data.get("price") as unknown as number;
+  const description = data.get("description") as unknown as string;
+  const stockQuantity = data.get("stockQuantity") as unknown as number;
+  const active = data.get("active") as unknown as boolean;
   const stripe = new Stripe(process.env.STRIPE_SK || "");
 
-  // const product = await stripe.products.create({});
+  console.log({
+    name,
+    price,
+    description,
+    stockQuantity,
+    active,
+  });
+
+  // create stripe product
+  const product = await stripe.products.create({
+    name,
+    description,
+    default_price_data: {
+      currency: "usd",
+      unit_amount: price,
+    },
+    active,
+  });
 
   // upload image
-  // convert image to jpg
-  // upload to blob storage
-  // const { url } = await put("/images/products/${productTitleSlug}.jpg", file, {
-  //   access: "public",
-  // });
+  const { url } = await put(`/images/products/${file.name}`, file, {
+    access: "public",
+  });
 
   // add sql row
-  // sql`
-  //       INSERT INTO products
-  //       (id, stripe_id, name, description, price, image_url, quantity, active)
-  //       VALUES (${uuid()}, ${product.id}, ${product.name}, ${
-  //   product.description
-  // }, ${price.unit_amount}, ${product.images[0]}, ${quantity}, ${
-  //   product.active
-  // });
-  //     `;
+  sql`
+  INSERT INTO products
+  (id, stripe_id, name, description, price, image_url, quantity, active)
+  VALUES (${uuid()}, ${product.id}, ${
+    product.name
+  }, ${description}, ${price}, ${url}, ${stockQuantity}, ${active});
+  `;
   return NextResponse.json({
     status: 200,
     message: "Success!",

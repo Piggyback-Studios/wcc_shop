@@ -7,14 +7,19 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { CreateProductFormType } from "@/src/shared/types";
 
 const CreateProductForm = () => {
-  // (id, name, description, price, image_url, quantity, active)
   const { register, handleSubmit } = useForm<CreateProductFormType>();
 
   const onSubmit: SubmitHandler<CreateProductFormType> = async (values) => {
-    console.log(values);
+    const formData = new FormData();
+    formData.append("image", values.image);
+    formData.append("name", values.name);
+    formData.append("price", values.price as unknown as string);
+    formData.append("description", values.description);
+    formData.append("stockQuantity", values.stockQuantity as unknown as string);
+    formData.append("active", JSON.stringify(values.active));
     await fetch("/api/products", {
       method: "POST",
-      body: JSON.stringify(values),
+      body: formData,
     }).then((res) => {
       console.log(res);
     });
