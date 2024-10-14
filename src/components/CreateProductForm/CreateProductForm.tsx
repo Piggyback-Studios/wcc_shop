@@ -7,7 +7,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { CreateProductFormType } from "@/src/shared/types";
 
 const CreateProductForm = () => {
-  // (id, stripe_id, name, description, price, image_url, quantity, active)
+  // (id, name, description, price, image_url, quantity, active)
   const { register, handleSubmit } = useForm<CreateProductFormType>();
 
   const onSubmit: SubmitHandler<CreateProductFormType> = async (values) => {
@@ -19,29 +19,56 @@ const CreateProductForm = () => {
       console.log(res);
     });
   };
+  const { ref: nameRef, ...nameRest } = register("name");
+  const { ref: descriptionRef, ...descriptionRest } = register("description");
+  const { ref: priceRef, ...priceRest } = register("price");
+  const { ref: stockQuantityRef, ...stockQuantityRest } =
+    register("stockQuantity");
+  const { ref: imageRef, ...imageRest } = register("image");
+  const { ref: activeRef, ...activeRest } = register("active");
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <CustomInput
         placeholder="product name"
         type="text"
-        {...register("name")}
+        {...nameRest}
+        forwardRef={nameRef}
+        label="Product Name"
+      />
+      <CustomInput
+        placeholder="product description"
+        type="textarea"
+        {...descriptionRest}
+        forwardRef={descriptionRef}
+        label="Product Description"
+      />
+      <CustomInput
+        placeholder="19"
+        type="number"
+        {...priceRest}
+        forwardRef={priceRef}
+        label="Product Name"
       />
       <CustomInput
         placeholder=""
-        type="textarea"
-        {...register("description")}
+        type="file"
+        {...imageRest}
+        forwardRef={imageRef}
+        label="Product Name"
       />
-      <CustomInput placeholder="" type="number" {...register("price")} />
-      <CustomInput placeholder="" type="file" {...register("image")} />
       <CustomInput
-        placeholder="quantity in stock"
+        placeholder="1"
         type="number"
-        {...register("stockQuantity")}
+        {...stockQuantityRest}
+        forwardRef={stockQuantityRef}
+        label="Quantity in Stock"
       />
       <CustomInput
-        placeholder="active"
+        placeholder="Product Active"
         type="checkbox"
-        {...register("active")}
+        {...activeRest}
+        forwardRef={activeRef}
+        label="Active"
       />
       <CustomButton label="submit" />
     </form>

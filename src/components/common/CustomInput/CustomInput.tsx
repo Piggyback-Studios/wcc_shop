@@ -1,4 +1,4 @@
-import { InputField } from "@/src/shared/data/types";
+import { InputField } from "@/src/shared/types";
 
 const CustomInput = ({
   name,
