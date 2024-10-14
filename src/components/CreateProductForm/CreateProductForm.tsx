@@ -10,16 +10,17 @@ const CreateProductForm = () => {
   const { register, handleSubmit, setValue } = useForm<CreateProductFormType>();
 
   const onSubmit: SubmitHandler<CreateProductFormType> = async (values) => {
-    const formData = new FormData();
-    formData.append("image", values.image);
-    formData.append("name", values.name);
-    formData.append("price", values.price as unknown as string);
-    formData.append("description", values.description);
-    formData.append("stockQuantity", values.stockQuantity as unknown as string);
-    formData.append("active", JSON.stringify(values.active));
-    await fetch("/api/products", {
+    const { name, price, description, stockQuantity, active, image } = values;
+    await fetch(`/api/products?product_image=${values.image.name}`, {
       method: "POST",
-      body: formData,
+      body: JSON.stringify({
+        name,
+        price,
+        description,
+        stockQuantity,
+        active,
+        image,
+      }),
     }).then((res) => {
       console.log(res);
     });
@@ -58,14 +59,7 @@ const CreateProductForm = () => {
         placeholder=""
         type="file"
         {...imageRest}
-        forwardRef={(e: any) => {
-          imageRef(e); // continue registering the input
-          e?.addEventListener("change", (event: any) => {
-            if (event.target.files) {
-              setValue("image", event.target.files[0]); // set the actual file
-            }
-          });
-        }}
+        forwardRef={imageRef}
         label="Product Image"
       />
       <CustomInput

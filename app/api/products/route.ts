@@ -4,16 +4,6 @@ import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
 import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
-import formidable, { File } from "formidable";
-
-import { parseForm } from "@/src/utils/forms";
-import { IncomingMessage } from "http";
-
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
 
 // fetch all active products
 export async function GET(req: NextRequest) {
@@ -41,19 +31,8 @@ export async function GET(req: NextRequest) {
 // create a product
 export async function POST(req: NextRequest) {
   try {
-    const { fields, files } = await parseForm(
-      req as unknown as IncomingMessage
-    );
-
-    console.log(fields);
-    console.log(files);
-
-    const file = files.image as unknown as File;
-    const name = fields.name?.join(" ")!;
-    const description = fields.description?.join(" ")!;
-    const unit_amount = fields.price as unknown as number;
-    const active = fields.active as unknown as boolean;
-    const stockQuantity = fields.stockQuantity as unknown as number;
+    const { name, description, price, image, active, stockQuantity } =
+      await req.json();
 
     // create stripe product
     const stripe = new Stripe(process.env.STRIPE_SK!);
@@ -62,28 +41,26 @@ export async function POST(req: NextRequest) {
       description,
       default_price_data: {
         currency: "usd",
-        unit_amount,
+        unit_amount: price,
       },
       active,
     });
 
     // upload image
-    const { url } = await put(
-      `/images/products/${file.originalFilename}`,
-      file.toString(),
-      {
-        access: "public",
-      }
-    );
+    const { searchParams } = new URL(req.url);
+    const filename = searchParams.get("product_image");
+    const { url } = await put(`/images/products/${filename}`, image, {
+      access: "public",
+    });
 
     // add sql row
     sql`
-  INSERT INTO products
-  (id, stripe_id, name, description, price, image_url, quantity, active)
-  VALUES (${uuid()}, ${product.id}, ${
+    INSERT INTO products
+    (id, stripe_id, name, description, price, image_url, quantity, active)
+    VALUES (${uuid()}, ${product.id}, ${
       product.name
-    }, ${description}, ${unit_amount}, ${url}, ${stockQuantity}, ${active});
-  `;
+    }, ${description}, ${price}, ${url}, ${stockQuantity}, ${active});
+    `;
   } catch (err) {
     console.log(err);
   }
