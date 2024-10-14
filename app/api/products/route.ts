@@ -5,6 +5,7 @@ import Stripe from "stripe";
 import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
 
+// fetch all active products
 export async function GET(req: NextRequest) {
   const products = await sql`select * from products where active = true;`;
 
@@ -45,6 +46,8 @@ export async function POST(req: NextRequest) {
     stockQuantity,
     active,
   });
+
+  // TODO: file.name is undefined so we aren't sure how to save the image file
 
   // create stripe product
   const product = await stripe.products.create({
