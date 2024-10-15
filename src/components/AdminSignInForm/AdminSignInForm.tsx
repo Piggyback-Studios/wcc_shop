@@ -11,11 +11,12 @@ const AdminSignInForm = () => {
 
   const onSubmit: SubmitHandler<SignInFormType> = async (values) => {
     const { email, password } = values;
-    const res = await fetch("/api/auth/signIn", {
+    const res = await fetch("/api/auth/sign-in", {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
-    console.log(res);
+    const resJson = await res.json();
+    console.log(resJson);
   };
 
   const { ref: emailRef, ...emailRest } = register("email");

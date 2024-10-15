@@ -1,7 +1,7 @@
+import { adminUsers } from "@/src/shared/data/seed/seed.data";
 import { db, VercelPoolClient } from "@vercel/postgres";
 import bcrypt from "bcrypt";
 import Stripe from "stripe";
-import { faker } from "@faker-js/faker";
 import { v4 as uuid } from "uuid";
 
 async function seedProducts(client: VercelPoolClient) {
@@ -103,40 +103,44 @@ async function seedProductCategories(client: VercelPoolClient) {
 }
 
 async function seedAdminUsers(client: VercelPoolClient) {
-  // try {
-  //   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-  //   // Create the "adminUsers" table if it doesn't exist
-  //   const createTable = await client.sql`
-  //     CREATE TABLE IF NOT EXISTS adminUsers (
-  //       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-  //       firstName VARCHAR(255) NOT NULL,
-  //       lastName VARCHAR(255) NOT NULL,
-  //       email TEXT NOT NULL UNIQUE,
-  //       password TEXT NOT NULL,
-  //       adminLevel TEXT NOT NULL
-  //     );
-  //   `;
-  //   console.log(`Created "adminUsers" table`);
-  //   // Insert data into the "adminUsers" table
-  //   const insertedAdminUsers = await Promise.all(
-  //     adminUsers.map(async (user: AdminUser) => {
-  //       const hashedPassword = await bcrypt.hash(user.password, 10);
-  //       return client.sql`
-  //       INSERT INTO adminUsers (id, firstName, lastName, email, password, adminLevel)
-  //       VALUES (${user.id}, ${user.firstName}, ${user.lastName}, ${user.email}, ${hashedPassword}, ${user.adminLevel})
-  //       ON CONFLICT (id) DO NOTHING;
-  //     `;
-  //     })
-  //   );
-  //   // console.log(`Seeded ${insertedAdminUsers.length} adminUsers`);
-  //   return {
-  //     createTable,
-  //     // adminUsers: insertedAdminUsers,
-  //   };
-  // } catch (error) {
-  //   console.error("Error seeding adminUsers:", error);
-  //   throw error;
-  // }
+  try {
+    await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+    // Create the "adminUsers" table if it doesn't exist
+    const createTable = await client.sql`
+      CREATE TABLE IF NOT EXISTS adminUsers (
+        id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+        firstName VARCHAR(255) NOT NULL,
+        lastName VARCHAR(255) NOT NULL,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT NOT NULL,
+        adminLevel TEXT NOT NULL
+      );
+    `;
+    console.log(`Created "adminUsers" table`);
+    // Insert data into the "adminUsers" table
+    const insertedAdminUsers = await Promise.all(
+      adminUsers.map(
+        async ({ password, id, email, firstName, lastName, adminLevel }) => {
+          console.log(`${adminLevel} admin email: `, email);
+          console.log(`${adminLevel} admin pw: `, password);
+          const hashedPassword = await bcrypt.hash(password, 10);
+          return client.sql`
+            INSERT INTO adminUsers (id, firstName, lastName, email, password, adminLevel)
+            VALUES (${id}, ${firstName}, ${lastName}, ${email}, ${hashedPassword}, ${adminLevel})
+            ON CONFLICT (id) DO NOTHING;
+          `;
+        }
+      )
+    );
+    console.log(`Seeded ${insertedAdminUsers.length} adminUsers`);
+    return {
+      createTable,
+      adminUsers: insertedAdminUsers,
+    };
+  } catch (error) {
+    console.error("Error seeding adminUsers:", error);
+    throw error;
+  }
 }
 
 async function seedCustomerUsers(client: VercelPoolClient) {
@@ -178,10 +182,10 @@ async function seedCustomerUsers(client: VercelPoolClient) {
 async function main() {
   const client = await db.connect();
   const promises = [
-    await seedProducts(client),
-    await seedCategories(client),
-    await seedProductCategories(client),
-    // await seedAdminUsers(client),
+    // await seedProducts(client),
+    // await seedCategories(client),
+    // await seedProductCategories(client),
+    await seedAdminUsers(client),
     // await seedCustomerUsers(client),
   ];
   Promise.all(promises)
