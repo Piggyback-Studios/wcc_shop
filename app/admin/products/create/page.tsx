@@ -7,7 +7,7 @@ import { getSession } from "@/src/utils/auth";
 
 export default function ContactPage() {
   const session = getSession();
-  if (isEmpty(session)) redirect("/admin");
+  if (!session) redirect("/admin");
   return (
     <main className="flex flex-col items-center">
       <Spacer size="lg" />

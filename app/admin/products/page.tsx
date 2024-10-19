@@ -8,7 +8,6 @@ import ProductListBlock from "@/src/blocks/ProductListBlock";
 
 export default async function Products() {
   const session = await getSession();
-  //   there is no session cookie set...?
   if (!session) redirect("/admin");
   return (
     <main className="flex flex-col items-center min-h-[calc(screen - 90px)]">

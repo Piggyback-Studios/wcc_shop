@@ -31,7 +31,7 @@ export async function login({ email }: { email: string }) {
   const user = { email };
 
   // Create the session
-  const expires = 60 * 60 * 4 * 1000; // Set session expiration time (4 hours from now)
+  const expires = Date.now() + 60 * 15 * 1000; // Set session expiration time (15 minutes from now)
   const session = await encrypt({ user, expires }); // Encrypt user data and set expiration time
 
   // Save the session in a cookie
