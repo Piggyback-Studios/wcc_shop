@@ -1,3 +1,5 @@
+"use server";
+
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
@@ -7,6 +9,8 @@ const secretKey = process.env.JWT_SECRET!;
 
 // Encode the secret key as bytes
 const key = new TextEncoder().encode(secretKey);
+
+const sessionCookieName = `wcc_session_cookie`;
 
 export async function encrypt(payload: any) {
   return await new SignJWT(payload)
@@ -32,24 +36,25 @@ export async function login({ email }: { email: string }) {
 
   // Save the session in a cookie
   // TODO: this doesnt seem to actually save a session cookie in the browser
-  cookies().set("session", session, { expires, httpOnly: true }); // Set session cookie with expiration time and HTTP only flag
-  return session;
+  cookies().set(sessionCookieName, session, { expires, httpOnly: true }); // Set session cookie with expiration time and HTTP only flag
+  console.log(cookies().getAll());
 }
 
 export async function logout() {
   // Destroy the session by clearing the session cookie
-  cookies().set("session", "", { expires: new Date(0) });
+  cookies().set(sessionCookieName, "", { expires: new Date(0) });
 }
 
 export async function getSession() {
-  const session = cookies().get("session")?.value; // Retrieve the session cookie value
+  const session = cookies().get(sessionCookieName)?.value; // Retrieve the session cookie value
+  console.log(cookies().getAll());
   console.log(session);
   if (!session) return null; // If session is not found, return null
   return await decrypt(session); // Decrypt and return the session payload
 }
 
 export async function updateSession(request: NextRequest) {
-  const session = request.cookies.get("session")?.value; // Retrieve the session cookie value from the request
+  const session = request.cookies.get(sessionCookieName)?.value; // Retrieve the session cookie value from the request
   if (!session) return; // If session is not found, return
 
   // Refresh the session expiration time
@@ -57,7 +62,7 @@ export async function updateSession(request: NextRequest) {
   parsed.expires = new Date(Date.now() + 10 * 1000); // Set a new expiration time (10 seconds from now)
   const res = NextResponse.next(); // Create a new response
   res.cookies.set({
-    name: "session",
+    name: sessionCookieName,
     value: await encrypt(parsed), // Encrypt and set the updated session data
     httpOnly: true,
     expires: parsed.expires, // Set the expiration time
