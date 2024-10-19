@@ -5,9 +5,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { SignInFormType } from "@/src/shared/types";
 import CustomInput from "@/src/components/common/CustomInput";
 import CustomButton from "@/src/components/common/CustomButton";
+import { useRouter } from "next/navigation";
 
 const AdminSignInForm = () => {
   const { handleSubmit, register } = useForm<SignInFormType>();
+  const router = useRouter();
 
   const onSubmit: SubmitHandler<SignInFormType> = async (values) => {
     const { email, password } = values;
@@ -15,8 +17,9 @@ const AdminSignInForm = () => {
       method: "POST",
       body: JSON.stringify({ email, password }),
     });
-    const resJson = await res.json();
-    console.log(resJson);
+    const { session, ...rest } = await res.json();
+    if (session) router.push("/admin/products");
+    else console.log({ session, ...rest });
   };
 
   const { ref: emailRef, ...emailRest } = register("email");

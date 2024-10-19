@@ -5,11 +5,11 @@ import Stripe from "stripe";
 import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
 
-export const config = {
-  api: {
-    bodyParser: false, // Disable the default body parser
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false, // Disable the default body parser
+//   },
+// };
 
 // fetch all active products
 export async function GET(req: NextRequest) {

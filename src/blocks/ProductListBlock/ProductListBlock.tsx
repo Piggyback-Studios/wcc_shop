@@ -6,7 +6,11 @@ import ProductCard from "@/src/components/ProductCard";
 import ContentContainer from "@/src/components/common/ContentContainer";
 import { Product } from "@/src/shared/types";
 
-const ProductGalleryBlock = () => {
+const ProductListItem = () => {
+  return <div></div>;
+};
+
+const ProductListBlock = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const fetchProducts = async () => {
     const res = await fetch("/api/products", { method: "GET" });
@@ -34,4 +38,4 @@ const ProductGalleryBlock = () => {
   );
 };
 
-export default ProductGalleryBlock;
+export default ProductListBlock;

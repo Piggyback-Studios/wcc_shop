@@ -82,7 +82,9 @@ export type InputField = {
   forwardRef: React.MutableRefObject;
 };
 
-// compontent and block level data types
+export type ContactFormFieldNamesType = "name" | "email" | "message";
+
+// component and block level data types
 
 export type ContactFormType = {
   name: string;
@@ -113,6 +115,8 @@ export type ContactProps = {
   email: Link;
   socials: Link[];
 };
+
+export type ContactFormProps = ContactBlockProps;
 
 export type SpacerProps = {
   size: SpacerSize;

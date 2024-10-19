@@ -9,7 +9,6 @@ const secretKey = process.env.JWT_SECRET!;
 const key = new TextEncoder().encode(secretKey);
 
 export async function encrypt(payload: any) {
-  console.log(payload);
   return await new SignJWT(payload)
     .setProtectedHeader({ alg: "HS256" }) // Set the algorithm for JWT signing
     .setIssuedAt() // Set the issuance time of the JWT
@@ -32,7 +31,9 @@ export async function login({ email }: { email: string }) {
   const session = await encrypt({ user, expires }); // Encrypt user data and set expiration time
 
   // Save the session in a cookie
+  // TODO: this doesnt seem to actually save a session cookie in the browser
   cookies().set("session", session, { expires, httpOnly: true }); // Set session cookie with expiration time and HTTP only flag
+  return session;
 }
 
 export async function logout() {
@@ -42,6 +43,7 @@ export async function logout() {
 
 export async function getSession() {
   const session = cookies().get("session")?.value; // Retrieve the session cookie value
+  console.log(session);
   if (!session) return null; // If session is not found, return null
   return await decrypt(session); // Decrypt and return the session payload
 }
