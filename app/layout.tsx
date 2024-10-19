@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
+
 import "./globals.css";
 import Navbar from "@/src/components/ui/Navbar";
 import ProviderWrapper from "@/src/components/ProviderWrapper";
 import { poppins, scenarie } from "@/app/fonts";
 import { navbarData } from "@/src/shared/data/global.data";
+import Footer from "@/src/components/ui/Footer/Footer";
+import Sidebar from "@/src/components/ui/Sidebar";
 
 export const metadata: Metadata = {
   title: "Williford Carpentry Collective",
@@ -23,7 +27,10 @@ export default function RootLayout({
       <body>
         <ProviderWrapper>
           <Navbar {...navbarData} />
+          <Sidebar />
           {children}
+          <Analytics />
+          <Footer />
         </ProviderWrapper>
       </body>
     </html>
