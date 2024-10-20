@@ -35,9 +35,7 @@ export async function login({ email }: { email: string }) {
   const session = await encrypt({ user, expires }); // Encrypt user data and set expiration time
 
   // Save the session in a cookie
-  // TODO: this doesnt seem to actually save a session cookie in the browser
   cookies().set(sessionCookieName, session, { expires, httpOnly: true }); // Set session cookie with expiration time and HTTP only flag
-  console.log(cookies().getAll());
 }
 
 export async function logout() {
@@ -47,8 +45,7 @@ export async function logout() {
 
 export async function getSession() {
   const session = cookies().get(sessionCookieName)?.value; // Retrieve the session cookie value
-  console.log(cookies().getAll());
-  console.log(session);
+
   if (!session) return null; // If session is not found, return null
   return await decrypt(session); // Decrypt and return the session payload
 }

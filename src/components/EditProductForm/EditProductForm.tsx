@@ -1,13 +1,26 @@
 "use client";
 
-import CustomInput from "@/src/components/common/CustomInput";
-import CustomButton from "../common/CustomButton";
-
+import { useMemo, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+
+import CustomInput from "@/src/components/common/CustomInput";
+import CustomButton from "@/src/components/common/CustomButton";
 import { CreateProductFormType } from "@/src/shared/types";
 
-const EditProductForm = () => {
-  const { register, handleSubmit } = useForm<CreateProductFormType>();
+const EditProductForm = ({ id }: { id: string }) => {
+  const [defaultValues, setDefaultValues] = useState<CreateProductFormType>();
+  const product = useMemo(async () => {
+    const res = await fetch(`/api/products/${id}`);
+    const resJson = await res.json();
+    console.log({ jsonProduct: resJson.product });
+    return resJson.product;
+  }, []);
+
+  console.log({ product });
+
+  const { register, handleSubmit } = useForm<CreateProductFormType>({
+    defaultValues,
+  });
 
   const onSubmit: SubmitHandler<CreateProductFormType> = async (values) => {
     const { name, price, description, stockQuantity, active, image } = values;
@@ -18,7 +31,7 @@ const EditProductForm = () => {
     formData.append("stockQuantity", stockQuantity as unknown as string);
     formData.append("price", price as unknown as string);
     formData.append("active", active as unknown as string);
-    formData.append("id", "123");
+    formData.append("id", id);
     await fetch(`/api/products`, {
       method: "PUT",
       body: formData,

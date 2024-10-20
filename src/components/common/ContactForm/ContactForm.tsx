@@ -46,7 +46,6 @@ const ContactForm = ({
     });
     try {
       const resJson = await res.json();
-      console.log(resJson.status);
       if (resJson.status === 200) {
         reset();
         setSubmitLabelValue("Success!");
