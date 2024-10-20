@@ -1,14 +1,9 @@
 "use client";
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
 
-import ProductCard from "@/src/components/ProductCard";
 import ContentContainer from "@/src/components/common/ContentContainer";
 import { Product } from "@/src/shared/types";
-
-const ProductListItem = () => {
-  return <div></div>;
-};
 
 const ProductListBlock = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -23,16 +18,34 @@ const ProductListBlock = () => {
   return (
     <section>
       <ContentContainer>
-        <h2>Our Collection</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          {products &&
-            products.map((product: Product) => (
-              <ProductCard
-                key={product.name + Math.round(Math.random() * 100)}
-                {...product}
-              />
+        <h2>Current Products</h2>
+        {!products && <p>No products created yet...</p>}
+        {products && (
+          <table className="table-auto text-left">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Active</th>
+                <th>Price</th>
+                <th>Desc</th>
+              </tr>
+            </thead>
+            {products.map((product: Product) => (
+              <tr>
+                <Link href={`/admin/products/edit/${product.id}`}>
+                  <td>{product.name}</td>
+                  <td>{product.active}</td>
+                  <td>{product.price}</td>
+                  <td>
+                    {product.description
+                      ? product.description.substring(0, 50) + "..."
+                      : ""}
+                  </td>
+                </Link>
+              </tr>
             ))}
-        </div>
+          </table>
+        )}
       </ContentContainer>
     </section>
   );

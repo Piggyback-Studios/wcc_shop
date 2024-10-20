@@ -27,6 +27,7 @@ export async function GET(req: NextRequest) {
         stripeId: row.stripe_id,
         price: row.price / 100,
         priceId: row.price_id,
+        active: row.active,
       } as Product)
   );
   return NextResponse.json({
@@ -45,8 +46,6 @@ export async function POST(req: NextRequest) {
     const price = form.get("price") as unknown as number;
     const stockQuantity = form.get("stockQuantity") as unknown as number;
     const active = (form.get("active") as unknown as boolean) || false;
-
-    console.log({ active, name, description, price });
 
     // create stripe product
     const stripe = new Stripe(process.env.STRIPE_SK!);
@@ -68,11 +67,62 @@ export async function POST(req: NextRequest) {
 
     // add sql row
     sql`
-    INSERT INTO products
-    (id, stripe_id, name, description, price, image_url, quantity, active)
-    VALUES (${uuid()}, ${product.id}, ${
+      INSERT INTO products
+      (id, stripe_id, name, description, price, image_url, quantity, active)
+      VALUES (${uuid()}, ${product.id}, ${
       product.name
     }, ${description}, ${price}, ${url}, ${stockQuantity}, ${active});
+    `;
+  } catch (err) {
+    console.log(err);
+  }
+
+  return NextResponse.json({
+    status: 200,
+    message: "Success!",
+  });
+}
+
+// edit a product
+export async function PUT(req: NextRequest) {
+  try {
+    // pull form data
+    const form = await req.formData();
+    const image = form.get("image") as File;
+    const name = form.get("name") as string;
+    const description = form.get("description") as string;
+    const price = form.get("price") as unknown as number;
+    const stockQuantity = form.get("stockQuantity") as unknown as number;
+    const active = (form.get("active") as unknown as boolean) || false;
+    const productId = form.get("id") as string;
+
+    const { rows } =
+      await sql`SELECT stripe_id, price FROM products WHERE id=${productId}`;
+
+    // edit stripe product
+    const stripe = new Stripe(process.env.STRIPE_SK!);
+    const product = await stripe.products.update(rows[0].stripe_id, {
+      name,
+      description,
+      default_price_data: {
+        currency: "usd",
+        unit_amount: price,
+      },
+      active,
+    });
+
+    // edit uploaded image
+    const imageFp = `/images/products/${image.name}`;
+    const { url } = await put(imageFp, image, {
+      access: "public",
+    });
+
+    // modify sql row
+    sql`
+    UPDATE products
+    SET name=${name}, description=${description}, price=${price}, image_url=${url}, quantity=${stockQuantity}, active=${active}
+    WHERE id=${productId}
+    ;
     `;
   } catch (err) {
     console.log(err);

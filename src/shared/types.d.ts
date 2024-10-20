@@ -63,6 +63,7 @@ export type Product = {
   stockQuantity: number;
   cartQuantity: number;
   imageUrl?: string;
+  active: boolean;
 };
 
 export type Metadata = {

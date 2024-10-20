@@ -1,17 +1,21 @@
 import { redirect } from "next/navigation";
 
 import Spacer from "@/src/blocks/ui/Spacer";
-import CreateProduct from "@/src/blocks/CreateProduct";
+import EditProduct from "@/src/blocks/EditProduct";
 import { getSession } from "@/src/utils/auth";
 
-export default async function CreateProductPage() {
+export default async function EditProductPage({
+  params: { slug },
+}: {
+  params: { slug: string };
+}) {
+  console.log(slug);
   const session = await getSession();
   if (!session) redirect("/admin");
   return (
     <main className="flex flex-col items-center">
       <Spacer size="lg" />
-      {JSON.stringify(session)}
-      <CreateProduct />
+      <EditProduct />
       <Spacer size="lg" />
     </main>
   );

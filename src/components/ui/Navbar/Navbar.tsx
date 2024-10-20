@@ -1,20 +1,38 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { useCartContext } from "@/src/context/Cart";
 import ContentContainer from "@/src/components/common/ContentContainer";
 import { NavbarProps } from "@/src/shared/types";
 import CustomHamburger from "@/src/components/ui/AnimatedHamburgerIcon";
+import { getSession, logout } from "@/src/utils/auth";
+import { useRouter } from "next/navigation";
 
 const Navbar = ({ logo, links }: NavbarProps) => {
   const [cart] = useCartContext();
+  const [sessionState, setSessionState] = useState();
+  const router = useRouter();
+
   const determineSize = () => {
     if (cart.totalCartProductsQuantity < 10) return "p-2";
     else if (cart.totalCartProductsQuantity < 100) return "p-3";
     else return "p-4";
   };
+  const handleSignOut = async () => {
+    const res = await fetch("/api/auth/sign-out", { method: "POST" });
+    router.push("/");
+    console.log(res);
+  };
+  // TODO: this is stupid and we need to fix it
+  const handleLoad = async () => {
+    const session = await getSession();
+    setSessionState(session);
+  };
+  useEffect(() => {
+    handleLoad();
+  }, []);
   return (
     <nav className="fixed top-0 w-full flex items-center justify-center h-24 z-50">
       <ContentContainer>
@@ -38,6 +56,7 @@ const Navbar = ({ logo, links }: NavbarProps) => {
                 <Link href={link.href}>{link.label}</Link>
               </li>
             ))}
+            {sessionState && <li onClick={() => handleSignOut()}>Sign Out</li>}
           </ul>
         </div>
       </ContentContainer>
