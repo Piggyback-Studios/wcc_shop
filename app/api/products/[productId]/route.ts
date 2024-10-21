@@ -10,9 +10,6 @@ export async function GET(
 ) {
   const { productId } = params;
   const product = await sql`SELECT * FROM products WHERE id=${productId};`;
-
-  console.log(product);
-
   const formattedProduct: Product = product.rows.map(
     (row: any) =>
       ({

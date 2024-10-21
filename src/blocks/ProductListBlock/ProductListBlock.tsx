@@ -32,16 +32,18 @@ const ProductListBlock = () => {
             </thead>
             {products.map((product: Product) => (
               <tr>
-                <Link href={`/admin/products/edit/${product.id}`}>
-                  <td>{product.name}</td>
-                  <td>{product.active}</td>
-                  <td>{product.price}</td>
-                  <td>
-                    {product.description
-                      ? product.description.substring(0, 50) + "..."
-                      : ""}
-                  </td>
-                </Link>
+                <td>
+                  <Link href={`/admin/products/edit/${product.id}`}>
+                    {product.name}
+                  </Link>
+                </td>
+                <td>{product.active}</td>
+                <td>{product.price}</td>
+                <td>
+                  {product.description
+                    ? product.description.substring(0, 50) + "..."
+                    : ""}
+                </td>
               </tr>
             ))}
           </table>

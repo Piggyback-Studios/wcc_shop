@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import CustomInput from "@/src/components/common/CustomInput";
@@ -9,17 +9,24 @@ import { CreateProductFormType } from "@/src/shared/types";
 
 const EditProductForm = ({ id }: { id: string }) => {
   const [defaultValues, setDefaultValues] = useState<CreateProductFormType>();
-  const product = useMemo(async () => {
+
+  const loadProduct = async () => {
     const res = await fetch(`/api/products/${id}`);
     const resJson = await res.json();
-    console.log({ jsonProduct: resJson.product });
-    return resJson.product;
+    setDefaultValues(resJson.product);
+  };
+
+  useEffect(() => {
+    loadProduct();
   }, []);
 
-  console.log({ product });
+  // console.log({ defaultValues: JSON.stringify(defaultValues) });
 
   const { register, handleSubmit } = useForm<CreateProductFormType>({
-    defaultValues,
+    defaultValues: {
+      name: defaultValues ? defaultValues.name : "",
+      description: defaultValues ? defaultValues.description : "",
+    },
   });
 
   const onSubmit: SubmitHandler<CreateProductFormType> = async (values) => {

@@ -91,7 +91,7 @@ export async function PUT(req: NextRequest) {
     const image = form.get("image") as File;
     const name = form.get("name") as string;
     const description = form.get("description") as string;
-    const price = form.get("price") as unknown as number;
+    const priceAmt = form.get("price") as unknown as number;
     const stockQuantity = form.get("stockQuantity") as unknown as number;
     const active = (form.get("active") as unknown as boolean) || false;
     const productId = form.get("id") as string;
@@ -99,15 +99,16 @@ export async function PUT(req: NextRequest) {
     const { rows } =
       await sql`SELECT stripe_id, price FROM products WHERE id=${productId}`;
 
-    // edit stripe product
+    // edit stripe price + product
     const stripe = new Stripe(process.env.STRIPE_SK!);
+    const price = await stripe.prices.create({
+      currency: "usd",
+      unit_amount: priceAmt,
+    });
     const product = await stripe.products.update(rows[0].stripe_id, {
       name,
       description,
-      default_price_data: {
-        currency: "usd",
-        unit_amount: price,
-      },
+      default_price: price.id,
       active,
     });
 
@@ -120,7 +121,7 @@ export async function PUT(req: NextRequest) {
     // modify sql row
     sql`
     UPDATE products
-    SET name=${name}, description=${description}, price=${price}, image_url=${url}, quantity=${stockQuantity}, active=${active}
+    SET name=${name}, description=${description}, price=${priceAmt}, image_url=${url}, quantity=${stockQuantity}, active=${active}
     WHERE id=${productId}
     ;
     `;
