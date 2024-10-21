@@ -81,6 +81,7 @@ export type InputField = {
   onChange: any;
   onBlur: any;
   forwardRef: React.MutableRefObject;
+  value?: any;
 };
 
 export type ContactFormFieldNamesType = "name" | "email" | "message";

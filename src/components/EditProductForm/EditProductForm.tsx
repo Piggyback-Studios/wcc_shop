@@ -9,26 +9,20 @@ import { CreateProductFormType } from "@/src/shared/types";
 
 const EditProductForm = ({ id }: { id: string }) => {
   const [defaultValues, setDefaultValues] = useState<CreateProductFormType>();
-
   const loadProduct = async () => {
     const res = await fetch(`/api/products/${id}`);
-    const resJson = await res.json();
-    setDefaultValues(resJson.product);
+    const { product } = await res.json();
+    setDefaultValues(product);
   };
-
   useEffect(() => {
     loadProduct();
   }, []);
-
-  // console.log({ defaultValues: JSON.stringify(defaultValues) });
-
   const { register, handleSubmit } = useForm<CreateProductFormType>({
     defaultValues: {
       name: defaultValues ? defaultValues.name : "",
       description: defaultValues ? defaultValues.description : "",
     },
   });
-
   const onSubmit: SubmitHandler<CreateProductFormType> = async (values) => {
     const { name, price, description, stockQuantity, active, image } = values;
     const formData = new FormData();
@@ -61,6 +55,7 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...nameRest}
         forwardRef={nameRef}
         label="Product Name"
+        value={defaultValues ? defaultValues.name : null}
       />
       <CustomInput
         placeholder="product description"
@@ -68,6 +63,7 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...descriptionRest}
         forwardRef={descriptionRef}
         label="Product Description"
+        value={defaultValues ? defaultValues.description : null}
       />
       <CustomInput
         placeholder="19"
@@ -75,6 +71,7 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...priceRest}
         forwardRef={priceRef}
         label="Product Price"
+        value={defaultValues ? defaultValues.price : null}
       />
       <CustomInput
         placeholder=""
@@ -82,6 +79,7 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...imageRest}
         forwardRef={imageRef}
         label="Product Image"
+        value={defaultValues ? defaultValues.image : null}
       />
       <CustomInput
         placeholder="1"
@@ -89,6 +87,7 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...stockQuantityRest}
         forwardRef={stockQuantityRef}
         label="Quantity in Stock"
+        value={defaultValues ? defaultValues.stockQuantity : null}
       />
       <CustomInput
         placeholder="Product Active"
@@ -96,6 +95,7 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...activeRest}
         forwardRef={activeRef}
         label="Active"
+        value={defaultValues ? defaultValues.active : null}
       />
       <CustomButton label="submit" />
     </form>
