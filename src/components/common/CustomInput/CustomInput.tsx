@@ -7,12 +7,13 @@ const CustomInput = ({
   onChange,
   forwardRef,
   onBlur,
-  value = "",
   label,
+  value,
+  ...rest
 }: InputField) => {
   return (
     <>
-      <label htmlFor={name}>{label}</label>{" "}
+      <label htmlFor={name}>{label}</label>
       {type === "textarea" && (
         <textarea
           className="p-2 border-none border-b-2 border-black bg-primary-500 text-black mb-8 bg-white text-black rounded-lg w-full"
@@ -23,6 +24,7 @@ const CustomInput = ({
           ref={forwardRef}
           onBlur={onBlur}
           value={value}
+          {...rest}
         />
       )}
       {type !== "textarea" && (
@@ -35,6 +37,7 @@ const CustomInput = ({
           ref={forwardRef}
           onBlur={onBlur}
           value={value}
+          {...rest}
         />
       )}
     </>

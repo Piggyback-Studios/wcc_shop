@@ -26,7 +26,7 @@ const EditProductForm = ({ id }: { id: string }) => {
   const onSubmit: SubmitHandler<CreateProductFormType> = async (values) => {
     const { name, price, description, stockQuantity, active, image } = values;
     const formData = new FormData();
-    formData.append("image", image[0], image[0].name);
+    if (image) formData.append("image", image[0], image[0].name);
     formData.append("name", name);
     formData.append("description", description);
     formData.append("stockQuantity", stockQuantity as unknown as string);
@@ -40,7 +40,9 @@ const EditProductForm = ({ id }: { id: string }) => {
       console.log(res);
     });
   };
-  const { ref: nameRef, ...nameRest } = register("name");
+  const { ref: nameRef, ...nameRest } = register("name", {
+    value: defaultValues ? defaultValues.name : "",
+  });
   const { ref: descriptionRef, ...descriptionRest } = register("description");
   const { ref: priceRef, ...priceRest } = register("price");
   const { ref: stockQuantityRef, ...stockQuantityRest } =
@@ -55,7 +57,6 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...nameRest}
         forwardRef={nameRef}
         label="Product Name"
-        value={defaultValues ? defaultValues.name : null}
       />
       <CustomInput
         placeholder="product description"
@@ -63,7 +64,6 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...descriptionRest}
         forwardRef={descriptionRef}
         label="Product Description"
-        value={defaultValues ? defaultValues.description : null}
       />
       <CustomInput
         placeholder="19"
@@ -71,7 +71,6 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...priceRest}
         forwardRef={priceRef}
         label="Product Price"
-        value={defaultValues ? defaultValues.price : null}
       />
       <CustomInput
         placeholder=""
@@ -79,7 +78,6 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...imageRest}
         forwardRef={imageRef}
         label="Product Image"
-        value={defaultValues ? defaultValues.image : null}
       />
       <CustomInput
         placeholder="1"
@@ -87,7 +85,6 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...stockQuantityRest}
         forwardRef={stockQuantityRef}
         label="Quantity in Stock"
-        value={defaultValues ? defaultValues.stockQuantity : null}
       />
       <CustomInput
         placeholder="Product Active"
@@ -95,7 +92,6 @@ const EditProductForm = ({ id }: { id: string }) => {
         {...activeRest}
         forwardRef={activeRef}
         label="Active"
-        value={defaultValues ? defaultValues.active : null}
       />
       <CustomButton label="submit" />
     </form>
