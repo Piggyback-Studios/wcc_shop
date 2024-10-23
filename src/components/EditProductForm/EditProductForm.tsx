@@ -18,7 +18,6 @@ const EditProductForm = ({ id }: { id: string }) => {
     loadProduct();
   }, []);
   useEffect(() => {
-    console.log(defaultValues);
     reset(defaultValues);
   }, [defaultValues]);
   const { register, handleSubmit, reset } = useForm<CreateProductFormType>({});

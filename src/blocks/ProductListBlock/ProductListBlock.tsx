@@ -16,18 +16,23 @@ const ProductListBlock = () => {
     fetchProducts();
   }, []);
   return (
-    <section>
+    <section className="w-full flex justify-center">
       <ContentContainer>
-        <h2>Current Products</h2>
+        <div className="flex justify-between items-center">
+          <h1>Current Products</h1>
+          <Link href="/admin/products/create">
+            <span>Create Product</span>
+          </Link>
+        </div>
         {!products && <p>No products created yet...</p>}
         {products && (
-          <table className="table-auto text-left">
+          <table className="table-auto text-left md:table-fixed border-separate border-spacing-x-2 border-spacing-y-1 md:border-spacing-x-4 border-spacing-y-2">
             <thead>
               <tr>
                 <th>Name</th>
                 <th>Active</th>
-                <th>Price</th>
-                <th>Desc</th>
+                <th className="hidden md:table-cell">Price</th>
+                <th className="hidden md:table-cell">Desc</th>
               </tr>
             </thead>
             {products.map((product: Product) => (
@@ -37,11 +42,13 @@ const ProductListBlock = () => {
                     {product.name}
                   </Link>
                 </td>
-                <td>{product.active}</td>
-                <td>{product.price}</td>
-                <td>
+                <td>{product.active.toString()}</td>
+                <td className="hidden md:table-cell">{product.price}</td>
+                <td className="hidden md:table-cell">
                   {product.description
-                    ? product.description.substring(0, 50) + "..."
+                    ? product.description.length > 50
+                      ? product.description.substring(0, 50) + "..."
+                      : product.description
                     : ""}
                 </td>
               </tr>
