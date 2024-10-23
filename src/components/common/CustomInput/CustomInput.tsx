@@ -8,7 +8,6 @@ const CustomInput = ({
   forwardRef,
   onBlur,
   label,
-  value,
   ...rest
 }: InputField) => {
   return (
@@ -23,7 +22,6 @@ const CustomInput = ({
           onChange={onChange}
           ref={forwardRef}
           onBlur={onBlur}
-          value={value}
           {...rest}
         />
       )}
@@ -36,7 +34,6 @@ const CustomInput = ({
           onChange={onChange}
           ref={forwardRef}
           onBlur={onBlur}
-          value={value}
           {...rest}
         />
       )}

@@ -17,12 +17,11 @@ const EditProductForm = ({ id }: { id: string }) => {
   useEffect(() => {
     loadProduct();
   }, []);
-  const { register, handleSubmit } = useForm<CreateProductFormType>({
-    defaultValues: {
-      name: defaultValues ? defaultValues.name : "",
-      description: defaultValues ? defaultValues.description : "",
-    },
-  });
+  useEffect(() => {
+    console.log(defaultValues);
+    reset(defaultValues);
+  }, [defaultValues]);
+  const { register, handleSubmit, reset } = useForm<CreateProductFormType>({});
   const onSubmit: SubmitHandler<CreateProductFormType> = async (values) => {
     const { name, price, description, stockQuantity, active, image } = values;
     const formData = new FormData();
@@ -40,9 +39,7 @@ const EditProductForm = ({ id }: { id: string }) => {
       console.log(res);
     });
   };
-  const { ref: nameRef, ...nameRest } = register("name", {
-    value: defaultValues ? defaultValues.name : "",
-  });
+  const { ref: nameRef, ...nameRest } = register("name");
   const { ref: descriptionRef, ...descriptionRest } = register("description");
   const { ref: priceRef, ...priceRest } = register("price");
   const { ref: stockQuantityRef, ...stockQuantityRest } =
