@@ -35,8 +35,8 @@ const ProductListBlock = () => {
                 <th className="hidden md:table-cell">Desc</th>
               </tr>
             </thead>
-            {products.map((product: Product) => (
-              <tr>
+            {products.map((product: Product, idx: number) => (
+              <tr key={idx}>
                 <td>
                   <Link href={`/admin/products/edit/${product.id}`}>
                     {product.name}

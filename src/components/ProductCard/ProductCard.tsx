@@ -82,7 +82,7 @@ const ProductCard = ({
               priceId,
               stockQuantity,
               cartQuantity,
-            })
+            } as Product)
           }
           label="Add to Cart"
           className="absolute bottom-0 translate-y-1/2 right-2"
