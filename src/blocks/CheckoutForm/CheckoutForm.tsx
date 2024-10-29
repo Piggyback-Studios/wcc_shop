@@ -1,15 +1,18 @@
 "use client";
 
 import ContentContainer from "@/src/components/common/ContentContainer";
+import CustomButton from "@/src/components/common/CustomButton";
 import {
   useStripe,
   useElements,
   PaymentElement,
   AddressElement,
 } from "@stripe/react-stripe-js";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const CheckoutForm = () => {
+  const router = useRouter();
   const stripe = useStripe();
   const elements = useElements();
   const [disabled, setDisabled] = useState<boolean>(false);
@@ -45,10 +48,10 @@ const CheckoutForm = () => {
       // Your customer will be redirected to your `return_url`. For some payment
       // methods like iDEAL, your customer will be redirected to an intermediate
       // site first to authorize the payment, then redirected to the `return_url`.
-      console.log(result);
 
       if (result.paymentIntent.status === "succeeded") {
         // redirect to order complete page here
+        router.push("/order-complete");
       }
     }
     setDisabled(false);
@@ -60,7 +63,7 @@ const CheckoutForm = () => {
         <form onSubmit={handleSubmit}>
           <PaymentElement />
           <AddressElement options={{ mode: "shipping" }} />
-          <button disabled={!stripe || disabled}>{submitLabel}</button>
+          <CustomButton disabled={!stripe || disabled} label={submitLabel} />
         </form>
       </ContentContainer>
     </section>

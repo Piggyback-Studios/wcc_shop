@@ -1,78 +1,92 @@
-import React, { useEffect } from "react";
-import Stripe from "stripe";
+import React from "react";
 import Image from "next/image";
 
 import styles from "./component.module.css";
 import { useCartContext } from "@/src/context/Cart";
-import { CartItem } from "@/app/types/cart.types";
+import { ProductCardProps, Product } from "@/src/shared/types";
+import CustomButton from "../common/CustomButton";
 
-interface ProductCard {
-  product: Stripe.Product;
-}
-
-const ProductCard = (props: ProductCard) => {
-  const { product } = props;
+const ProductCard = ({
+  id,
+  name,
+  price,
+  description,
+  imageUrl,
+  stripeId,
+  priceId,
+  stockQuantity,
+  cartQuantity,
+}: ProductCardProps) => {
   const [cart, setCart] = useCartContext();
 
-  const addProductToCart = (product: Stripe.Product) => {
+  const addProductToCart = (product: Product) => {
     // i dont necessarily like this solution
-    const itemInCart = cart.cartItems.filter(
+    const itemInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id === product.id
     );
-    const otherItemsInCart = cart.cartItems.filter(
+    const otherItemsInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id !== product.id
     );
-    const totalCartItemsQuantity = cart.cartItems.reduce(
+    const totalCartProductsQuantity = cart.cartProducts.reduce(
       (runningTotal, current) => {
-        return (runningTotal += current.quantity);
+        return (runningTotal += current.cartQuantity);
       },
       1
     );
+
+    // calculate cart subtotal
+    const cartSubtotal = cart.cartProducts.reduce((runningTotal, current) => {
+      return (runningTotal += current.cartQuantity * current.price);
+    }, 1);
+
     setCart({
-      cartItems: [
+      ...cart,
+      cartSubtotal,
+      cartProducts: [
         ...otherItemsInCart,
         {
-          name: product.name,
-          id: product.id,
-          quantity: itemInCart.length ? itemInCart[0].quantity + 1 : 1,
-          price: Number(product.metadata.plainTextPrice),
-          image: product.images[0],
-        } as CartItem,
+          ...product,
+          cartQuantity: itemInCart.length ? itemInCart[0].cartQuantity + 1 : 1,
+        } as Product,
       ],
-      totalCartItemsQuantity,
+      totalCartProductsQuantity,
     });
   };
 
   return (
     <div className={styles.card}>
-      {product.images[0] && (
+      {imageUrl && (
         <Image
-          src={product.images[0]}
+          src={imageUrl}
           width={500}
           height={500}
-          alt={`picture of ${product.name}`}
-          layout="responsive"
+          alt={`picture of ${name}`}
+          className="rounded-lg border-2 border-dark-900 mb-4"
         />
       )}
       <div className={styles.info}>
-        <div className={styles.top_row}>
-          {product.name && <p className={styles.name}>{product.name}</p>}
-          {product.metadata.plainTextPrice && (
-            <span className={styles.price}>
-              ${product.metadata.plainTextPrice}
-            </span>
-          )}
+        <div className="mb-2 flex justify-between">
+          <h6>{name}</h6>
+          <span className={styles.price}>${price}</span>
         </div>
-        {product.description && (
-          <p className={styles.description}>{product.description}</p>
-        )}
-
-        <button
-          className={styles.add_to_cart_button}
-          onClick={() => addProductToCart(product)}
-        >
-          Add to Cart
-        </button>
+        {description && <p className={styles.description}>{description}</p>}
+        <CustomButton
+          onClick={() =>
+            addProductToCart({
+              id,
+              name,
+              price,
+              description,
+              imageUrl,
+              stripeId,
+              priceId,
+              stockQuantity,
+              cartQuantity,
+            } as Product)
+          }
+          label="Add to Cart"
+          className="absolute bottom-0 translate-y-1/2 right-2"
+        />
       </div>
     </div>
   );

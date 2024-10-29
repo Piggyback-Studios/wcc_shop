@@ -1,34 +1,29 @@
 import React from "react";
 
 import { useCartContext } from "@/src/context/Cart";
-import styles from "./component.module.css";
-import Link from "next/link";
 import CartSummaryItem from "@/src/components/CartSummaryItem";
 import ContentContainer from "@/src/components/common/ContentContainer";
+import CustomLink from "@/src/components/common/CustomLink";
 
 const CartSummary = () => {
   const [cart] = useCartContext();
+
   return (
-    <section>
+    <section className="w-full flex justify-center">
       <ContentContainer>
-        {cart?.cartItems.length
-          ? cart?.cartItems.map((cartItem) => (
+        <div className="grid gap-8 mb-8">
+          {cart?.cartProducts.length > 0 &&
+            cart?.cartProducts.map((cartItem) => (
               <CartSummaryItem
                 {...cartItem}
                 key={cartItem.name + Math.round(Math.random() * 100)}
               />
-            ))
-          : ""}
-        {cart?.cartItems.length ? (
-          <Link href={"/checkout"}>
-            <button className={styles.add_to_cart_button}>
-              go to checkout
-            </button>
-          </Link>
-        ) : (
-          ""
+            ))}
+          {!cart?.cartProducts.length && <p>No items in cart...</p>}
+        </div>
+        {cart?.cartProducts.length > 0 && (
+          <CustomLink href="/checkout" label="go to checkout" />
         )}
-        {!cart?.cartItems.length && <p>No items in cart...</p>}
       </ContentContainer>
     </section>
   );
