@@ -18,10 +18,6 @@ const CreateProductForm = () => {
     formData.append("stockQuantity", stockQuantity as unknown as string);
     formData.append("price", price as unknown as string);
     formData.append("active", active as unknown as string);
-    // log form data
-    // for (const [k, v] of Object.entries(formData)) {
-    //   console.log(k + ", " + v);
-    // }
     await fetch(`/api/products`, {
       method: "POST",
       body: formData,
@@ -53,8 +49,8 @@ const CreateProductForm = () => {
         label="Product Description"
       />
       <CustomInput
-        placeholder="19"
-        type="number"
+        placeholder="19.99"
+        type="decimal"
         {...priceRest}
         forwardRef={priceRef}
         label="Product Price"

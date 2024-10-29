@@ -63,7 +63,7 @@ const EditProductForm = ({ id }: { id: string }) => {
       />
       <CustomInput
         placeholder="19"
-        type="number"
+        type="decimal"
         {...priceRest}
         forwardRef={priceRef}
         label="Product Price"

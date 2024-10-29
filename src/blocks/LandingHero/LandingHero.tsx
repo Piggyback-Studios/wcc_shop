@@ -15,9 +15,9 @@ const LandingHero = ({
         <div className="grid gap-8 md:grid-cols-2">
           <div className="flex flex-col gap-4">
             <h6>{tagline}</h6>
-            <h1 className="mb-4">{headline}</h1>
+            <h1>{headline}</h1>
             <p>{description}</p>
-            <>{cta}</>
+            {cta}
           </div>
           <div className="grid grid-rows-3 grid-cols-3 gap-4 md:gap-8">
             {/* TODO: make these videos gifs. performance is awful using video */}

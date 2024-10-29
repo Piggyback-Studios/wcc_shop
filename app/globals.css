@@ -64,7 +64,7 @@ h4,
 h5,
 h6 {
   font-family: var(--font-header);
-  line-height: 1.1;
+  line-height: 0.9;
 }
 
 /* global content container class */
