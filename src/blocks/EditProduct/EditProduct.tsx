@@ -8,9 +8,9 @@ import EditProductForm from "@/src/components/EditProductForm";
 const EditProduct = () => {
   const { productId } = useParams();
   return (
-    <section>
+    <section className="w-full flex justify-center">
       <ContentContainer>
-        <h1>Edit </h1>
+        <h1>Edit Product</h1>
         <EditProductForm id={productId as string} />
       </ContentContainer>
     </section>

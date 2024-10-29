@@ -11,7 +11,7 @@ const CustomInput = ({
   ...rest
 }: InputField) => {
   return (
-    <>
+    <div className="w-full flex flex-col">
       <label htmlFor={name}>{label}</label>
       {type === "textarea" && (
         <textarea
@@ -37,7 +37,7 @@ const CustomInput = ({
           {...rest}
         />
       )}
-    </>
+    </div>
   );
 };
 

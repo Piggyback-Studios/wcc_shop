@@ -14,7 +14,7 @@ const Contact = ({
   socials,
 }: ContactProps) => {
   return (
-    <section>
+    <section className="w-full flex justify-center">
       <ContentContainer>
         <div className="grid md:grid-cols-2 gap-8">
           <div className="h-full flex flex-col justify-between gap-4">

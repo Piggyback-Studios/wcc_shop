@@ -104,31 +104,43 @@ export async function PUT(req: NextRequest) {
     const price = await stripe.prices.create({
       currency: "usd",
       unit_amount: priceAmt,
+      product: rows[0].stripe_id,
     });
-    const product = await stripe.products.update(rows[0].stripe_id, {
+    await stripe.products.update(rows[0].stripe_id, {
       name,
       description,
       default_price: price.id,
       active,
     });
 
-    // edit uploaded image
-    const imageFp = `/images/products/${image.name}`;
-    const { url } = await put(imageFp, image, {
-      access: "public",
-    });
-
-    // modify sql row
-    sql`
-    UPDATE products
-    SET name=${name}, description=${description}, price=${priceAmt}, image_url=${url}, quantity=${stockQuantity}, active=${active}
-    WHERE id=${productId}
-    ;
-    `;
+    if (image) {
+      // edit uploaded image
+      const imageFp = `/images/products/${image.name}`;
+      const { url } = await put(imageFp, image, {
+        access: "public",
+      });
+      // modify sql row
+      sql`
+        UPDATE products
+        SET name=${name}, description=${description}, price=${priceAmt}, image_url=${url}, quantity=${stockQuantity}, active=${active}
+        WHERE id=${productId};
+      `;
+    } else {
+      // modify sql row
+      sql`
+        UPDATE products
+        SET name=${name}, description=${description}, price=${priceAmt}, quantity=${stockQuantity}, active=${active}
+        WHERE id=${productId};
+      `;
+    }
   } catch (err) {
     console.log(err);
+    return NextResponse.json({
+      status: 500,
+      message: "Internal Server Error",
+      error: err,
+    });
   }
-
   return NextResponse.json({
     status: 200,
     message: "Success!",

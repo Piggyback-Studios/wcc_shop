@@ -24,7 +24,7 @@ const EditProductForm = ({ id }: { id: string }) => {
   const onSubmit: SubmitHandler<CreateProductFormType> = async (values) => {
     const { name, price, description, stockQuantity, active, image } = values;
     const formData = new FormData();
-    if (image) formData.append("image", image[0], image[0].name);
+    if (image[0]) formData.append("image", image[0], image[0].name);
     formData.append("name", name);
     formData.append("description", description);
     formData.append("stockQuantity", stockQuantity as unknown as string);
