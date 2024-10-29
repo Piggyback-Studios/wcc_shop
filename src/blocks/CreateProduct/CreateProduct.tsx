@@ -3,7 +3,7 @@ import CreateProductForm from "@/src/components/CreateProductForm";
 
 const CreateProduct = () => {
   return (
-    <section>
+    <section className="w-full flex justify-center">
       <ContentContainer>
         <h1>Create a Product</h1>
         <CreateProductForm />

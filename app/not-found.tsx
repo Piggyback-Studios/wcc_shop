@@ -7,7 +7,7 @@ const FourOhFourPage = () => {
   return (
     <main className="flex flex-col items-center">
       <Spacer size="lg" />
-      <section>
+      <section className="w-full flex justify-center">
         <ContentContainer>
           <div className="flex flex-col items-center justify-center text-center gap-8">
             <Image

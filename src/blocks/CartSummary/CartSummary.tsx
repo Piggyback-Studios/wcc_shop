@@ -9,7 +9,7 @@ const CartSummary = () => {
   const [cart] = useCartContext();
 
   return (
-    <section>
+    <section className="w-full flex justify-center">
       <ContentContainer>
         <div className="grid gap-8 mb-8">
           {cart?.cartProducts.length > 0 &&

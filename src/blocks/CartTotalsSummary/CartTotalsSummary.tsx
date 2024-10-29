@@ -4,7 +4,7 @@ import { useCartContext } from "@/src/context/Cart";
 const CartTotalsSummary = () => {
   const [cart] = useCartContext();
   return (
-    <section>
+    <section className="w-full flex justify-center">
       <ContentContainer>
         <div className="grid w-full">
           {cart.cartSubtotal ? (

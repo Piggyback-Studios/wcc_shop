@@ -10,7 +10,7 @@ const LandingHero = ({
   videos,
 }: LandingHeroProps) => {
   return (
-    <section>
+    <section className="w-full flex justify-center">
       <ContentContainer>
         <div className="grid gap-8 md:grid-cols-2">
           <div className="flex flex-col gap-4">

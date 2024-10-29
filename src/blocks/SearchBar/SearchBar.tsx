@@ -5,7 +5,7 @@ import { SearchBarProps } from "@/src/shared/types";
 
 function SearchBar({ onSearch, value }: SearchBarProps) {
   return (
-    <section>
+    <section className="w-full flex justify-center">
       <ContentContainer>
         <h1>Search Our Collection</h1>
         {/* TODO: switch with custom input */}

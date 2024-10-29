@@ -17,7 +17,7 @@ const ProductGalleryBlock = () => {
     fetchProducts();
   }, []);
   return (
-    <section>
+    <section className="w-full flex justify-center">
       <ContentContainer>
         <h2>Our Collection</h2>
         <div className="grid md:grid-cols-3 gap-8">
