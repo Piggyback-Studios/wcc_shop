@@ -5,6 +5,7 @@ import styles from "./component.module.css";
 import { useCartContext } from "@/src/context/Cart";
 import { ProductCardProps, Product } from "@/src/shared/types";
 import CustomButton from "../common/CustomButton";
+import toast from "@/src/utils/toast";
 
 const ProductCard = ({
   id,
@@ -53,6 +54,11 @@ const ProductCard = ({
     });
   };
 
+  const handleClick = (product: Product) => {
+    addProductToCart(product);
+    toast(`${product.name} added to cart`, "success");
+  };
+
   return (
     <div className={styles.card}>
       {imageUrl && (
@@ -72,7 +78,7 @@ const ProductCard = ({
         {description && <p className={styles.description}>{description}</p>}
         <CustomButton
           onClick={() =>
-            addProductToCart({
+            handleClick({
               id,
               name,
               price,

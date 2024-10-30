@@ -6,6 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import CustomInput from "@/src/components/common/CustomInput";
 import CustomButton from "@/src/components/common/CustomButton";
 import { CreateProductFormType } from "@/src/shared/types";
+import toast from "@/src/utils/toast";
 
 const EditProductForm = ({ id }: { id: string }) => {
   const [defaultValues, setDefaultValues] = useState<CreateProductFormType>();
@@ -35,7 +36,14 @@ const EditProductForm = ({ id }: { id: string }) => {
       method: "PUT",
       body: formData,
     }).then((res) => {
-      console.log(res);
+      if (res.status === 200) toast("Product edited!", "success");
+      else
+        toast(
+          `There was an issue editing ${
+            defaultValues ? defaultValues.name : name
+          }. Please try again.`,
+          "error"
+        );
     });
   };
   const { ref: nameRef, ...nameRest } = register("name");
