@@ -69,9 +69,9 @@ export async function POST(req: NextRequest) {
     sql`
       INSERT INTO products
       (id, stripe_id, name, description, price, image_url, quantity, active)
-      VALUES (${uuid()}, ${product.id}, ${
-      product.name
-    }, ${description}, ${price}, ${url}, ${stockQuantity}, ${active});
+      VALUES (${uuid()}, ${product.id}, ${product.name}, ${description}, ${
+      price * 100
+    }, ${url}, ${stockQuantity}, ${active});
     `;
   } catch (err) {
     console.log(err);
@@ -103,7 +103,7 @@ export async function PUT(req: NextRequest) {
     const stripe = new Stripe(process.env.STRIPE_SK!);
     const price = await stripe.prices.create({
       currency: "usd",
-      unit_amount: priceAmt,
+      unit_amount: priceAmt * 100,
       product: rows[0].stripe_id,
     });
     await stripe.products.update(rows[0].stripe_id, {
@@ -122,14 +122,18 @@ export async function PUT(req: NextRequest) {
       // modify sql row
       sql`
         UPDATE products
-        SET name=${name}, description=${description}, price=${priceAmt}, image_url=${url}, quantity=${stockQuantity}, active=${active}
+        SET name=${name}, description=${description}, price=${
+        priceAmt * 100
+      }, image_url=${url}, quantity=${stockQuantity}, active=${active}
         WHERE id=${productId};
       `;
     } else {
       // modify sql row
       sql`
         UPDATE products
-        SET name=${name}, description=${description}, price=${priceAmt}, quantity=${stockQuantity}, active=${active}
+        SET name=${name}, description=${description}, price=${
+        priceAmt * 100
+      }, quantity=${stockQuantity}, active=${active}
         WHERE id=${productId};
       `;
     }

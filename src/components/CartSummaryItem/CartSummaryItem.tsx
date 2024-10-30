@@ -3,13 +3,26 @@ import Image from "next/image";
 
 import { useCartContext } from "@/src/context/Cart";
 import CustomButton from "@/src/components/common/CustomButton";
+import { useEffect } from "react";
 
 const CartSummaryItem = (product: Product) => {
   const { name, price, cartQuantity, imageUrl } = product;
   const [cart, setCart] = useCartContext();
 
-  const editProductInCart = (product: Product) => {
-    // TODO: do this
+  const editProductQuantity = (product: Product, qty: number) => {
+    const cartProduct = cart.cartProducts.filter(
+      (cartProduct) => cartProduct.id === product.id
+    )[0];
+    setCart({
+      ...cart,
+      cartProducts: [
+        ...cart.cartProducts,
+        {
+          ...cartProduct,
+          cartQuantity: (cartProduct.cartQuantity += qty),
+        },
+      ],
+    });
   };
 
   const removeProductFromCart = (product: Product) => {
@@ -29,6 +42,8 @@ const CartSummaryItem = (product: Product) => {
     });
   };
 
+  useEffect(() => console.log(cart), [cart]);
+
   return (
     <div className="grid md:grid-cols-2">
       <div className="flex flex-col justify-between">
@@ -39,8 +54,12 @@ const CartSummaryItem = (product: Product) => {
         </div>
         <div className="flex gap-4 mb-4 md:mb-0">
           <CustomButton
-            onClick={() => editProductInCart({ ...product })}
-            label="edit"
+            onClick={() => editProductQuantity({ ...product }, -1)}
+            label="-"
+          />
+          <CustomButton
+            onClick={() => editProductQuantity({ ...product }, 1)}
+            label="+"
           />
           <CustomButton
             onClick={() => removeProductFromCart({ ...product })}
