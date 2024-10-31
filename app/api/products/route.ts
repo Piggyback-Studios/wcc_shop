@@ -4,6 +4,7 @@ import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
 import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
+import { getSession } from "@/src/utils/auth";
 
 // fetch all active products
 export async function GET(req: NextRequest) {
@@ -31,6 +32,12 @@ export async function GET(req: NextRequest) {
 
 // create a product
 export async function POST(req: NextRequest) {
+  const session = await getSession();
+  if (!session)
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized.",
+    });
   try {
     // pull form data
     const form = await req.formData();
@@ -79,6 +86,12 @@ export async function POST(req: NextRequest) {
 
 // edit a product
 export async function PUT(req: NextRequest) {
+  const session = await getSession();
+  if (!session)
+    return NextResponse.json({
+      status: 401,
+      message: "Unauthorized.",
+    });
   try {
     // pull form data
     const form = await req.formData();
@@ -113,7 +126,6 @@ export async function PUT(req: NextRequest) {
       const { url } = await put(imageFp, image, {
         access: "public",
       });
-      // modify sql row
       sql`
         UPDATE products
         SET name=${name}, description=${description}, price=${
@@ -122,7 +134,7 @@ export async function PUT(req: NextRequest) {
         WHERE id=${productId};
       `;
     } else {
-      // modify sql row
+      console.log("no image");
       sql`
         UPDATE products
         SET name=${name}, description=${description}, price=${

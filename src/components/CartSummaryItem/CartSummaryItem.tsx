@@ -41,18 +41,15 @@ const CartSummaryItem = (product: Product) => {
   };
 
   useEffect(() => {
-    // TODO: calculate totals and set totals here
     const totalCartProductsQuantity = cart.cartProducts.reduce(
       (runningTotal, current) => {
         return (runningTotal += current.cartQuantity);
       },
-      1
+      0
     );
-
-    // calculate cart subtotal
     const cartSubtotal = cart.cartProducts.reduce((runningTotal, current) => {
       return (runningTotal += current.cartQuantity * current.price);
-    }, 1);
+    }, 0);
     setTotals({ ...totals, cartSubtotal, totalCartProductsQuantity });
   }, [cart]);
 
