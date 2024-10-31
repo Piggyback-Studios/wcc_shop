@@ -61,7 +61,7 @@ const ProductCard = ({
       return (runningTotal += current.cartQuantity * current.price);
     }, 1);
 
-    setTotals({ ...totals });
+    setTotals({ ...totals, totalCartProductsQuantity, cartSubtotal });
   }, [cart]);
 
   return (

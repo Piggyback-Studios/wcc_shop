@@ -15,16 +15,20 @@ const CartSummaryItem = (product: Product) => {
     const cartProduct = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id === product.id
     )[0];
-    setCart({
-      ...cart,
-      cartProducts: [
-        ...cart.cartProducts,
-        {
-          ...cartProduct,
-          cartQuantity: (cartProduct.cartQuantity += qty),
-        },
-      ],
-    });
+    const cartQuantity = Math.max((cartProduct.cartQuantity += qty), 0);
+    if (cartQuantity) {
+      setCart({
+        cartProducts: [
+          ...cart.cartProducts,
+          {
+            ...cartProduct,
+            cartQuantity: cartQuantity,
+          },
+        ],
+      });
+    } else {
+      removeProductFromCart(product);
+    }
   };
 
   const removeProductFromCart = (product: Product) => {
