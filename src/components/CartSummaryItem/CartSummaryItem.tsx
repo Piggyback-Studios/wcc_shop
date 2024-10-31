@@ -4,10 +4,12 @@ import Image from "next/image";
 import { useCartContext } from "@/src/context/Cart";
 import CustomButton from "@/src/components/common/CustomButton";
 import { useEffect } from "react";
+import { useTotalsContext } from "@/src/context/Totals";
 
 const CartSummaryItem = (product: Product) => {
   const { name, price, cartQuantity, imageUrl } = product;
   const [cart, setCart] = useCartContext();
+  const [totals, setTotals] = useTotalsContext();
 
   const editProductQuantity = (product: Product, qty: number) => {
     const cartProduct = cart.cartProducts.filter(
@@ -29,20 +31,26 @@ const CartSummaryItem = (product: Product) => {
     const otherItemsInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id !== product.id
     );
-    const totalCartItemsQuantity = otherItemsInCart.reduce(
-      (runningTotal, current) => {
-        return (runningTotal += current.cartQuantity);
-      },
-      0
-    );
     setCart({
-      ...cart,
       cartProducts: [...otherItemsInCart],
-      totalCartProductsQuantity: totalCartItemsQuantity - product.cartQuantity,
     });
   };
 
-  useEffect(() => console.log(cart), [cart]);
+  useEffect(() => {
+    // TODO: calculate totals and set totals here
+    const totalCartProductsQuantity = cart.cartProducts.reduce(
+      (runningTotal, current) => {
+        return (runningTotal += current.cartQuantity);
+      },
+      1
+    );
+
+    // calculate cart subtotal
+    const cartSubtotal = cart.cartProducts.reduce((runningTotal, current) => {
+      return (runningTotal += current.cartQuantity * current.price);
+    }, 1);
+    setTotals({ ...totals, cartSubtotal, totalCartProductsQuantity });
+  }, [cart]);
 
   return (
     <div className="grid md:grid-cols-2">

@@ -11,11 +11,6 @@ import { Product } from "@/src/shared/types";
 
 type Cart = {
   cartProducts: Product[];
-  totalCartProductsQuantity: number;
-  cartSubtotal: number;
-  cartTotal: number;
-  shippingAmount: number;
-  taxesAmount: number;
 };
 
 type ContextType = [cart: Cart, setCart: Dispatch<SetStateAction<Cart>>];
@@ -25,11 +20,6 @@ export const CartContext = createContext<ContextType | undefined>(undefined);
 export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   const value = useState<Cart>({
     cartProducts: [],
-    totalCartProductsQuantity: 0,
-    cartSubtotal: 0,
-    shippingAmount: 0,
-    taxesAmount: 0,
-    cartTotal: 0,
   });
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 };

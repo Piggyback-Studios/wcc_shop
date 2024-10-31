@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 
 import styles from "./component.module.css";
 import { useCartContext } from "@/src/context/Cart";
+import { useTotalsContext } from "@/src/context/Totals";
 import { ProductCardProps, Product } from "@/src/shared/types";
-import CustomButton from "../common/CustomButton";
+import CustomButton from "@/src/components/common/CustomButton";
 import toast from "@/src/utils/toast";
 
 const ProductCard = ({
@@ -19,15 +20,35 @@ const ProductCard = ({
   cartQuantity,
 }: ProductCardProps) => {
   const [cart, setCart] = useCartContext();
+  const [totals, setTotals] = useTotalsContext();
 
   const addProductToCart = (product: Product) => {
     // i dont necessarily like this solution
     const itemInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id === product.id
-    );
+    )[0];
     const otherItemsInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id !== product.id
     );
+
+    setCart({
+      cartProducts: [
+        ...otherItemsInCart,
+        {
+          ...product,
+          cartQuantity: itemInCart ? itemInCart.cartQuantity + 1 : 1,
+        } as Product,
+      ],
+    });
+  };
+
+  const handleClick = (product: Product) => {
+    addProductToCart(product);
+    toast(`${product.name} added to cart`, "success");
+  };
+
+  useEffect(() => {
+    // TODO: calculate totals from cart and set totals here
     const totalCartProductsQuantity = cart.cartProducts.reduce(
       (runningTotal, current) => {
         return (runningTotal += current.cartQuantity);
@@ -40,24 +61,8 @@ const ProductCard = ({
       return (runningTotal += current.cartQuantity * current.price);
     }, 1);
 
-    setCart({
-      ...cart,
-      cartSubtotal,
-      cartProducts: [
-        ...otherItemsInCart,
-        {
-          ...product,
-          cartQuantity: itemInCart.length ? itemInCart[0].cartQuantity + 1 : 1,
-        } as Product,
-      ],
-      totalCartProductsQuantity,
-    });
-  };
-
-  const handleClick = (product: Product) => {
-    addProductToCart(product);
-    toast(`${product.name} added to cart`, "success");
-  };
+    setTotals({ ...totals });
+  }, [cart]);
 
   return (
     <div className={styles.card}>
