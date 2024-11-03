@@ -1,5 +1,6 @@
 import { ProductDetailDisplayProps } from "@/src/shared/types";
 import Image from "next/image";
+import Link from "next/link";
 
 const ProductDetailDisplay = ({
   id,
@@ -10,6 +11,10 @@ const ProductDetailDisplay = ({
 }: ProductDetailDisplayProps) => {
   return (
     <div>
+      <div className="flex justify-between items-center">
+        <h1>{name}</h1>
+        <Link href="/">Back</Link>
+      </div>
       <div className="grid md:grid-cols-[2fr_1fr]">
         <div>
           {imageUrl && (
@@ -22,7 +27,6 @@ const ProductDetailDisplay = ({
           )}
         </div>
         <div>
-          <p>{id}</p>
           <p>{name}</p>
           <p>{price}</p>
           <p>{description}</p>

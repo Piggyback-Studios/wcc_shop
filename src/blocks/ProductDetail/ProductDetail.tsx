@@ -1,17 +1,25 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 import ContentContainer from "@/src/components/common/ContentContainer";
 import ProductDetailDisplay from "@/src/components/ProductDetailDisplay";
-import { ProductDetailBlockProps } from "@/src/shared/types";
-import { notFound } from "next/navigation";
+import { Product, ProductDetailBlockProps } from "@/src/shared/types";
 
-const ProductDetail = async ({ id }: ProductDetailBlockProps) => {
-  const res = await fetch(`/api/products/${id}`);
-  const resJson = await res.json();
-  const product = resJson.body;
-  if (!product) return notFound();
+const ProductDetail = ({ id }: ProductDetailBlockProps) => {
+  const [product, setProduct] = useState<Product>();
+  const loadProduct = async () => {
+    const res = await fetch(`/api/products/${id}`);
+    const resJson = await res.json();
+    setProduct(resJson.product);
+  };
+  useEffect(() => {
+    loadProduct();
+  }, []);
   return (
     <section>
       <ContentContainer>
-        <ProductDetailDisplay {...product} />
+        {product && <ProductDetailDisplay {...product} />}
       </ContentContainer>
     </section>
   );
