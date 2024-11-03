@@ -153,3 +153,9 @@ export type ContactBlockProps = {
   fields: InputField[];
   alignment?: AlignmentType;
 };
+
+export type ProductDetailBlockProps = {
+  id: string;
+};
+
+export type ProductDetailDisplayProps = Product & {};
