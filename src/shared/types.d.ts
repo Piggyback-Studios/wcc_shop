@@ -79,8 +79,8 @@ export type InputField = {
   label: string;
   icon?: Icon;
   onChange: any;
-  onBlur: any;
-  forwardRef: React.MutableRefObject;
+  onBlur?: any;
+  forwardRef?: React.MutableRefObject;
   value?: any;
   defaultValue?: string;
 };
