@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./globals.css";
 import Navbar from "@/src/components/ui/Navbar";
@@ -31,6 +33,7 @@ export default function RootLayout({
           {children}
           <Analytics />
           <Footer />
+          <ToastContainer />
         </ProviderWrapper>
       </body>
     </html>

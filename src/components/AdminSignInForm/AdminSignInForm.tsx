@@ -6,6 +6,7 @@ import { SignInFormType } from "@/src/shared/types";
 import CustomInput from "@/src/components/common/CustomInput";
 import CustomButton from "@/src/components/common/CustomButton";
 import { useRouter } from "next/navigation";
+import toast from "@/src/utils/toast";
 
 const AdminSignInForm = () => {
   const { handleSubmit, register } = useForm<SignInFormType>();
@@ -19,6 +20,11 @@ const AdminSignInForm = () => {
     });
     const { status } = await res.json();
     if (status === 200) router.push("/admin/products");
+    else
+      toast(
+        "There was a problem signing you in. Please check your credentials and try again.",
+        "error"
+      );
   };
 
   const { ref: emailRef, ...emailRest } = register("email");

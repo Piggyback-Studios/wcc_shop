@@ -1,6 +1,5 @@
 import ContentContainer from "@/src/components/common/ContentContainer";
 import { LandingHeroProps } from "@/src/shared/types";
-import Image from "next/image";
 
 const LandingHero = ({
   tagline,
@@ -20,7 +19,6 @@ const LandingHero = ({
             {cta}
           </div>
           <div className="grid grid-rows-3 grid-cols-3 gap-4 md:gap-8">
-            {/* TODO: make these videos gifs. performance is awful using video */}
             {/* TODO: make cart store in local storage */}
             {videos &&
               videos.map((video, idx) => (

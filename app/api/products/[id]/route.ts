@@ -6,10 +6,9 @@ import { Product } from "@/src/shared/types";
 // fetch single product by id
 export async function GET(
   req: NextRequest,
-  { params }: { params: { productId: string } }
+  { params: { id } }: { params: { id: string } }
 ) {
-  const { productId } = params;
-  const product = await sql`SELECT * FROM products WHERE id=${productId};`;
+  const product = await sql`SELECT * FROM products WHERE id=${id};`;
   const formattedProduct: Product = product.rows.map(
     (row: any) =>
       ({

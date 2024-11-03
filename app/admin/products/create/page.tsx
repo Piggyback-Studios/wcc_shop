@@ -10,7 +10,6 @@ export default async function CreateProductPage() {
   return (
     <main className="flex flex-col items-center">
       <Spacer size="lg" />
-      {JSON.stringify(session)}
       <CreateProduct />
       <Spacer size="lg" />
     </main>

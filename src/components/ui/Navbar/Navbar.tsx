@@ -3,21 +3,21 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-import { useCartContext } from "@/src/context/Cart";
 import ContentContainer from "@/src/components/common/ContentContainer";
 import { NavbarProps } from "@/src/shared/types";
 import CustomHamburger from "@/src/components/ui/AnimatedHamburgerIcon";
 import { getSession, logout } from "@/src/utils/auth";
 import { useRouter } from "next/navigation";
+import { useTotalsContext } from "@/src/context/Totals";
 
 const Navbar = ({ logo, links }: NavbarProps) => {
-  const [cart] = useCartContext();
+  const [totals] = useTotalsContext();
   const [sessionState, setSessionState] = useState();
   const router = useRouter();
 
   const determineSize = () => {
-    if (cart.totalCartProductsQuantity < 10) return "p-2";
-    else if (cart.totalCartProductsQuantity < 100) return "p-3";
+    if (totals.totalCartProductsQuantity < 10) return "p-2";
+    else if (totals.totalCartProductsQuantity < 100) return "p-3";
     else return "p-4";
   };
   const handleSignOut = async () => {
@@ -42,12 +42,12 @@ const Navbar = ({ logo, links }: NavbarProps) => {
           <ul className="hidden md:flex flex-row gap-6">
             {links.map((link, idx) => (
               <li key={idx} className="relative">
-                {link.label === "cart" && cart.totalCartProductsQuantity ? (
+                {link.label === "cart" && totals.totalCartProductsQuantity ? (
                   <span
                     className={`bg-primary-500 rounded-full absolute top-0 right-0 -translate-y-2/3 translate-x-1/2 h-4 w-4 flex items-center justify-center ${determineSize()}  text-xs`}
                   >
-                    {cart.totalCartProductsQuantity < 100
-                      ? cart.totalCartProductsQuantity
+                    {totals.totalCartProductsQuantity < 100
+                      ? totals.totalCartProductsQuantity
                       : "100+"}
                   </span>
                 ) : (

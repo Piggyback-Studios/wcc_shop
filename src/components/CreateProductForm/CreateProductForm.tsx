@@ -5,6 +5,7 @@ import CustomButton from "../common/CustomButton";
 
 import { useForm, SubmitHandler } from "react-hook-form";
 import { CreateProductFormType } from "@/src/shared/types";
+import toast from "@/src/utils/toast";
 
 const CreateProductForm = () => {
   const { register, handleSubmit } = useForm<CreateProductFormType>();
@@ -22,7 +23,14 @@ const CreateProductForm = () => {
       method: "POST",
       body: formData,
     }).then((res) => {
-      // console.log(res);
+      console.log(res);
+
+      if (res.status === 200) toast("Product created!", "success");
+      else
+        toast(
+          "There was an issue creating a product. Please try again.",
+          "error"
+        );
     });
   };
   const { ref: nameRef, ...nameRest } = register("name");

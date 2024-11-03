@@ -4,11 +4,14 @@ import { PropsWithChildren } from "react";
 
 import { CartProvider } from "@/src/context/Cart";
 import { SidebarProvider } from "@/src/context/Sidebar";
+import { TotalsProvider } from "@/src/context/Totals";
 
 const ProviderWrapper = ({ children }: PropsWithChildren) => {
   return (
     <CartProvider>
-      <SidebarProvider>{children}</SidebarProvider>
+      <TotalsProvider>
+        <SidebarProvider>{children}</SidebarProvider>
+      </TotalsProvider>
     </CartProvider>
   );
 };

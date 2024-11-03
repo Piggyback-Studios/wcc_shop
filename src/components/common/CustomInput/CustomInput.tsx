@@ -11,11 +11,17 @@ const CustomInput = ({
   ...rest
 }: InputField) => {
   return (
-    <div className="w-full flex flex-col">
-      <label htmlFor={name}>{label}</label>
+    <div
+      className={`w-full flex mb-8 ${
+        type !== "checkbox" ? "flex-col border-b-2 border-dark" : "flex-row"
+      }`}
+    >
+      <label className={`${type !== "checkbox" && "mb-2"}`} htmlFor={name}>
+        {label}
+      </label>
       {type === "textarea" && (
         <textarea
-          className="p-2 border-none border-b-2 border-black mb-8 w-full"
+          className="p-2 w-full"
           name={name}
           placeholder={placeholder}
           rows={10}
@@ -27,7 +33,7 @@ const CustomInput = ({
       )}
       {type === "decimal" && (
         <input
-          className="p-2 border-none border-b-2 border-black mb-8 w-full"
+          className="p-2 w-full"
           name={name}
           placeholder={placeholder}
           type="number"
@@ -40,7 +46,7 @@ const CustomInput = ({
       )}
       {type !== "textarea" && type !== "decimal" && (
         <input
-          className="p-2 border-none border-b-2 border-black mb-8 w-full"
+          className={`p-2 ${type !== "checkbox" ? "w-full" : " ml-2"}`}
           name={name}
           placeholder={placeholder}
           type={type}
