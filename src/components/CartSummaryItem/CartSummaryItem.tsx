@@ -15,11 +15,14 @@ const CartSummaryItem = (product: Product) => {
     const cartProduct = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id === product.id
     )[0];
+    const otherCartProducts = cart.cartProducts.filter(
+      (cartProduct) => cartProduct.id !== product.id
+    );
     const cartQuantity = Math.max((cartProduct.cartQuantity += qty), 0);
     if (cartQuantity) {
       setCart({
         cartProducts: [
-          ...cart.cartProducts,
+          ...otherCartProducts,
           {
             ...cartProduct,
             cartQuantity: cartQuantity,
