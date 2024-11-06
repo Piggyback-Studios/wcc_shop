@@ -24,7 +24,7 @@ a {
   --light-color: #f6f2ea;
   --dark-color: #2d2513;
   --nav-height: 80px;
-  --h1FontSize: clamp(2.5rem, -0.875rem + 8.333vw, 209px);
+  --h1FontSize: clamp(2.5rem, -0.875rem + 8.333vw, 140px);
   --h2FontSize: clamp(2rem, -0.875rem + 8vw, 90px);
   --h3FontSize: clamp(1.75rem, -0.875rem + 7.5vw, 40px);
   --h4FontSize: clamp(1.5rem, -0.875rem + 7vw, 32px);
