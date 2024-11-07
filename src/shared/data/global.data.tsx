@@ -64,7 +64,7 @@ export const SITE_INFO = {
   ADDRESS_LINE_2: "",
   PHONE_NUMBER: "",
   PHONE_NUMBER_LINK: "",
-  EMAIL_ADDRESS: "",
+  EMAIL_ADDRESS: process.env.SENDING_EMAIL!,
   EMAIL_ADDRESS_LINK: "",
 };
 
