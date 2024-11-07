@@ -7,6 +7,7 @@ import CustomInput from "@/src/components/common/CustomInput";
 import ProductCard from "@/src/components/ProductCard";
 
 import { SearchBarProps, Product } from "@/src/shared/types";
+import { useProductsContext } from "@/src/context/Products";
 
 function SearchBar({ onSearch, value }: SearchBarProps) {
   return (
@@ -33,23 +34,26 @@ const SearchProducts = () => {
     return name.toLowerCase().indexOf(searchValue.toLowerCase()) !== -1;
   };
 
-  const [products, setProducts] = useState<Product[]>([]);
+  const [productsContext, setProducts] = useProductsContext();
   const fetchProducts = async () => {
     const res = await fetch("/api/products", { method: "GET" });
     const jsonRes = await res.json();
-    setProducts(jsonRes.products);
+    setProducts({ products: jsonRes.products });
   };
   useEffect(() => {
-    fetchProducts();
+    if (!productsContext.products.length) fetchProducts();
+    else console.log("products");
   }, []);
   return (
     <section className="w-full flex justify-center">
       <ContentContainer>
         <SearchBar onSearch={setSearchValue} value={searchValue} />
         <div className="grid gap-4 md:grid-cols-3">
-          {products.filter(filterProductNames).map((product, idx) => (
-            <ProductCard {...product} key={idx} />
-          ))}
+          {productsContext.products.length
+            ? productsContext.products
+                .filter(filterProductNames)
+                .map((product, idx) => <ProductCard {...product} key={idx} />)
+            : null}
         </div>
       </ContentContainer>
     </section>

@@ -16,7 +16,7 @@ const Contact = ({
   return (
     <section className="w-full flex justify-center">
       <ContentContainer>
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid gap-8">
           <div className="h-full flex flex-col justify-between gap-4">
             <h1>{title}</h1>
             <div>

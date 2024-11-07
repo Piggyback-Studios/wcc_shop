@@ -1,19 +1,22 @@
 "use client";
-import React, { useEffect, useState } from "react";
+
+import React, { useEffect } from "react";
 import Link from "next/link";
 
 import ContentContainer from "@/src/components/common/ContentContainer";
 import { Product } from "@/src/shared/types";
+import { useProductsContext } from "@/src/context/Products";
 
 const ProductListBlock = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [productsContext, setProducts] = useProductsContext();
   const fetchProducts = async () => {
     const res = await fetch("/api/products", { method: "GET" });
     const jsonRes = await res.json();
-    setProducts(jsonRes.products);
+    setProducts({ products: jsonRes.products });
   };
   useEffect(() => {
-    fetchProducts();
+    if (!productsContext.products.length) fetchProducts();
+    else console.log("products");
   }, []);
   return (
     <section className="w-full flex justify-center">
@@ -24,8 +27,7 @@ const ProductListBlock = () => {
             <span>Create Product</span>
           </Link>
         </div>
-        {!products && <p>No products created yet...</p>}
-        {products && (
+        {productsContext.products.length ? (
           <table className="table-auto text-left md:table-fixed border-separate border-spacing-x-2 border-spacing-y-1 md:border-spacing-x-4 border-spacing-y-2">
             <thead>
               <tr>
@@ -35,7 +37,7 @@ const ProductListBlock = () => {
                 <th className="hidden md:table-cell">Desc</th>
               </tr>
             </thead>
-            {products.map((product: Product, idx: number) => (
+            {productsContext.products.map((product: Product, idx: number) => (
               <tr key={idx}>
                 <td>
                   <Link href={`/admin/products/edit/${product.id}`}>
@@ -54,6 +56,8 @@ const ProductListBlock = () => {
               </tr>
             ))}
           </table>
+        ) : (
+          <p>No products created yet...</p>
         )}
       </ContentContainer>
     </section>
