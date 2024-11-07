@@ -16,7 +16,6 @@ const ProductListBlock = () => {
   };
   useEffect(() => {
     if (!productsContext.products.length) fetchProducts();
-    else console.log("products");
   }, []);
   return (
     <section className="w-full flex justify-center">
