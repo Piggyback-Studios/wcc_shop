@@ -1,4 +1,4 @@
-import { Product, Metadata } from "@/src/shared/types";
+import { Product } from "@/src/shared/types";
 import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
 
@@ -21,16 +21,9 @@ export async function POST(req: NextRequest) {
     },
     0
   );
-  const metadata: Metadata = {};
-  products.forEach((product: Product) => {
-    metadata[
-      product.stripeId
-    ] = `${product.name} - Quantity: ${product.cartQuantity}`;
-  });
   const paymentIntent = await stripe.paymentIntents.create({
     amount: total,
     currency: "usd",
-    metadata,
   });
   return NextResponse.json({
     clientSecret: paymentIntent.client_secret,

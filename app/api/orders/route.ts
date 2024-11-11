@@ -3,8 +3,8 @@ import { NextRequest, NextResponse } from "next/server";
 import Mailgun from "mailgun.js";
 import formData from "form-data";
 
-export async function POST(req: NextRequest) {
-  // email customer that order has shipped
+export async function GET(req: NextRequest) {
+  // get all orders in db
 
   const mailgun = new Mailgun(formData);
   const mg = mailgun.client({

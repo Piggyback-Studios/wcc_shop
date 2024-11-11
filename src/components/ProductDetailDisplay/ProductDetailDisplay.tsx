@@ -10,12 +10,12 @@ const ProductDetailDisplay = ({
   price,
 }: ProductDetailDisplayProps) => {
   return (
-    <div>
+    <div className="grid gap-8">
       <div className="flex justify-between items-center">
         <h1>{name}</h1>
         <Link href="/">Back</Link>
       </div>
-      <div className="grid md:grid-cols-[2fr_1fr]">
+      <div className="grid md:grid-cols-[2fr_1fr] gap-8">
         <div>
           {imageUrl && (
             <Image

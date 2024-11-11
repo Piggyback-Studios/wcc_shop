@@ -9,7 +9,7 @@ const Footer = ({}: FooterProps) => {
   return (
     <footer className="flex justify-center my-8">
       <ContentContainer>
-        <div className="grid md:grid-cols-3 mb-8">
+        <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
             <h6>LINKS</h6>
             <ul>
