@@ -59,7 +59,7 @@ const ProductDetailDisplay = ({
             />
           )}
         </div>
-        <div className="flex flex-col items-start gap-8">
+        <div className="flex flex-col items-start gap-4">
           <p>{name}</p>
           <p>{price}</p>
           <p>{description}</p>
