@@ -64,7 +64,6 @@ const ProductCard = ({
 
   return (
     <Link href={`/products/${id}`}>
-      {" "}
       <div className={styles.card}>
         {imageUrl && (
           <Image
@@ -82,7 +81,8 @@ const ProductCard = ({
           </div>
           {description && <p className={styles.description}>{description}</p>}
           <CustomButton
-            onClick={() =>
+            onClick={(evt) => {
+              evt.preventDefault();
               handleClick({
                 id,
                 name,
@@ -93,8 +93,8 @@ const ProductCard = ({
                 priceId,
                 stockQuantity,
                 cartQuantity,
-              } as Product)
-            }
+              } as Product);
+            }}
             label="Add to Cart"
             className="absolute bottom-0 translate-y-1/2 right-2"
           />

@@ -2,6 +2,7 @@
 
 import ContentContainer from "@/src/components/common/ContentContainer";
 import CustomButton from "@/src/components/common/CustomButton";
+import toast from "@/src/utils/toast";
 import {
   useStripe,
   useElements,
@@ -43,6 +44,10 @@ const CheckoutForm = () => {
     if (result.error) {
       // Show error to your customer (for example, payment details incomplete)
       console.log(result.error.message);
+      toast(
+        "There was an error processing your payment. Please check your payment information and try again.",
+        "error"
+      );
       setSubmitLabel("Try Again");
     } else {
       // Your customer will be redirected to your `return_url`. For some payment

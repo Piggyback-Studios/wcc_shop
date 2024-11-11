@@ -6,28 +6,52 @@ import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
 import { getSession } from "@/src/utils/auth";
 
-// fetch all active products
+// fetch all products
 export async function GET(req: NextRequest) {
-  const products = await sql`select * from products where active = true;`;
-
-  const formattedProducts: Product[] = products.rows.map(
-    (row) =>
-      ({
-        id: row.id,
-        name: row.name,
-        description: row.description,
-        imageUrl: row.image_url,
-        stockQuantity: row.quantity,
-        cartQuantity: 0,
-        stripeId: row.stripe_id,
-        price: row.price / 100,
-        priceId: row.price_id,
-        active: row.active,
-      } as Product)
-  );
-  return NextResponse.json({
-    products: formattedProducts,
-  });
+  const searchParams = req.nextUrl.searchParams;
+  const adminList = searchParams.get("adminList");
+  if (adminList) {
+    const products = await sql`select * from products;`;
+    const formattedProducts: Product[] = products.rows.map(
+      (row) =>
+        ({
+          id: row.id,
+          name: row.name,
+          description: row.description,
+          imageUrl: row.image_url,
+          stockQuantity: row.quantity,
+          cartQuantity: 0,
+          stripeId: row.stripe_id,
+          price: row.price / 100,
+          priceId: row.price_id,
+          active: row.active,
+        } as Product)
+    );
+    return NextResponse.json({
+      products: formattedProducts,
+    });
+  } else {
+    const products =
+      await sql`select * from products where active = true and quantity > 0;`;
+    const formattedProducts: Product[] = products.rows.map(
+      (row) =>
+        ({
+          id: row.id,
+          name: row.name,
+          description: row.description,
+          imageUrl: row.image_url,
+          stockQuantity: row.quantity,
+          cartQuantity: 0,
+          stripeId: row.stripe_id,
+          price: row.price / 100,
+          priceId: row.price_id,
+          active: row.active,
+        } as Product)
+    );
+    return NextResponse.json({
+      products: formattedProducts,
+    });
+  }
 }
 
 // create a product
