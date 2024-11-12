@@ -13,8 +13,6 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
-// todo: 
-
 model Product {
   id          Int                 @id @default(autoincrement())
   stripeId    String              @unique
@@ -56,14 +54,18 @@ model User {
 }
 
 model UserType {
-  id   Int    @id @default(autoincrement())
-  name String
-  User User[]
+  id       Int    @id @default(autoincrement())
+  userType String @unique
+  User     User[]
 }
 
 model Order {
-  id       Int             @id @default(autoincrement())
-  products OrderProducts[]
+  id                   Int             @id @default(autoincrement())
+  paymentId            String
+  shipped              Boolean
+  shippingAddressLine1 String
+  shippingAddressLine2 String
+  products             OrderProducts[]
 }
 
 model OrderProducts {
