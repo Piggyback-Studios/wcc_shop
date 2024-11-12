@@ -5,11 +5,14 @@ import Stripe from "stripe";
 import { put } from "@vercel/blob";
 import { v4 as uuid } from "uuid";
 import { getSession } from "@/src/utils/auth";
+import db from "@/src/utils/data/db";
 
 // fetch all products
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const adminList = searchParams.get("adminList");
+  const prismaRes = await db.product.findMany();
+  console.log(prismaRes);
   if (adminList) {
     const products = await sql`select * from products;`;
     const formattedProducts: Product[] = products.rows.map(
