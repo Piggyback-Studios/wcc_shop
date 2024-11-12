@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt";
+
 import db from "@/src/utils/data/db";
 
 const createUserTypes = async () => {
@@ -28,14 +30,15 @@ const createUsers = async () => {
   const userType = await db.userType.findFirstOrThrow({
     where: { userType: "owner" },
   });
+  const hashedPw = await bcrypt.hash("123456", 10);
   const louie = await db.user.upsert({
-    where: { email: "alice@prisma.io" },
+    where: { email: "louie@piggybackstudios.co" },
     update: {},
     create: {
       email: "alice@prisma.io",
       firstName: "Louie",
       lastName: "Williford",
-      password: "123",
+      password: hashedPw,
       type: {
         connect: {
           id: userType.id,
