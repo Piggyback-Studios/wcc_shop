@@ -187,8 +187,8 @@ export async function PUT(req: NextRequest) {
           description,
           price: priceInt,
           imageUrl: url,
-          quantity: stockQuantity,
-          active,
+          quantity: parseInt(stockQuantity.toString()),
+          active: parseBool(active.toString()),
         },
       });
     } else {
@@ -198,8 +198,8 @@ export async function PUT(req: NextRequest) {
           name,
           description,
           price: priceInt,
-          quantity: stockQuantity,
-          active,
+          quantity: parseInt(stockQuantity.toString()),
+          active: parseBool(active.toString()),
         },
       });
     }
