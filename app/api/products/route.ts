@@ -2,7 +2,6 @@ import { Product } from "@/src/shared/types";
 import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
 import { put } from "@vercel/blob";
-import { v4 as uuid } from "uuid";
 import { getSession } from "@/src/utils/auth";
 import db from "@/src/utils/data/db";
 
