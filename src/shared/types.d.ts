@@ -66,6 +66,17 @@ export type Product = {
   active: boolean;
 };
 
+export type Order = {
+  id: string;
+  paymentId: string;
+  paid: boolean;
+  shipped: boolean;
+  shippingStreetAddress: string;
+  shippingState: string;
+  shippingMunicipality: string;
+  shippingZip: string;
+};
+
 export type Metadata = {
   [k: string]: string;
 };
