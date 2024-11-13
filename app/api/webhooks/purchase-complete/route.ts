@@ -33,7 +33,6 @@ export async function POST(req: NextRequest) {
   //     to: [SITE_INFO.EMAIL_ADDRESS],
   //     subject: `Your Order From Williford Carpentry Collective Has Been Placed`,
   //     html: `
-  //   //   TODO: go through items here
   //       <h1>Contact Form Submission - ${name}</h1>\n
   //       <p>Contact Email: ${email}</p>\n
   //       <p>Message: ${message}</p>\n
