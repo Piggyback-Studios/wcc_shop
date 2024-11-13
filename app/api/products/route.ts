@@ -7,6 +7,13 @@ import { getSession } from "@/src/utils/auth";
 import db from "@/src/utils/data/db";
 import { parseBool } from "@/src/utils/parse";
 
+// TODO: once purchased, remove the appropriate amount from stock quantity
+// TODO: dont allow users to purchase more than the stock quantity
+// TODO: once a purchase is completed, create an order in the database
+// TODO: once an order is shipped, admins and owners should be able to mark order as shipped in the system and the customer should get an email
+// TODO: allow admins to see all orders
+// TODO: make cart store in local storage
+
 // fetch all products
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
@@ -198,6 +205,7 @@ export async function PUT(req: NextRequest) {
           name,
           description,
           price: priceInt,
+          // idk why I have to do this - for some reason prisma sees these values as strings. need to look into it.
           quantity: parseInt(stockQuantity.toString()),
           active: parseBool(active.toString()),
         },

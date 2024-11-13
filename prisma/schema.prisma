@@ -61,12 +61,15 @@ model UserType {
 }
 
 model Order {
-  id                   Int             @id @default(autoincrement())
-  paymentId            String
-  shipped              Boolean
-  shippingAddressLine1 String
-  shippingAddressLine2 String
-  products             OrderProducts[]
+  id                    Int             @id @default(autoincrement())
+  paymentId             String
+  paid                  Boolean
+  shipped               Boolean
+  shippingStreetAddress String
+  shippingState         String
+  shippingMunicipality  String
+  shippingZip           String
+  products              OrderProducts[]
 }
 
 model OrderProducts {
