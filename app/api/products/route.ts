@@ -10,8 +10,6 @@ import db from "@/src/utils/data/db";
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const adminList = searchParams.get("adminList");
-  const prismaRes = await db.product.findMany();
-  console.log(prismaRes);
   if (adminList) {
     const products = await db.product.findMany();
     const formattedProducts: Product[] = products.map(
@@ -113,7 +111,7 @@ export async function POST(req: NextRequest) {
       access: "public",
     });
 
-    // add sql row
+    // update db
     await db.product.create({
       data: {
         name: product.name,
@@ -157,17 +155,18 @@ export async function PUT(req: NextRequest) {
 
     const priceInt = Math.ceil(priceAmt * 100);
 
-    const { rows } =
-      await sql`SELECT stripe_id, price FROM products WHERE id=${productId}`;
+    const { stripeId } = await db.product.findFirstOrThrow({
+      where: { id: parseInt(productId) },
+    });
 
     // edit stripe price + product
     const stripe = new Stripe(process.env.STRIPE_SK!);
     const price = await stripe.prices.create({
       currency: "usd",
       unit_amount: priceInt,
-      product: rows[0].stripe_id,
+      product: stripeId,
     });
-    await stripe.products.update(rows[0].stripe_id, {
+    await stripe.products.update(stripeId, {
       name,
       description,
       default_price: price.id,
@@ -180,17 +179,28 @@ export async function PUT(req: NextRequest) {
       const { url } = await put(imageFp, image, {
         access: "public",
       });
-      sql`
-        UPDATE products
-        SET name=${name}, description=${description}, price=${priceInt}, image_url=${url}, quantity=${stockQuantity}, active=${active}
-        WHERE id=${productId};
-      `;
+      await db.product.update({
+        where: { id: parseInt(productId) },
+        data: {
+          name,
+          description,
+          price: priceInt,
+          imageUrl: url,
+          quantity: stockQuantity,
+          active,
+        },
+      });
     } else {
-      sql`
-        UPDATE products
-        SET name=${name}, description=${description}, price=${priceInt}, quantity=${stockQuantity}, active=${active}
-        WHERE id=${productId};
-      `;
+      await db.product.update({
+        where: { id: parseInt(productId) },
+        data: {
+          name,
+          description,
+          price: priceInt,
+          quantity: stockQuantity,
+          active,
+        },
+      });
     }
   } catch (err) {
     console.log(err);

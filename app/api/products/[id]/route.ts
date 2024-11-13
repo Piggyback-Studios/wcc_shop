@@ -1,4 +1,3 @@
-import { sql } from "@vercel/postgres";
 import { NextResponse, NextRequest } from "next/server";
 
 import { Product } from "@/src/shared/types";
