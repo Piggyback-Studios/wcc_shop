@@ -35,7 +35,7 @@ const createUsers = async () => {
     where: { email: "louie@piggybackstudios.co" },
     update: {},
     create: {
-      email: "alice@prisma.io",
+      email: "louie@piggybackstudios.co",
       firstName: "Louie",
       lastName: "Williford",
       password: hashedPw,

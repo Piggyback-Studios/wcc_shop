@@ -14,42 +14,61 @@ export async function GET(req: NextRequest) {
   const prismaRes = await db.product.findMany();
   console.log(prismaRes);
   if (adminList) {
-    const products = await sql`select * from products;`;
-    const formattedProducts: Product[] = products.rows.map(
-      (row) =>
+    const products = await db.product.findMany();
+    const formattedProducts: Product[] = products.map(
+      ({
+        id,
+        name,
+        description,
+        imageUrl,
+        quantity,
+        stripeId,
+        price,
+        priceId,
+        active,
+      }) =>
         ({
-          id: row.id,
-          name: row.name,
-          description: row.description,
-          imageUrl: row.image_url,
-          stockQuantity: row.quantity,
+          id,
+          name,
+          description,
+          imageUrl,
+          stockQuantity: quantity,
           cartQuantity: 0,
-          stripeId: row.stripe_id,
-          price: row.price / 100,
-          priceId: row.price_id,
-          active: row.active,
-        } as Product)
+          stripeId,
+          price: price / 100,
+          priceId,
+          active,
+        } as unknown as Product)
     );
     return NextResponse.json({
       products: formattedProducts,
     });
   } else {
-    const products =
-      await sql`select * from products where active = true and quantity > 0;`;
-    const formattedProducts: Product[] = products.rows.map(
-      (row) =>
+    const products = await db.product.findMany({ where: { active: true } });
+    const formattedProducts: Product[] = products.map(
+      ({
+        id,
+        name,
+        description,
+        imageUrl,
+        quantity,
+        stripeId,
+        price,
+        priceId,
+        active,
+      }) =>
         ({
-          id: row.id,
-          name: row.name,
-          description: row.description,
-          imageUrl: row.image_url,
-          stockQuantity: row.quantity,
+          id,
+          name,
+          description,
+          imageUrl,
+          stockQuantity: quantity,
           cartQuantity: 0,
-          stripeId: row.stripe_id,
-          price: row.price / 100,
-          priceId: row.price_id,
-          active: row.active,
-        } as Product)
+          stripeId,
+          price: price / 100,
+          priceId,
+          active,
+        } as unknown as Product)
     );
     return NextResponse.json({
       products: formattedProducts,
