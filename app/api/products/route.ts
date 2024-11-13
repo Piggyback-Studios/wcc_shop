@@ -1,9 +1,11 @@
-import { Product } from "@/src/shared/types";
 import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
 import { put } from "@vercel/blob";
+
+import { Product } from "@/src/shared/types";
 import { getSession } from "@/src/utils/auth";
 import db from "@/src/utils/data/db";
+import { parseBool } from "@/src/utils/parse";
 
 // fetch all products
 export async function GET(req: NextRequest) {
@@ -87,7 +89,7 @@ export async function POST(req: NextRequest) {
     const name = form.get("name") as string;
     const description = form.get("description") as string;
     const price = form.get("price") as unknown as number;
-    const stockQuantity = form.get("stockQuantity") as unknown as number;
+    const stockQuantity = form.get("stockQuantity") as unknown as string;
     const active = (form.get("active") as unknown as boolean) || false;
 
     const priceInt = Math.ceil(price * 100);
@@ -119,8 +121,8 @@ export async function POST(req: NextRequest) {
         price: priceInt,
         imageUrl: url,
         priceId: product.default_price as string,
-        quantity: stockQuantity,
-        active,
+        quantity: parseInt(stockQuantity),
+        active: parseBool(active.toString()),
       },
     });
   } catch (err) {
