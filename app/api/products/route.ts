@@ -1,5 +1,4 @@
 import { Product } from "@/src/shared/types";
-import { sql } from "@vercel/postgres";
 import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
 import { put } from "@vercel/blob";
@@ -115,13 +114,18 @@ export async function POST(req: NextRequest) {
     });
 
     // add sql row
-    sql`
-      INSERT INTO products
-      (id, stripe_id, name, description, price, image_url, quantity, active)
-      VALUES (${uuid()}, ${product.id}, ${
-      product.name
-    }, ${description}, ${priceInt}, ${url}, ${stockQuantity}, ${active});
-    `;
+    await db.product.create({
+      data: {
+        name: product.name,
+        stripeId: product.id,
+        description: description,
+        price: priceInt,
+        imageUrl: url,
+        priceId: product.default_price as string,
+        quantity: stockQuantity,
+        active,
+      },
+    });
   } catch (err) {
     console.log(err);
   }
@@ -182,7 +186,6 @@ export async function PUT(req: NextRequest) {
         WHERE id=${productId};
       `;
     } else {
-      console.log("no image");
       sql`
         UPDATE products
         SET name=${name}, description=${description}, price=${priceInt}, quantity=${stockQuantity}, active=${active}
