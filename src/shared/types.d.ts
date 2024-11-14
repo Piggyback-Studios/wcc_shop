@@ -117,6 +117,10 @@ export type CreateProductFormType = {
   active: boolean;
 };
 
+export type EditOrderFormType = {
+  shipped: boolean;
+};
+
 export type SignInFormType = {
   email: string;
   password: string;
@@ -171,3 +175,7 @@ export type ProductDetailBlockProps = {
 };
 
 export type ProductDetailDisplayProps = Product & {};
+
+export type EditOrderFormProps = {
+  id: string;
+};
