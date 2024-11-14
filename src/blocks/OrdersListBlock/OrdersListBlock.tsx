@@ -63,8 +63,20 @@ const OrdersListBlock = () => {
                   <td>{shippingName}</td>
                   <td>{shippingStreetAddress}</td>
                   <td className="hidden md:table-cell">{`${shippingMunicipality}, ${shippingState} ${shippingZip}`}</td>
-                  <td className="hidden md:table-cell">{paid}</td>
-                  <td>{shipped}</td>
+                  <td
+                    className={`hidden md:table-cell ${
+                      paid ? "text-primary-500" : "text-red-500"
+                    }`}
+                  >
+                    {paid.toString()}
+                  </td>
+                  <td
+                    className={`${
+                      shipped ? "text-primary-500" : "text-red-500"
+                    }`}
+                  >
+                    {shipped.toString()}
+                  </td>
                 </tr>
               )
             )}
