@@ -52,7 +52,6 @@ model User {
   password   String
   type       UserType @relation(fields: [userTypeId], references: [id])
   userTypeId Int
-  orders     Order[]
 }
 
 model UserType {
@@ -66,13 +65,12 @@ model Order {
   paymentId             String
   paid                  Boolean
   shipped               Boolean
+  shippingName          String
   shippingStreetAddress String
   shippingState         String
   shippingMunicipality  String
   shippingZip           String
   products              OrderProducts[]
-  User                  User?           @relation(fields: [userId], references: [id])
-  userId                Int?
 }
 
 model OrderProducts {

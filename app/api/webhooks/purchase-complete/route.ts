@@ -13,6 +13,7 @@ export async function POST(req: NextRequest) {
       paymentId: "1234",
       paid: true,
       shipped: false,
+      shippingName: "Shipping Name Here",
       shippingStreetAddress: "123 Main St.",
       shippingMunicipality: "Colorado Springs",
       shippingZip: "80909",

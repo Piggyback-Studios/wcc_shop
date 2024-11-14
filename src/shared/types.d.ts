@@ -71,6 +71,7 @@ export type Order = {
   paymentId: string;
   paid: boolean;
   shipped: boolean;
+  shippingName: string;
   shippingStreetAddress: string;
   shippingState: string;
   shippingMunicipality: string;

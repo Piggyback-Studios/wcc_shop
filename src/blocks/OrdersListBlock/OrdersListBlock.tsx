@@ -35,6 +35,7 @@ const OrdersListBlock = () => {
             <thead>
               <tr>
                 <th>Order ID#</th>
+                <th>Customer Name</th>
                 <th>Street Address Line 1</th>
                 <th className="hidden md:table-cell">Street Address Line 2</th>
                 <th className="hidden md:table-cell">Paid</th>
@@ -45,6 +46,7 @@ const OrdersListBlock = () => {
               (
                 {
                   id,
+                  shippingName,
                   shippingStreetAddress,
                   shippingState,
                   shippingMunicipality,
@@ -58,6 +60,7 @@ const OrdersListBlock = () => {
                   <td>
                     <Link href={`/admin/orders/edit/${id}`}>{id}</Link>
                   </td>
+                  <td>{shippingName}</td>
                   <td>{shippingStreetAddress}</td>
                   <td className="hidden md:table-cell">{`${shippingMunicipality}, ${shippingState} ${shippingZip}`}</td>
                   <td className="hidden md:table-cell">{paid}</td>

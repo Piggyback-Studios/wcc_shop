@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import Stripe from "stripe";
 
 import db from "@/src/utils/data/db";
 
@@ -49,9 +50,37 @@ const createUsers = async () => {
   console.log({ louie });
 };
 
+const createProducts = async () => {
+  const priceInt = 1999;
+  const stripe = new Stripe(process.env.STRIPE_SK!);
+  const product = await stripe.products.create({
+    name: "Seeded Product",
+    description: "Seeded product description.",
+    default_price_data: {
+      currency: "usd",
+      unit_amount: priceInt,
+    },
+    active: true,
+  });
+
+  await db.product.create({
+    data: {
+      name: product.name,
+      stripeId: product.id,
+      description: product.description || "",
+      price: priceInt,
+      imageUrl: "/images/test/product-image.jpg",
+      priceId: product.default_price as string,
+      quantity: 0,
+      active: true,
+    },
+  });
+};
+
 async function main() {
   await createUserTypes();
   await createUsers();
+  await createProducts();
 }
 
 main()
