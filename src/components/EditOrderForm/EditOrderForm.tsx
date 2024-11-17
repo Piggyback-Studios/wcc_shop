@@ -20,7 +20,6 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
     loadOrder();
   }, []);
   const onSubmit: SubmitHandler<EditOrderFormType> = async (values) => {
-    const { shipped } = values;
     await fetch(`/api/orders/${id}`, {
       method: "PUT",
       body: null,

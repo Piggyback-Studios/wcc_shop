@@ -74,8 +74,8 @@ export type Order = {
   shippingName: string;
   shippingStreetAddress: string;
   shippingState: string;
-  shippingMunicipality: string;
-  shippingZip: string;
+  shippingCity: string;
+  shippingPostalCode: string;
 };
 
 export type Metadata = {

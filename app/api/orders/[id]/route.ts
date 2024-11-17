@@ -4,14 +4,12 @@ import formData from "form-data";
 
 import db from "@/src/utils/data/db";
 import { getSession } from "@/src/utils/auth";
-import { SITE_INFO } from "@/src/shared/data/global.data";
 
+// fetch single order
 export async function GET(
   req: NextRequest,
   { params: { id } }: { params: { id: string } }
 ) {
-  // fetch single order
-  // email customer that order has shipped
   const order = db.order.findFirstOrThrow({ where: { id: parseInt(id) } });
   return NextResponse.json({ order });
 }
@@ -35,7 +33,9 @@ export async function PUT(
         shippedDate: new Date(),
       },
     });
-    const {} = db.order.findFirstOrThrow({ where: { id: parseInt(id) } });
+    const { customerEmail } = await db.order.findFirstOrThrow({
+      where: { id: parseInt(id) },
+    });
     // email customer that order has been shipped
     const mailgun = new Mailgun(formData);
     const mg = mailgun.client({
@@ -44,9 +44,9 @@ export async function PUT(
     });
     const body = await req.json();
     const { email, message, name } = body;
-    const customerMsg = await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
+    await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
       from: `${name} <mailgun@${process.env.MAILGUN_DOMAIN!}>`,
-      to: [SITE_INFO.EMAIL_ADDRESS],
+      to: [customerEmail],
       subject: `Your Order From Williford Carpentry Collective Has Been Shipped`,
       html: `
         <h1>Contact Form Submission - ${name}</h1>\n

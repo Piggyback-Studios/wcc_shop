@@ -62,16 +62,17 @@ model UserType {
 
 model Order {
   id                    Int             @id @default(autoincrement())
-  paymentId             String
+  paymentId             String?
   paid                  Boolean
   shipped               Boolean
   customerEmail         String
-  shippingName          String
-  shippingStreetAddress String
-  shippingState         String
-  shippingMunicipality  String
-  shippingZip           String
-  orderDate             DateTime
+  shippingName          String?
+  shippingCountry       String?
+  shippingStreetAddress String?
+  shippingState         String?
+  shippingCity          String?
+  shippingPostalCode    String?
+  orderDate             DateTime?
   shippedDate           DateTime?
   products              OrderProducts[]
 }

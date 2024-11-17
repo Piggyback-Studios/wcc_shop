@@ -49,8 +49,8 @@ const OrdersListBlock = () => {
                   shippingName,
                   shippingStreetAddress,
                   shippingState,
-                  shippingMunicipality,
-                  shippingZip,
+                  shippingCity,
+                  shippingPostalCode,
                   paid,
                   shipped,
                 }: Order,
@@ -62,7 +62,7 @@ const OrdersListBlock = () => {
                   </td>
                   <td>{shippingName}</td>
                   <td>{shippingStreetAddress}</td>
-                  <td className="hidden md:table-cell">{`${shippingMunicipality}, ${shippingState} ${shippingZip}`}</td>
+                  <td className="hidden md:table-cell">{`${shippingCity}, ${shippingState} ${shippingPostalCode}`}</td>
                   <td
                     className={`hidden md:table-cell ${
                       paid ? "text-primary-500" : "text-red-500"

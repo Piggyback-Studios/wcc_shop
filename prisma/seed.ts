@@ -123,6 +123,7 @@ const createCategories = async () => {
 };
 
 const createOrders = async () => {
+  // TODO: create an upaid order, a paid order, and a shipped order
   await db.order.create({
     data: {
       paymentId: "1234",
@@ -131,8 +132,8 @@ const createOrders = async () => {
       customerEmail: "test@piggybackstudios.co",
       shippingName: "Shipping Name Here",
       shippingStreetAddress: "123 Main St.",
-      shippingMunicipality: "Colorado Springs",
-      shippingZip: "80909",
+      shippingCity: "Colorado Springs",
+      shippingPostalCode: "80909",
       shippingState: "CO",
       orderDate: new Date(),
     },
