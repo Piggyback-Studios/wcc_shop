@@ -66,6 +66,18 @@ export type Product = {
   active: boolean;
 };
 
+export type Order = {
+  id: string;
+  paymentId: string;
+  paid: boolean;
+  shipped: boolean;
+  shippingName: string;
+  shippingStreetAddress: string;
+  shippingState: string;
+  shippingMunicipality: string;
+  shippingZip: string;
+};
+
 export type Metadata = {
   [k: string]: string;
 };
@@ -103,6 +115,10 @@ export type CreateProductFormType = {
   image: FileList;
   stockQuantity: number;
   active: boolean;
+};
+
+export type EditOrderFormType = {
+  shipped: boolean;
 };
 
 export type SignInFormType = {
@@ -159,3 +175,7 @@ export type ProductDetailBlockProps = {
 };
 
 export type ProductDetailDisplayProps = Product & {};
+
+export type EditOrderFormProps = {
+  id: string;
+};

@@ -1,8 +1,8 @@
-import { sql } from "@vercel/postgres";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 
 import { login } from "@/src/utils/auth";
+import db from "@/src/utils/data/db";
 
 export async function POST(req: NextRequest) {
   const unauthResponse = NextResponse.json({
@@ -12,9 +12,18 @@ export async function POST(req: NextRequest) {
   let response: NextResponse = unauthResponse;
   try {
     const { email, password } = await req.json();
-    const { rows } = await sql`select * from adminUsers where email=${email}`;
-    const { password: storedHash, adminLevel, firstName, lastName } = rows[0];
-    const result = await bcrypt.compare(password, storedHash);
+    const {
+      password: storedPassword,
+      firstName,
+      lastName,
+      userTypeId,
+    } = await db.user.findFirstOrThrow({
+      where: { email },
+    });
+    const { userType } = await db.userType.findFirstOrThrow({
+      where: { id: userTypeId },
+    });
+    const result = await bcrypt.compare(password, storedPassword);
     switch (result) {
       case true:
         const emailStr = email as string;
@@ -22,7 +31,7 @@ export async function POST(req: NextRequest) {
         response = NextResponse.json({
           message: "Success!",
           status: 200,
-          userInfo: { adminLevel, firstName, lastName },
+          userInfo: { type: userType, firstName, lastName },
           session,
         });
       default:

@@ -4,13 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
     "start": "next start",
-    "lint": "next lint",
-    "seed": "npx tsx -r dotenv/config ./src/utils/data/seed.ts dotenv_config_path=.env.local"
+    "lint": "next lint"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^9.0.3",
+    "@prisma/client": "^5.22.0",
     "@stripe/react-stripe-js": "^2.6.2",
     "@stripe/stripe-js": "^3.0.10",
     "@types/bcrypt": "^5.0.2",
@@ -33,6 +36,7 @@
     "multer": "^1.4.5-lts.1",
     "next": "14.1.4",
     "postcss": "^8.4.47",
+    "prisma": "^5.22.0",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.53.0",
@@ -43,12 +47,13 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^22.9.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.1.4",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
   },
   "resolutions": {
     "string-width": "4.2.3"

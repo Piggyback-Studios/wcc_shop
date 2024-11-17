@@ -1,3 +1,5 @@
+const colors = require("tailwindcss/colors");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -9,6 +11,7 @@ module.exports = {
   theme: {
     extend: {},
     colors: {
+      red: colors.red,
       primary: {
         50: "#E2F8EC",
         100: "#D2F3E1",

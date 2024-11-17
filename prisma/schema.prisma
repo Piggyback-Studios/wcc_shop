@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model Product {
+  id          Int                 @id @default(autoincrement())
+  stripeId    String              @unique
+  name        String
+  description String
+  price       Int
+  priceId     String
+  imageUrl    String
+  quantity    Int
+  active      Boolean
+  categories  ProductCategories[]
+  orders      OrderProducts[]
+}
+
+model Category {
+  id          Int                 @id @default(autoincrement())
+  name        String
+  description String
+  imageUrl    String
+  active      Boolean
+  products    ProductCategories[]
+}
+
+model ProductCategories {
+  id         Int       @id @default(autoincrement())
+  Product    Product?  @relation(fields: [productId], references: [id])
+  productId  Int?
+  Category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId Int?
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  firstName  String
+  lastName   String
+  email      String   @unique
+  password   String
+  type       UserType @relation(fields: [userTypeId], references: [id])
+  userTypeId Int
+}
+
+model UserType {
+  id       Int    @id @default(autoincrement())
+  userType String @unique
+  User     User[]
+}
+
+model Order {
+  id                    Int             @id @default(autoincrement())
+  paymentId             String
+  paid                  Boolean
+  shipped               Boolean
+  customerEmail         String
+  shippingName          String
+  shippingStreetAddress String
+  shippingState         String
+  shippingMunicipality  String
+  shippingZip           String
+  orderDate             DateTime
+  shippedDate           DateTime?
+  products              OrderProducts[]
+}
+
+model OrderProducts {
+  id        Int      @id @default(autoincrement())
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
+  Order     Order?   @relation(fields: [orderId], references: [id])
+  orderId   Int?
+}

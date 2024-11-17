@@ -7,16 +7,19 @@ import { SidebarProvider } from "@/src/context/Sidebar";
 import { TotalsProvider } from "@/src/context/Totals";
 import { ProductsProvider } from "@/src/context/Products";
 import { AdminProductsProvider } from "@/src/context/AdminProducts";
+import { OrdersProvider } from "@/src/context/Orders";
 
 const ProviderWrapper = ({ children }: PropsWithChildren) => {
   return (
     <ProductsProvider>
       <AdminProductsProvider>
-        <CartProvider>
-          <TotalsProvider>
-            <SidebarProvider>{children}</SidebarProvider>
-          </TotalsProvider>
-        </CartProvider>
+        <OrdersProvider>
+          <CartProvider>
+            <TotalsProvider>
+              <SidebarProvider>{children}</SidebarProvider>
+            </TotalsProvider>
+          </CartProvider>
+        </OrdersProvider>
       </AdminProductsProvider>
     </ProductsProvider>
   );

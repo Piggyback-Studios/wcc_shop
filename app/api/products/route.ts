@@ -1,52 +1,82 @@
-import { Product } from "@/src/shared/types";
-import { sql } from "@vercel/postgres";
 import { NextResponse, NextRequest } from "next/server";
 import Stripe from "stripe";
 import { put } from "@vercel/blob";
-import { v4 as uuid } from "uuid";
+
+import { Product } from "@/src/shared/types";
 import { getSession } from "@/src/utils/auth";
+import db from "@/src/utils/data/db";
+import { parseBool } from "@/src/utils/parse";
+
+// MASTER TODO MVP LIST
+// TODO: once purchased, remove the appropriate amount from stock quantity
+// TODO: dont allow users to purchase more than the stock quantity
+// TODO: once a purchase is completed, create an order in the database
+// TODO: once an order is shipped, admins and owners should be able to mark order as shipped in the system and the customer should get an email
+// TODO: allow admins to see all orders
+// TODO: make cart store in local storage
+// TODO: protect all necessary backend endpoints
+// TODO: write tests for api endpoints and block-level components
 
 // fetch all products
 export async function GET(req: NextRequest) {
   const searchParams = req.nextUrl.searchParams;
   const adminList = searchParams.get("adminList");
   if (adminList) {
-    const products = await sql`select * from products;`;
-    const formattedProducts: Product[] = products.rows.map(
-      (row) =>
+    const products = await db.product.findMany();
+    const formattedProducts: Product[] = products.map(
+      ({
+        id,
+        name,
+        description,
+        imageUrl,
+        quantity,
+        stripeId,
+        price,
+        priceId,
+        active,
+      }) =>
         ({
-          id: row.id,
-          name: row.name,
-          description: row.description,
-          imageUrl: row.image_url,
-          stockQuantity: row.quantity,
+          id,
+          name,
+          description,
+          imageUrl,
+          stockQuantity: quantity,
           cartQuantity: 0,
-          stripeId: row.stripe_id,
-          price: row.price / 100,
-          priceId: row.price_id,
-          active: row.active,
-        } as Product)
+          stripeId,
+          price: price / 100,
+          priceId,
+          active,
+        } as unknown as Product)
     );
     return NextResponse.json({
       products: formattedProducts,
     });
   } else {
-    const products =
-      await sql`select * from products where active = true and quantity > 0;`;
-    const formattedProducts: Product[] = products.rows.map(
-      (row) =>
+    const products = await db.product.findMany({ where: { active: true } });
+    const formattedProducts: Product[] = products.map(
+      ({
+        id,
+        name,
+        description,
+        imageUrl,
+        quantity,
+        stripeId,
+        price,
+        priceId,
+        active,
+      }) =>
         ({
-          id: row.id,
-          name: row.name,
-          description: row.description,
-          imageUrl: row.image_url,
-          stockQuantity: row.quantity,
+          id,
+          name,
+          description,
+          imageUrl,
+          stockQuantity: quantity,
           cartQuantity: 0,
-          stripeId: row.stripe_id,
-          price: row.price / 100,
-          priceId: row.price_id,
-          active: row.active,
-        } as Product)
+          stripeId,
+          price: price / 100,
+          priceId,
+          active,
+        } as unknown as Product)
     );
     return NextResponse.json({
       products: formattedProducts,
@@ -69,7 +99,7 @@ export async function POST(req: NextRequest) {
     const name = form.get("name") as string;
     const description = form.get("description") as string;
     const price = form.get("price") as unknown as number;
-    const stockQuantity = form.get("stockQuantity") as unknown as number;
+    const stockQuantity = form.get("stockQuantity") as unknown as string;
     const active = (form.get("active") as unknown as boolean) || false;
 
     const priceInt = Math.ceil(price * 100);
@@ -92,14 +122,19 @@ export async function POST(req: NextRequest) {
       access: "public",
     });
 
-    // add sql row
-    sql`
-      INSERT INTO products
-      (id, stripe_id, name, description, price, image_url, quantity, active)
-      VALUES (${uuid()}, ${product.id}, ${
-      product.name
-    }, ${description}, ${priceInt}, ${url}, ${stockQuantity}, ${active});
-    `;
+    // update db
+    await db.product.create({
+      data: {
+        name: product.name,
+        stripeId: product.id,
+        description: description,
+        price: priceInt,
+        imageUrl: url,
+        priceId: product.default_price as string,
+        quantity: parseInt(stockQuantity),
+        active: parseBool(active.toString()),
+      },
+    });
   } catch (err) {
     console.log(err);
   }
@@ -131,17 +166,18 @@ export async function PUT(req: NextRequest) {
 
     const priceInt = Math.ceil(priceAmt * 100);
 
-    const { rows } =
-      await sql`SELECT stripe_id, price FROM products WHERE id=${productId}`;
+    const { stripeId } = await db.product.findFirstOrThrow({
+      where: { id: parseInt(productId) },
+    });
 
     // edit stripe price + product
     const stripe = new Stripe(process.env.STRIPE_SK!);
     const price = await stripe.prices.create({
       currency: "usd",
       unit_amount: priceInt,
-      product: rows[0].stripe_id,
+      product: stripeId,
     });
-    await stripe.products.update(rows[0].stripe_id, {
+    await stripe.products.update(stripeId, {
       name,
       description,
       default_price: price.id,
@@ -154,18 +190,29 @@ export async function PUT(req: NextRequest) {
       const { url } = await put(imageFp, image, {
         access: "public",
       });
-      sql`
-        UPDATE products
-        SET name=${name}, description=${description}, price=${priceInt}, image_url=${url}, quantity=${stockQuantity}, active=${active}
-        WHERE id=${productId};
-      `;
+      await db.product.update({
+        where: { id: parseInt(productId) },
+        data: {
+          name,
+          description,
+          price: priceInt,
+          imageUrl: url,
+          quantity: parseInt(stockQuantity.toString()),
+          active: parseBool(active.toString()),
+        },
+      });
     } else {
-      console.log("no image");
-      sql`
-        UPDATE products
-        SET name=${name}, description=${description}, price=${priceInt}, quantity=${stockQuantity}, active=${active}
-        WHERE id=${productId};
-      `;
+      await db.product.update({
+        where: { id: parseInt(productId) },
+        data: {
+          name,
+          description,
+          price: priceInt,
+          // idk why I have to do this - for some reason prisma sees these values as strings. need to look into it.
+          quantity: parseInt(stockQuantity.toString()),
+          active: parseBool(active.toString()),
+        },
+      });
     }
   } catch (err) {
     console.log(err);
