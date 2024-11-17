@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import db from "@/src/utils/data/db";
 
+// get all orders in db
 export async function GET(req: NextRequest) {
   try {
-    // get all orders in db
     const orders = await db.order.findMany();
     return NextResponse.json({ orders, status: 200 });
   } catch (err) {

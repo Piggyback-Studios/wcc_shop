@@ -128,11 +128,13 @@ const createOrders = async () => {
       paymentId: "1234",
       paid: true,
       shipped: false,
+      customerEmail: "test@piggybackstudios.co",
       shippingName: "Shipping Name Here",
       shippingStreetAddress: "123 Main St.",
       shippingMunicipality: "Colorado Springs",
       shippingZip: "80909",
       shippingState: "CO",
+      orderDate: new Date(),
     },
   });
 };

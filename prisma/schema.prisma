@@ -65,11 +65,14 @@ model Order {
   paymentId             String
   paid                  Boolean
   shipped               Boolean
+  customerEmail         String
   shippingName          String
   shippingStreetAddress String
   shippingState         String
   shippingMunicipality  String
   shippingZip           String
+  orderDate             DateTime
+  shippedDate           DateTime?
   products              OrderProducts[]
 }
 

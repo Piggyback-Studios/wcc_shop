@@ -23,7 +23,7 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
     const { shipped } = values;
     await fetch(`/api/orders/${id}`, {
       method: "PUT",
-      body: JSON.stringify({ shipped }),
+      body: null,
     }).then((res) => {
       if (res.status === 200) toast("Product edited!", "success");
       else
