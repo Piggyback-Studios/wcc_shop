@@ -7,7 +7,8 @@ import db from "@/src/utils/data/db";
 
 export async function POST(req: NextRequest) {
   // create order in our db
-  console.log(req.body);
+  const reqJson = await req.json();
+  console.log(reqJson);
   const order = await db.order.create({
     data: {
       paymentId: "1234",
