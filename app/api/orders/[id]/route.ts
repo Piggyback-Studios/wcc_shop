@@ -12,14 +12,19 @@ export async function GET(
 ) {
   const order = await db.order.findFirstOrThrow({
     where: { id: parseInt(id) },
-    include: { products: true },
   });
-  const products = order.products.map(
-    async (orderProduct) =>
-      await db.product.findFirstOrThrow({
-        where: { id: orderProduct.id },
-      })
-  );
+  const orderProducts = await db.orderProducts.findMany({
+    where: { orderId: order.id },
+  });
+  const products: any[] = [];
+  for (let i = 0; i < orderProducts.length; i++) {
+    const orderProduct = orderProducts[i];
+    console.log({ orderProduct });
+    const dbProduct = await db.product.findFirstOrThrow({
+      where: { id: orderProduct.productId || 0 },
+    });
+    products.push({ ...dbProduct, quantity: orderProduct.quantity });
+  }
   return NextResponse.json({ order, products });
 }
 

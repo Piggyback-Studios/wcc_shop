@@ -12,7 +12,7 @@ const EditOrder = () => {
   return (
     <section className="w-full flex justify-center">
       <ContentContainer>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center mb-8">
           <h1>Edit Order</h1>
           <Link href="/admin/orders">Back</Link>
         </div>

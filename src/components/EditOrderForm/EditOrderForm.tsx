@@ -10,6 +10,7 @@ import {
   OrderDetail,
 } from "@/src/shared/types";
 import toast from "@/src/utils/toast";
+import CustomInput from "../common/CustomInput";
 
 const EditOrderForm = ({ id }: EditOrderFormProps) => {
   const { handleSubmit } = useForm<EditOrderFormType>({});
@@ -18,6 +19,7 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
   const loadOrder = async () => {
     const res = await fetch(`/api/orders/${id}`);
     const { order, products } = await res.json();
+    console.log({ ...order, products });
     setOrderDetail({ ...order, products });
   };
   useEffect(() => {
@@ -39,38 +41,47 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {orderDetail && (
-        <>
-          <div className="grid md:grid-cols-2">
-            <div>
-              <h4>Customer Information</h4>
-              {/* email, shipping information, etc */}
-              {orderDetail.customerEmail && <p>{orderDetail.customerEmail}</p>}
-              {orderDetail.shippingStreetAddress && (
-                <p>{orderDetail.shippingStreetAddress}</p>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <h4>Customer Information</h4>
+            {/* email, shipping information, etc */}
+            {orderDetail.customerEmail && <p>{orderDetail.customerEmail}</p>}
+            {orderDetail.shippingStreetAddress && (
+              <p>{orderDetail.shippingStreetAddress}</p>
+            )}
+            {orderDetail.shippingState &&
+              orderDetail.shippingCity &&
+              orderDetail.shippingPostalCode && (
+                <p>
+                  {orderDetail.shippingCity}, {orderDetail.shippingState}{" "}
+                  {orderDetail.shippingPostalCode}
+                </p>
               )}
-              {orderDetail.shippingState &&
-                orderDetail.shippingCity &&
-                orderDetail.shippingPostalCode && (
-                  <p>
-                    {orderDetail.shippingCity}, {orderDetail.shippingState}{" "}
-                    {orderDetail.shippingPostalCode}
-                  </p>
-                )}
-            </div>
-            <div>
-              <h4>Order Information</h4>
-              {/* products, totals, etc */}
-              {orderDetail.products && (
-                <>
-                  {orderDetail.products.map((product) => (
-                    <p>{product.name}</p>
-                  ))}
-                </>
-              )}
-            </div>
           </div>
-          <CustomButton label="Mark as Shipped" />
-        </>
+          <div>
+            <h4>Order Information</h4>
+            {/* products, totals, etc */}
+            {orderDetail.products && (
+              <>
+                {orderDetail.products.map((product) => (
+                  <p>{product.name}</p>
+                ))}
+              </>
+            )}
+          </div>
+          <div>
+            <h4>Internal Shipping Information</h4>
+            {/* products, totals, etc */}
+            <CustomInput
+              label="Shipping Code"
+              placeholder="XYZ-SHIPPING-CODE"
+              name="Shipping Code"
+              onChange={() => {}}
+              type="text"
+            />
+            {!orderDetail.shipped && <CustomButton label="Mark as Shipped" />}
+          </div>
+        </div>
       )}
     </form>
   );
