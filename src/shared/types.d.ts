@@ -68,14 +68,16 @@ export type Product = {
 
 export type Order = {
   id: string;
-  paymentId: string;
+  paymentId?: string;
   paid: boolean;
   shipped: boolean;
-  shippingName: string;
-  shippingStreetAddress: string;
-  shippingState: string;
-  shippingCity: string;
-  shippingPostalCode: string;
+  shippingName?: string;
+  customerEmail?: string;
+  shippingStreetAddress?: string;
+  shippingState?: string;
+  shippingCity?: string;
+  shippingPostalCode?: string;
+  trackingCode?: string;
 };
 
 export type Metadata = {
@@ -98,6 +100,10 @@ export type InputField = {
 };
 
 export type ContactFormFieldNamesType = "name" | "email" | "message";
+
+export type OrderDetail = Order & {
+  products: Product[];
+};
 
 // component and block level data types
 

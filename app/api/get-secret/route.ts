@@ -8,11 +8,20 @@ export async function POST(req: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SK || "");
   const data = await req.json();
   const { products, customerEmail } = data;
+  const dbProducts = products.map(
+    async (product: Product) =>
+      await db.product.findUniqueOrThrow({
+        where: { id: parseInt(product.id) },
+      })
+  );
   const order = await db.order.create({
     data: {
       paid: false,
       shipped: false,
       customerEmail: customerEmail,
+      products: {
+        connect: dbProducts.map((product: Product) => ({ id: product.id })),
+      },
     },
   });
   const total = await products.reduce(

@@ -9,10 +9,10 @@ export async function POST(req: NextRequest) {
   // create order in our db
   const reqJson = await req.json();
   const orderId = parseInt(reqJson.data.object.metadata.internal_order_id);
-  const order = await db.order.update({
+  await db.order.update({
     where: { id: orderId },
     data: {
-      paymentId: "1234",
+      paymentId: reqJson.data.object.id,
       paid: true,
       orderDate: new Date(),
       shippingName: reqJson.data.object.shipping.name,
@@ -23,15 +23,23 @@ export async function POST(req: NextRequest) {
       shippingPostalCode: reqJson.data.object.shipping.address.postalCode,
     },
   });
-  // enumerate products in order in stringified html here
-  // const orderProducts = await db.orderProducts.findMany({ where: { orderId } });
-  // const ordersHtml = `
-  //   ${orderProducts.map(
-  //     (orderProduct) => `
-  //       <p>${orderProduct.}</p>
-  //     `
-  //   )}
-  // `;
+  const order = await db.order.findUniqueOrThrow({
+    where: { id: orderId },
+    include: {
+      products: true,
+    },
+  });
+  const ordersHtml = `
+    ${order.products.map(async (orderProduct) => {
+      const fullProduct = await db.product.findFirstOrThrow({
+        where: { id: orderProduct.id },
+      });
+      return `
+        <p>${fullProduct.name} - ${orderProduct.quantity}</p>\n
+      `;
+    })}
+    <p>Total: $${reqJson.data.object.amount}</p>
+  `;
   // email customer that order has been placed
   const mailgun = new Mailgun(formData);
   const mg = mailgun.client({
@@ -44,6 +52,8 @@ export async function POST(req: NextRequest) {
     subject: `Your Order From Williford Carpentry Collective Has Been Placed`,
     html: `
         <h1>Your Order - #${order.id}</h1>\n
+        ${ordersHtml}
+        <p>Thank you for your order!</p>
       `,
   });
   // email us that order has been placed
@@ -53,6 +63,7 @@ export async function POST(req: NextRequest) {
     subject: `Williford Carpentry Collective Has Received a New Order`,
     html: `
         <h1>Online Order - #${order.id}</h1>\n
+        ${ordersHtml}
       `,
   });
   return Response.json(

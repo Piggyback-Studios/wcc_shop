@@ -74,6 +74,7 @@ model Order {
   shippingPostalCode    String?
   orderDate             DateTime?
   shippedDate           DateTime?
+  trackingCode          String?
   products              OrderProducts[]
 }
 

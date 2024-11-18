@@ -10,8 +10,17 @@ export async function GET(
   req: NextRequest,
   { params: { id } }: { params: { id: string } }
 ) {
-  const order = db.order.findFirstOrThrow({ where: { id: parseInt(id) } });
-  return NextResponse.json({ order });
+  const order = await db.order.findFirstOrThrow({
+    where: { id: parseInt(id) },
+    include: { products: true },
+  });
+  const products = order.products.map(
+    async (orderProduct) =>
+      await db.product.findFirstOrThrow({
+        where: { id: orderProduct.id },
+      })
+  );
+  return NextResponse.json({ order, products });
 }
 
 // edit an order
