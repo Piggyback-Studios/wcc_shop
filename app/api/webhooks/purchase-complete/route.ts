@@ -26,11 +26,11 @@ export async function POST(req: NextRequest) {
   const order = await db.order.findUniqueOrThrow({
     where: { id: orderId },
     include: {
-      products: true,
+      orderProducts: true,
     },
   });
   const ordersHtml = `
-    ${order.products.map(async (orderProduct) => {
+    ${order.orderProducts.map(async (orderProduct) => {
       const fullProduct = await db.product.findFirstOrThrow({
         where: { id: orderProduct.id },
       });

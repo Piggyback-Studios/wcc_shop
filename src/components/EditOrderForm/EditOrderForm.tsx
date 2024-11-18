@@ -63,8 +63,8 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
             {/* products, totals, etc */}
             {orderDetail.products && (
               <>
-                {orderDetail.products.map((product) => (
-                  <p>{product.name}</p>
+                {orderDetail.products.map((product, idx) => (
+                  <p key={idx}>{product.name}</p>
                 ))}
               </>
             )}
