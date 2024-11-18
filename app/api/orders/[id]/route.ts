@@ -46,7 +46,7 @@ export async function PUT(
     const { email, message, name } = body;
     await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
       from: `${name} <mailgun@${process.env.MAILGUN_DOMAIN!}>`,
-      to: [customerEmail],
+      to: customerEmail,
       subject: `Your Order From Williford Carpentry Collective Has Been Shipped`,
       html: `
         <h1>Contact Form Submission - ${name}</h1>\n

@@ -8,8 +8,9 @@ import db from "@/src/utils/data/db";
 export async function POST(req: NextRequest) {
   // create order in our db
   const reqJson = await req.json();
+  const orderId = parseInt(reqJson.data.object.metadata.internal_order_id);
   const order = await db.order.update({
-    where: { id: parseInt(reqJson.data.object.metadata.internal_order_id) },
+    where: { id: orderId },
     data: {
       paymentId: "1234",
       paid: true,
@@ -22,6 +23,15 @@ export async function POST(req: NextRequest) {
       shippingPostalCode: reqJson.data.object.shipping.address.postalCode,
     },
   });
+  // enumerate products in order in stringified html here
+  // const orderProducts = await db.orderProducts.findMany({ where: { orderId } });
+  // const ordersHtml = `
+  //   ${orderProducts.map(
+  //     (orderProduct) => `
+  //       <p>${orderProduct.}</p>
+  //     `
+  //   )}
+  // `;
   // email customer that order has been placed
   const mailgun = new Mailgun(formData);
   const mg = mailgun.client({
@@ -39,7 +49,7 @@ export async function POST(req: NextRequest) {
   // email us that order has been placed
   await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
     from: `<mailgun@${process.env.MAILGUN_DOMAIN!}>`,
-    to: [SITE_INFO.EMAIL_ADDRESS],
+    to: SITE_INFO.EMAIL_ADDRESS,
     subject: `Williford Carpentry Collective Has Received a New Order`,
     html: `
         <h1>Online Order - #${order.id}</h1>\n

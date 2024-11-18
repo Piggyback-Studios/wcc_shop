@@ -17,8 +17,8 @@ export async function POST(req: NextRequest) {
   try {
     const msg = await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
       from: `${name} <mailgun@${process.env.MAILGUN_DOMAIN!}>`,
-      to: [SITE_INFO.EMAIL_ADDRESS],
-      subject: `Website Contact Form Submission - Project Inquiry from ${name}`,
+      to: SITE_INFO.EMAIL_ADDRESS,
+      subject: `Williford Carpentry Collective Contact Form Submission - Project Inquiry from ${name}`,
       html: `
         <h1>Contact Form Submission - ${name}</h1>\n
         <p>Contact Email: ${email}</p>\n
