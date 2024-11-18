@@ -9,12 +9,12 @@ import { EditOrderFormProps, EditOrderFormType } from "@/src/shared/types";
 import toast from "@/src/utils/toast";
 
 const EditOrderForm = ({ id }: EditOrderFormProps) => {
-  const { register, handleSubmit, reset } = useForm<EditOrderFormType>({});
+  const { handleSubmit } = useForm<EditOrderFormType>({});
 
-  const [defaultValues, setDefaultValues] = useState<EditOrderFormType>();
   const loadOrder = async () => {
     const res = await fetch(`/api/orders/${id}`);
     const { order } = await res.json();
+    console.log(order);
   };
   useEffect(() => {
     loadOrder();
@@ -24,7 +24,8 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
       method: "PUT",
       body: null,
     }).then((res) => {
-      if (res.status === 200) toast("Product edited!", "success");
+      if (res.status === 200)
+        toast(`Order #${id} Marked as Shipped!`, "success");
       else
         toast(
           `There was an issue editing Order #${id}. Please try again.`,
@@ -32,17 +33,9 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
         );
     });
   };
-  const { ref: shippedRef, ...shippedRest } = register("shipped");
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <CustomInput
-        placeholder="Order Shipped"
-        type="checkbox"
-        {...shippedRest}
-        forwardRef={shippedRef}
-        label="Active"
-      />
-      <CustomButton label="submit" />
+      <CustomButton label="Mark as Shipped" />
     </form>
   );
 };
