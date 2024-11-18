@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   // create order in our db
   const reqJson = await req.json();
   const order = await db.order.update({
-    where: { id: reqJson.data.object.metadata.internal_order_id },
+    where: { id: parseInt(reqJson.data.object.metadata.internal_order_id) },
     data: {
       paymentId: "1234",
       paid: true,
