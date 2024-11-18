@@ -75,7 +75,7 @@ model Order {
   orderDate             DateTime?
   shippedDate           DateTime?
   trackingCode          String?
-  products              OrderProducts[]
+  orderProducts         OrderProducts[]
 }
 
 model OrderProducts {
