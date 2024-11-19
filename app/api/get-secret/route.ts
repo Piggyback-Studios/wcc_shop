@@ -4,18 +4,14 @@ import Stripe from "stripe";
 import { Product } from "@/src/shared/types";
 import db from "@/src/utils/data/db";
 import { randomIntFromInterval } from "@/src/utils/numbers";
-import { Product as PrismaProduct } from "@prisma/client";
 
 export async function POST(req: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SK || "");
   const data = await req.json();
   const { products, customerEmail } = data;
-  const dbProducts: PrismaProduct[] = products.map(
-    async (product: Product) =>
-      await db.product.findUniqueOrThrow({
-        where: { id: parseInt(product.id) },
-      })
-  );
+  const dbProducts = await db.product.findMany({
+    where: { id: { in: products.map((product: Product) => product.id) } },
+  });
   const order = await db.order.create({
     data: {
       paid: false,

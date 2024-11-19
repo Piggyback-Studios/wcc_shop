@@ -51,23 +51,24 @@ export default function Checkout() {
     <main className="flex flex-col items-center">
       <Spacer size="lg" />
       <CartTotalsSummary />
-      <Spacer size="lg" />
       <ContentContainer>
-        <CustomInput
-          name="email"
-          type="email"
-          placeholder="Your Email Address"
-          label="Email"
-          onChange={(evt: ChangeEvent<HTMLInputElement>) =>
-            setCustomerInput(evt.target.value)
-          }
-        />
-        {!customerEmail && (
-          <CustomButton
-            label="submit"
-            onClick={() => validateCustomerInput()}
+        <div className="my-8">
+          <CustomInput
+            name="email"
+            type="email"
+            placeholder="Your Email Address"
+            label="Email"
+            onChange={(evt: ChangeEvent<HTMLInputElement>) =>
+              setCustomerInput(evt.target.value)
+            }
           />
-        )}
+          {!customerEmail && (
+            <CustomButton
+              label="submit"
+              onClick={() => validateCustomerInput()}
+            />
+          )}
+        </div>
       </ContentContainer>
       {clientSecret && (
         <Elements stripe={stripePromise} options={stripeOptions}>

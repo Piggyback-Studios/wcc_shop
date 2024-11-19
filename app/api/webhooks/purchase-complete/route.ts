@@ -37,7 +37,7 @@ export async function POST(req: NextRequest) {
         <p>${fullProduct.name} - ${orderProduct.quantity}</p>\n
       `;
     })}
-    <p>Total: $${reqJson.data.object.amount}</p>
+    <p>Total: $${reqJson.data.object.amount / 100}</p>
   `;
   // email customer that order has been placed
   const mailgun = new Mailgun(formData);
