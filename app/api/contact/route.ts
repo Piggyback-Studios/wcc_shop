@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
         <p>Message: ${message}</p>\n
       `,
     });
-    console.log(msg);
+    console.log({ name, email, message });
     return Response.json(
       { message: "Success! Your email was sent.", status: 200 },
       { status: 200 }

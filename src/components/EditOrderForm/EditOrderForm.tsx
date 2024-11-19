@@ -72,13 +72,17 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
           <div>
             <h4>Internal Shipping Information</h4>
             {/* products, totals, etc */}
-            <CustomInput
-              label="Shipping Code"
-              placeholder="XYZ-SHIPPING-CODE"
-              name="Shipping Code"
-              onChange={() => {}}
-              type="text"
-            />
+            {!orderDetail.trackingCode ? (
+              <CustomInput
+                label="Shipping Code"
+                placeholder="XYZ-SHIPPING-CODE"
+                name="Shipping Code"
+                onChange={() => {}}
+                type="text"
+              />
+            ) : (
+              <p>{orderDetail.trackingCode}</p>
+            )}
             {!orderDetail.shipped && <CustomButton label="Mark as Shipped" />}
           </div>
         </div>

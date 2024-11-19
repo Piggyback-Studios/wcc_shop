@@ -6,7 +6,6 @@ import { SITE_INFO } from "@/src/shared/data/global.data";
 import db from "@/src/utils/data/db";
 
 export async function POST(req: NextRequest) {
-  // create order in our db
   const reqJson = await req.json();
   const orderId = parseInt(reqJson.data.object.metadata.internal_order_id);
   await db.order.update({
@@ -20,7 +19,7 @@ export async function POST(req: NextRequest) {
       shippingCountry: reqJson.data.object.shipping.address.country,
       shippingCity: reqJson.data.object.shipping.address.city,
       shippingState: reqJson.data.object.shipping.address.state,
-      shippingPostalCode: reqJson.data.object.shipping.address.postalCode,
+      shippingPostalCode: reqJson.data.object.shipping.address.postal_code,
     },
   });
   const order = await db.order.findUniqueOrThrow({
