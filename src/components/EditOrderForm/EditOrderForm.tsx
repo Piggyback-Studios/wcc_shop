@@ -13,7 +13,7 @@ import toast from "@/src/utils/toast";
 import CustomInput from "../common/CustomInput";
 
 const EditOrderForm = ({ id }: EditOrderFormProps) => {
-  const { handleSubmit } = useForm<EditOrderFormType>({});
+  const { handleSubmit, register } = useForm<EditOrderFormType>({});
   const [orderDetail, setOrderDetail] = useState<OrderDetail>();
 
   const loadOrder = async () => {
@@ -26,18 +26,29 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
     loadOrder();
   }, []);
   const onSubmit: SubmitHandler<EditOrderFormType> = async (values) => {
-    await fetch(`/api/orders/${id}`, {
-      method: "PUT",
-    }).then((res) => {
-      if (res.status === 200)
-        toast(`Order #${id} Marked as Shipped!`, "success");
-      else
-        toast(
-          `There was an issue editing Order #${id}. Please try again.`,
-          "error"
-        );
-    });
+    if (values.trackingCode) {
+      const formData = new FormData();
+      formData.append("trackingCode", values.trackingCode as unknown as string);
+      await fetch(`/api/orders/${id}`, {
+        method: "PUT",
+        body: formData,
+      }).then((res) => {
+        if (res.status === 200)
+          toast(`Order #${id} Marked as Shipped!`, "success");
+        else
+          toast(
+            `There was an issue editing Order #${id}. Please try again.`,
+            "error"
+          );
+      });
+    } else
+      toast(
+        "Please submit a shipping code to mark this order as shipped.",
+        "error"
+      );
   };
+  const { ref: trackingCodeRef, ...trackingCodeRest } =
+    register("trackingCode");
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       {orderDetail && (
@@ -71,19 +82,20 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
           </div>
           <div>
             <h4>Internal Shipping Information</h4>
-            {/* products, totals, etc */}
-            {!orderDetail.trackingCode ? (
+            {!orderDetail.shipped ? (
               <CustomInput
                 label="Shipping Code"
                 placeholder="XYZ-SHIPPING-CODE"
-                name="Shipping Code"
-                onChange={() => {}}
+                forwardRef={trackingCodeRef}
+                {...trackingCodeRest}
                 type="text"
               />
             ) : (
               <p>{orderDetail.trackingCode}</p>
             )}
-            {!orderDetail.shipped && <CustomButton label="Mark as Shipped" />}
+            {!orderDetail.shipped && (
+              <CustomButton label="Mark as Shipped" type="submit" />
+            )}
           </div>
         </div>
       )}

@@ -19,7 +19,6 @@ export async function GET(
   const products: any[] = [];
   for (let i = 0; i < orderProducts.length; i++) {
     const orderProduct = orderProducts[i];
-    console.log({ orderProduct });
     const dbProduct = await db.product.findFirstOrThrow({
       where: { id: orderProduct.productId || 0 },
     });
@@ -40,11 +39,15 @@ export async function PUT(
       message: "Unauthorized.",
     });
   try {
-    await db.order.update({
+    // pull form data
+    const form = await req.formData();
+    const trackingCode = form.get("trackingCode") as string;
+    const order = await db.order.update({
       where: { id: parseInt(id) },
       data: {
         shipped: true,
         shippedDate: new Date(),
+        trackingCode,
       },
     });
     const { customerEmail } = await db.order.findFirstOrThrow({
@@ -56,16 +59,15 @@ export async function PUT(
       username: "api",
       key: process.env.MAILGUN_API_KEY!,
     });
-    const body = await req.json();
-    const { email, message, name } = body;
     await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
-      from: `${name} <mailgun@${process.env.MAILGUN_DOMAIN!}>`,
+      from: `Williford Carpentry Collective <mailgun@${process.env
+        .MAILGUN_DOMAIN!}>`,
       to: customerEmail,
       subject: `Your Order From Williford Carpentry Collective Has Been Shipped`,
       html: `
-        <h1>Contact Form Submission - ${name}</h1>\n
-        <p>Contact Email: ${email}</p>\n
-        <p>Message: ${message}</p>\n
+        <h1>Order #${order.id}</h1>\n
+        <p>Contact Email: willifordcarpentrycollective@piggybackstudios.co</p>\n
+        <p>Shipping Code: ${trackingCode}</p>\n
       `,
     });
   } catch (err) {

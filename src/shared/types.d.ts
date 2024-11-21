@@ -111,7 +111,6 @@ export type ContactFormType = {
   name: string;
   email: string;
   message: string;
-  // file: File;
 };
 
 export type CreateProductFormType = {
@@ -124,7 +123,7 @@ export type CreateProductFormType = {
 };
 
 export type EditOrderFormType = {
-  shipped: boolean;
+  trackingCode: string;
 };
 
 export type SignInFormType = {
