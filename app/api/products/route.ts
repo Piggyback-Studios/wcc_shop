@@ -9,9 +9,7 @@ import { parseBool } from "@/src/utils/parse";
 
 // MASTER TODO MVP LIST
 
-// maybe allowing backorders is okay when just starting out? need to meet with katy
-// just put a cap of any one amount of items ordered
-
+// TODO: put a cap of any one amount of items ordered
 // TODO: make cart store in local storage
 // TODO: empty cart after purchase
 // TODO: protect all necessary backend endpoints
