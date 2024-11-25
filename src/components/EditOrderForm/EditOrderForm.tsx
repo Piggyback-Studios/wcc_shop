@@ -19,7 +19,6 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
   const loadOrder = async () => {
     const res = await fetch(`/api/orders/${id}`);
     const { order, products } = await res.json();
-    console.log({ ...order, products });
     setOrderDetail({ ...order, products });
   };
   useEffect(() => {
@@ -81,20 +80,26 @@ const EditOrderForm = ({ id }: EditOrderFormProps) => {
             )}
           </div>
           <div>
-            <h4>Internal Shipping Information</h4>
-            {!orderDetail.shipped ? (
-              <CustomInput
-                label="Shipping Code"
-                placeholder="XYZ-SHIPPING-CODE"
-                forwardRef={trackingCodeRef}
-                {...trackingCodeRest}
-                type="text"
-              />
+            {orderDetail.paid ? (
+              <>
+                <h4>Internal Shipping Information</h4>
+                {!orderDetail.shipped ? (
+                  <CustomInput
+                    label="Shipping Code"
+                    placeholder="XYZ-SHIPPING-CODE"
+                    forwardRef={trackingCodeRef}
+                    {...trackingCodeRest}
+                    type="text"
+                  />
+                ) : (
+                  <p>{orderDetail.trackingCode}</p>
+                )}
+                {!orderDetail.shipped && (
+                  <CustomButton label="Mark as Shipped" type="submit" />
+                )}
+              </>
             ) : (
-              <p>{orderDetail.trackingCode}</p>
-            )}
-            {!orderDetail.shipped && (
-              <CustomButton label="Mark as Shipped" type="submit" />
+              <p>Order was never placed.</p>
             )}
           </div>
         </div>
