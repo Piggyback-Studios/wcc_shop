@@ -23,8 +23,6 @@ const CreateProductForm = () => {
       method: "POST",
       body: formData,
     }).then((res) => {
-      console.log(res);
-
       if (res.status === 200) toast("Product created!", "success");
       else
         toast(

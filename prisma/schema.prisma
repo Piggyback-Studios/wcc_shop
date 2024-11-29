@@ -62,23 +62,26 @@ model UserType {
 
 model Order {
   id                    Int             @id @default(autoincrement())
-  paymentId             String
+  paymentId             String?
   paid                  Boolean
   shipped               Boolean
   customerEmail         String
-  shippingName          String
-  shippingStreetAddress String
-  shippingState         String
-  shippingMunicipality  String
-  shippingZip           String
-  orderDate             DateTime
+  shippingName          String?
+  shippingCountry       String?
+  shippingStreetAddress String?
+  shippingState         String?
+  shippingCity          String?
+  shippingPostalCode    String?
+  orderDate             DateTime?
   shippedDate           DateTime?
-  products              OrderProducts[]
+  trackingCode          String?
+  orderProducts         OrderProducts[]
 }
 
 model OrderProducts {
   id        Int      @id @default(autoincrement())
   Product   Product? @relation(fields: [productId], references: [id])
+  quantity  Int
   productId Int?
   Order     Order?   @relation(fields: [orderId], references: [id])
   orderId   Int?

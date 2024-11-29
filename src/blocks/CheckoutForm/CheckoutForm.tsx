@@ -67,7 +67,7 @@ const CheckoutForm = () => {
       <ContentContainer>
         <form onSubmit={handleSubmit}>
           <PaymentElement />
-          <AddressElement options={{ mode: "shipping" }} />
+          <AddressElement options={{ mode: "shipping" }} className="mb-8" />
           <CustomButton disabled={!stripe || disabled} label={submitLabel} />
         </form>
       </ContentContainer>

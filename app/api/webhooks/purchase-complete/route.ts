@@ -6,54 +6,65 @@ import { SITE_INFO } from "@/src/shared/data/global.data";
 import db from "@/src/utils/data/db";
 
 export async function POST(req: NextRequest) {
-  // create order in our db
   const reqJson = await req.json();
-  console.log(reqJson);
-  const order = await db.order.create({
+  const orderId = parseInt(reqJson.data.object.metadata.internal_order_id);
+  await db.order.update({
+    where: { id: orderId },
     data: {
-      paymentId: "1234",
+      paymentId: reqJson.data.object.id,
       paid: true,
-      shipped: false,
-      customerEmail: "customer@email.com",
-      shippingName: "Shipping Name Here",
-      shippingStreetAddress: "123 Main St.",
-      shippingMunicipality: "Colorado Springs",
-      shippingZip: "80909",
-      shippingState: "CO",
       orderDate: new Date(),
+      shippingName: reqJson.data.object.shipping.name,
+      shippingStreetAddress: reqJson.data.object.shipping.address.line1,
+      shippingCountry: reqJson.data.object.shipping.address.country,
+      shippingCity: reqJson.data.object.shipping.address.city,
+      shippingState: reqJson.data.object.shipping.address.state,
+      shippingPostalCode: reqJson.data.object.shipping.address.postal_code,
     },
   });
+  const order = await db.order.findUniqueOrThrow({
+    where: { id: orderId },
+    include: {
+      orderProducts: true,
+    },
+  });
+  const ordersHtml = `
+    ${order.orderProducts.map(async (orderProduct) => {
+      const fullProduct = await db.product.findFirstOrThrow({
+        where: { id: orderProduct.id },
+      });
+      return `
+        <p>${fullProduct.name} - ${orderProduct.quantity}</p>\n
+      `;
+    })}
+    <p>Total: $${reqJson.data.object.amount / 100}</p>
+  `;
   // email customer that order has been placed
   const mailgun = new Mailgun(formData);
   const mg = mailgun.client({
     username: "api",
     key: process.env.MAILGUN_API_KEY!,
   });
-  const body = await req.json();
-  const { email, message, name } = body;
-  const customerMsg = await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
+  await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
     from: `<mailgun@${process.env.MAILGUN_DOMAIN!}>`,
-    to: [SITE_INFO.EMAIL_ADDRESS],
+    to: order.customerEmail,
     subject: `Your Order From Williford Carpentry Collective Has Been Placed`,
     html: `
-        <h1>Your Order - ${name}</h1>\n
-        <p>Contact Email: ${email}</p>\n
-        <p>Message: ${message}</p>\n
+        <h1>Your Order - #${order.id}</h1>\n
+        ${ordersHtml}
+        <p>Thank you for your order!</p>
       `,
   });
-
   // email us that order has been placed
-  const sellerMsg = await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
-    from: `${name} <mailgun@${process.env.MAILGUN_DOMAIN!}>`,
-    to: [SITE_INFO.EMAIL_ADDRESS],
+  await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
+    from: `<mailgun@${process.env.MAILGUN_DOMAIN!}>`,
+    to: SITE_INFO.EMAIL_ADDRESS,
     subject: `Williford Carpentry Collective Has Received a New Order`,
     html: `
-        <h1>Contact Form Submission - ${name}</h1>\n
-        <p>Contact Email: ${email}</p>\n
-        <p>Message: ${message}</p>\n
+        <h1>Online Order - #${order.id}</h1>\n
+        ${ordersHtml}
       `,
   });
-  console.log(sellerMsg);
   return Response.json(
     { message: "Success! Your email was sent.", status: 200 },
     { status: 200 }

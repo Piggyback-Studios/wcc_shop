@@ -8,14 +8,13 @@ import db from "@/src/utils/data/db";
 import { parseBool } from "@/src/utils/parse";
 
 // MASTER TODO MVP LIST
-// TODO: once purchased, remove the appropriate amount from stock quantity
-// TODO: dont allow users to purchase more than the stock quantity
-// TODO: once a purchase is completed, create an order in the database
-// TODO: once an order is shipped, admins and owners should be able to mark order as shipped in the system and the customer should get an email
-// TODO: allow admins to see all orders
+
+// TODO: put a cap of any one amount of items ordered
 // TODO: make cart store in local storage
+// TODO: empty cart after purchase
 // TODO: protect all necessary backend endpoints
 // TODO: write tests for api endpoints and block-level components
+// TODO: test extensively in browserstack and fix all bugs
 
 // fetch all products
 export async function GET(req: NextRequest) {

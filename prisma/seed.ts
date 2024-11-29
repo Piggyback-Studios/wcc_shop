@@ -2,6 +2,8 @@ import bcrypt from "bcrypt";
 import Stripe from "stripe";
 
 import db from "@/src/utils/data/db";
+import { Product } from "@prisma/client";
+import { randomIntFromInterval } from "@/src/utils/numbers";
 
 const createUserTypes = async () => {
   await db.userType.upsert({
@@ -123,19 +125,108 @@ const createCategories = async () => {
 };
 
 const createOrders = async () => {
-  await db.order.create({
+  // unpaid order (customer never completed purchase)
+  const unpaidProducts = await db.product.findMany({
+    where: {
+      id: {
+        // Only fetch products with even IDs
+        in: await db.product
+          .findMany({
+            select: { id: true },
+          })
+          .then((products) =>
+            products.filter((p) => p.id % 2 === 0).map((p) => p.id)
+          ),
+      },
+    },
+  });
+  const unpaidOrder = await db.order.create({
+    data: {
+      paid: false,
+      shipped: false,
+      customerEmail: "test1@piggybackstudios.co",
+    },
+  });
+  await db.orderProducts.createMany({
+    data: unpaidProducts.map((product) => ({
+      productId: product.id,
+      quantity: randomIntFromInterval(1, 6),
+      orderId: unpaidOrder.id,
+    })),
+  });
+
+  // paid order (customer completed purchase)
+  const paidProducts = await db.product.findMany({
+    where: {
+      id: {
+        // Only fetch products with even IDs
+        in: await db.product
+          .findMany({
+            select: { id: true },
+          })
+          .then((products) =>
+            products.filter((p) => p.id % 2 === 1).map((p) => p.id)
+          ),
+      },
+    },
+  });
+  const paidOrder = await db.order.create({
     data: {
       paymentId: "1234",
       paid: true,
       shipped: false,
-      customerEmail: "test@piggybackstudios.co",
+      customerEmail: "test2@piggybackstudios.co",
       shippingName: "Shipping Name Here",
       shippingStreetAddress: "123 Main St.",
-      shippingMunicipality: "Colorado Springs",
-      shippingZip: "80909",
+      shippingCity: "Colorado Springs",
+      shippingPostalCode: "80909",
       shippingState: "CO",
       orderDate: new Date(),
     },
+  });
+  await db.orderProducts.createMany({
+    data: paidProducts.map((product) => ({
+      productId: product.id,
+      quantity: randomIntFromInterval(1, 6),
+      orderId: paidOrder.id,
+    })),
+  });
+
+  // shipped order (admin marked shipped in db)
+  const shippedProducts = await db.product.findMany({
+    where: {
+      id: {
+        // Only fetch products with IDs divisible by 3
+        in: await db.product
+          .findMany({
+            select: { id: true },
+          })
+          .then((products) =>
+            products.filter((p) => p.id % 3 === 0).map((p) => p.id)
+          ),
+      },
+    },
+  });
+  const shippedOrder = await db.order.create({
+    data: {
+      paymentId: "5678",
+      paid: true,
+      shipped: true,
+      customerEmail: "test3@piggybackstudios.co",
+      shippingName: "Shipping Name Here",
+      shippingStreetAddress: "123 Main St.",
+      shippingCity: "Colorado Springs",
+      shippingPostalCode: "80909",
+      shippingState: "CO",
+      orderDate: new Date(),
+    },
+  });
+  await db.orderProducts.createMany({
+    data: shippedProducts.map((product) => ({
+      productId: product.id,
+      quantity: randomIntFromInterval(1, 6),
+      orderId: shippedOrder.id,
+    })),
   });
 };
 
