@@ -24,29 +24,30 @@ const ProductCard = ({
   const [totals, setTotals] = useTotalsContext();
 
   const addProductToCart = (product: Product) => {
-    // i dont necessarily like this solution
     const itemInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id === product.id
     )[0];
     const otherItemsInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id !== product.id
     );
-
-    setCart({
-      cartProducts: [
-        ...otherItemsInCart,
-        {
-          ...product,
-          cartQuantity: itemInCart ? itemInCart.cartQuantity + 1 : 1,
-        } as Product,
-      ],
-    });
+    if (itemInCart && itemInCart.cartQuantity >= 5) {
+      toast("Only 5 max of each item can be ordered at a time.", "error")
+    }
+    else {
+      toast(`${product.name} added to cart.`, "success");
+      setCart({
+        cartProducts: [
+          ...otherItemsInCart,
+          {
+            ...product,
+            cartQuantity: itemInCart ? itemInCart.cartQuantity + 1 : 1,
+          } as Product,
+        ],
+      });
+    }
   };
 
-  const handleClick = (product: Product) => {
-    addProductToCart(product);
-    toast(`${product.name} added to cart`, "success");
-  };
+  const handleClick = (product: Product) => addProductToCart(product);
 
   useEffect(() => {
     const totalCartProductsQuantity = cart.cartProducts.reduce(

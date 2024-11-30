@@ -9,6 +9,12 @@ export async function POST(req: NextRequest) {
   const stripe = new Stripe(process.env.STRIPE_SK || "");
   const data = await req.json();
   const { products, customerEmail } = data;
+  if (!products.length) return NextResponse.json({status: 401, message: 'Products must be provided.'})
+  if (!customerEmail) return NextResponse.json({status: 401, message: 'Customer email must be provided.'})
+  for (let i = 0; i<= products.length; i++) {
+    const product = products[i]
+    if (product && (product.cartQuantity > 5)) return NextResponse.json({status: 401, message: 'Only 5 items max per product allowed.'})
+  }
   const dbProducts = await db.product.findMany({
     where: { id: { in: products.map((product: Product) => product.id) } },
   });
