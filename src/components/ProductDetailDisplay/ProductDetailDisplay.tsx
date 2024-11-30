@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import CustomButton from "@/src/components/common/CustomButton";
 import { ProductDetailDisplayProps, Product } from "@/src/shared/types";
-import { useCartContext } from "@/src/context/Cart";
+import { updateLocalCart, useCartContext } from "@/src/context/Cart";
 import toast from "@/src/utils/toast";
 
 const ProductDetailDisplay = ({
@@ -30,15 +30,17 @@ const ProductDetailDisplay = ({
     }
     else {
       toast(`${product.name} added to cart.`, "success");
+      const updatedProducts = [
+        ...otherItemsInCart,
+        {
+          ...product,
+          cartQuantity: itemInCart ? itemInCart.cartQuantity + 1 : 1,
+        } as Product,
+      ]
       setCart({
-        cartProducts: [
-          ...otherItemsInCart,
-          {
-            ...product,
-            cartQuantity: itemInCart ? itemInCart.cartQuantity + 1 : 1,
-          } as Product,
-        ],
+        cartProducts: updatedProducts
       });
+      updateLocalCart(updatedProducts)
     }
   };
 

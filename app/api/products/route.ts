@@ -13,6 +13,8 @@ import { parseBool } from "@/src/utils/parse";
 // TODO: protect all necessary backend endpoints with session auth
 // TODO: finish order confirmation page
 // TODO: protect webhook by verifying secret passed from stripe
+// TODO: fix display of totals
+// TODO: add shipping cost to checkout
 
 // testing 
 // TODO: write tests for api endpoints and block-level components (playwright for e2e and integration testing and cypress for component testing)

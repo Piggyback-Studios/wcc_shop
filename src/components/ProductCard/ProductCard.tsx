@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 
 import styles from "./component.module.css";
-import { useCartContext } from "@/src/context/Cart";
+import { updateLocalCart, useCartContext } from "@/src/context/Cart";
 import { useTotalsContext } from "@/src/context/Totals";
 import { ProductCardProps, Product } from "@/src/shared/types";
 import CustomButton from "@/src/components/common/CustomButton";
@@ -35,15 +35,17 @@ const ProductCard = ({
     }
     else {
       toast(`${product.name} added to cart.`, "success");
+      const updatedProducts = [
+        ...otherItemsInCart,
+        {
+          ...product,
+          cartQuantity: itemInCart ? itemInCart.cartQuantity + 1 : 1,
+        } as Product,
+      ]
       setCart({
-        cartProducts: [
-          ...otherItemsInCart,
-          {
-            ...product,
-            cartQuantity: itemInCart ? itemInCart.cartQuantity + 1 : 1,
-          } as Product,
-        ],
+        cartProducts: updatedProducts,
       });
+      updateLocalCart(updatedProducts)
     }
   };
 

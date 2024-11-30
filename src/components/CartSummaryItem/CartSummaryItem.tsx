@@ -1,7 +1,7 @@
 import { Product } from "@/src/shared/types";
 import Image from "next/image";
 
-import { useCartContext } from "@/src/context/Cart";
+import { updateLocalCart, useCartContext } from "@/src/context/Cart";
 import CustomButton from "@/src/components/common/CustomButton";
 import { useEffect } from "react";
 import { useTotalsContext } from "@/src/context/Totals";
@@ -19,16 +19,18 @@ const CartSummaryItem = (product: Product) => {
       (cartProduct) => cartProduct.id !== product.id
     );
     const cartQuantity = Math.max((cartProduct.cartQuantity += qty), 0);
+    const updatedProducts = [
+      ...otherCartProducts,
+      {
+        ...cartProduct,
+        cartQuantity: cartQuantity,
+      },
+    ];
     if (cartQuantity) {
       setCart({
-        cartProducts: [
-          ...otherCartProducts,
-          {
-            ...cartProduct,
-            cartQuantity: cartQuantity,
-          },
-        ],
+        cartProducts: updatedProducts,
       });
+      updateLocalCart(updatedProducts);
     } else {
       removeProductFromCart(product);
     }
@@ -38,9 +40,11 @@ const CartSummaryItem = (product: Product) => {
     const otherItemsInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id !== product.id
     );
+    const updatedProducts = [...otherItemsInCart]
     setCart({
-      cartProducts: [...otherItemsInCart],
+      cartProducts: updatedProducts,
     });
+    updateLocalCart(updatedProducts);
   };
 
   useEffect(() => {
