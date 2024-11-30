@@ -2,6 +2,7 @@
 
 import ContentContainer from "@/src/components/common/ContentContainer";
 import CustomButton from "@/src/components/common/CustomButton";
+import { useCartContext } from "@/src/context/Cart";
 import toast from "@/src/utils/toast";
 import {
   useStripe,
@@ -18,6 +19,7 @@ const CheckoutForm = () => {
   const elements = useElements();
   const [disabled, setDisabled] = useState<boolean>(false);
   const [submitLabel, setSubmitLabel] = useState<string>("Submit");
+  const [cart, setCart] = useCartContext()
 
   const handleSubmit = async (event: React.SyntheticEvent) => {
     setDisabled(true);
@@ -56,6 +58,7 @@ const CheckoutForm = () => {
 
       if (result.paymentIntent.status === "succeeded") {
         // redirect to order complete page here
+        setCart({ cartProducts: [] });
         router.push("/order-complete");
       }
     }

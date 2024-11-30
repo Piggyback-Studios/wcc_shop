@@ -8,7 +8,6 @@ import db from "@/src/utils/data/db";
 import { parseBool } from "@/src/utils/parse";
 
 // MASTER TODO MVP LIST
-// TODO: empty cart after successful purchase
 // TODO: protect all necessary backend endpoints with session auth
 // TODO: finish order confirmation page
 // TODO: protect webhook by verifying secret passed from stripe
