@@ -8,7 +8,6 @@ import db from "@/src/utils/data/db";
 import { parseBool } from "@/src/utils/parse";
 
 // MASTER TODO MVP LIST
-// TODO: make cart store in local storage
 // TODO: empty cart after successful purchase
 // TODO: protect all necessary backend endpoints with session auth
 // TODO: finish order confirmation page
