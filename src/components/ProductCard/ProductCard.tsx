@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 
 import styles from "./component.module.css";
-import { useCartContext } from "@/src/context/Cart";
+import { updateLocalCart, useCartContext } from "@/src/context/Cart";
 import { useTotalsContext } from "@/src/context/Totals";
 import { ProductCardProps, Product } from "@/src/shared/types";
 import CustomButton from "@/src/components/common/CustomButton";
@@ -24,29 +24,32 @@ const ProductCard = ({
   const [totals, setTotals] = useTotalsContext();
 
   const addProductToCart = (product: Product) => {
-    // i dont necessarily like this solution
     const itemInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id === product.id
     )[0];
     const otherItemsInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id !== product.id
     );
-
-    setCart({
-      cartProducts: [
+    if (itemInCart && itemInCart.cartQuantity >= 5) {
+      toast("Only 5 max of each item can be ordered at a time.", "error")
+    }
+    else {
+      toast(`${product.name} added to cart.`, "success");
+      const updatedProducts = [
         ...otherItemsInCart,
         {
           ...product,
           cartQuantity: itemInCart ? itemInCart.cartQuantity + 1 : 1,
         } as Product,
-      ],
-    });
+      ]
+      setCart({
+        cartProducts: updatedProducts,
+      });
+      updateLocalCart(updatedProducts)
+    }
   };
 
-  const handleClick = (product: Product) => {
-    addProductToCart(product);
-    toast(`${product.name} added to cart`, "success");
-  };
+  const handleClick = (product: Product) => addProductToCart(product);
 
   useEffect(() => {
     const totalCartProductsQuantity = cart.cartProducts.reduce(

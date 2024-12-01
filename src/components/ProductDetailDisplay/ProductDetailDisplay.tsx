@@ -3,7 +3,7 @@ import Link from "next/link";
 
 import CustomButton from "@/src/components/common/CustomButton";
 import { ProductDetailDisplayProps, Product } from "@/src/shared/types";
-import { useCartContext } from "@/src/context/Cart";
+import { updateLocalCart, useCartContext } from "@/src/context/Cart";
 import toast from "@/src/utils/toast";
 
 const ProductDetailDisplay = ({
@@ -19,23 +19,29 @@ const ProductDetailDisplay = ({
 }: ProductDetailDisplayProps) => {
   const [cart, setCart] = useCartContext();
   const addProductToCart = (product: Product) => {
-    // i dont necessarily like this solution
     const itemInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id === product.id
     )[0];
     const otherItemsInCart = cart.cartProducts.filter(
       (cartProduct) => cartProduct.id !== product.id
     );
-
-    setCart({
-      cartProducts: [
+    if (itemInCart && itemInCart.cartQuantity >= 5) {
+      toast("Only 5 max of each item can be ordered at a time.", "error")
+    }
+    else {
+      toast(`${product.name} added to cart.`, "success");
+      const updatedProducts = [
         ...otherItemsInCart,
         {
           ...product,
           cartQuantity: itemInCart ? itemInCart.cartQuantity + 1 : 1,
         } as Product,
-      ],
-    });
+      ]
+      setCart({
+        cartProducts: updatedProducts
+      });
+      updateLocalCart(updatedProducts)
+    }
   };
 
   const handleClick = (product: Product) => {
