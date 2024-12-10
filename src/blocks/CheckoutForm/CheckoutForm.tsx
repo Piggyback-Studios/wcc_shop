@@ -45,7 +45,6 @@ const CheckoutForm = () => {
 
     if (result.error) {
       // Show error to your customer (for example, payment details incomplete)
-      console.log(result.error.message);
       toast(
         "There was an error processing your payment. Please check your payment information and try again.",
         "error"

@@ -31,7 +31,6 @@ export const CartProvider = ({ children }: PropsWithChildren<{}>) => {
   const [localCartState, setLocalCartState] = useState<Product[]>([])
   useEffect(() => {
     const localSavedCartOrEmpty = fetchLocalCart();
-    console.log({localSavedCartOrEmpty})
    setLocalCartState(localSavedCartOrEmpty)
   }, [])
   const [value, setValue] = useState<Cart>({

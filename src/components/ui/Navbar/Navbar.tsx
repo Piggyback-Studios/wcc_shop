@@ -21,9 +21,8 @@ const Navbar = ({ logo, links }: NavbarProps) => {
     else return "p-4";
   };
   const handleSignOut = async () => {
-    const res = await fetch("/api/auth/sign-out", { method: "POST" });
+    await fetch("/api/auth/sign-out", { method: "POST" });
     router.push("/");
-    console.log(res);
   };
   // TODO: this is stupid and we need to fix it
   const handleLoad = async () => {
